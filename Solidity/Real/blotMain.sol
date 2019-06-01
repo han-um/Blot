@@ -4,7 +4,6 @@ import "./blotPost.sol";
 
 /***
  * @title BlotMain Contract
- * @dev
  *  사용자별 번역 활동(번역, 평가) 내역을 이벤트로 저장
  *  번역 활동 기여도에 따른 보상금 지급
 */
@@ -18,14 +17,14 @@ contract BlotMain is BlotPost {
   /// @param _postId 글 id
   /// @param _transActivity 번역자별 번역 문장 리스트
   /// @dev 문장 번역 기록을 저장할 이벤트 호출
-  function generateTranslationEvent(uint _postId, string calldata _translatorId, uint _userShare, uint[] calldata _sentenceId) external {
+  function generateTranslationEvent(uint _postId, string calldata _translatorId, uint _userShare, uint[] calldata _sentenceId) external onlyOwner {
       emit NewTranslation(_postId, _translatorId, _userShare, _sentenceId);
   }
 
   /// @param _postId 글 id
   /// @param _evalActivity 평가자별 평가 문장 리스트
   /// @dev 문장 평가 기록을 저장할 이벤트 호출
-  function generateEvaluationEvent(uint _postId, string calldata _evaluatorId, uint _userShare, uint[] calldata _sentenceId) external {
+  function generateEvaluationEvent(uint _postId, string calldata _evaluatorId, uint _userShare, uint[] calldata _sentenceId) external onlyOwner {
       emit NewTranslation(_postId, _evaluatorId, _userShare, _sentenceId);
   }
 
@@ -57,10 +56,5 @@ contract BlotMain is BlotPost {
   /// @dev 계정 지갑의 잔고 반환
   function getBalanceOfAccount (address payable _account) external view returns (uint) {
       return _account.balance;
-  }
-
-  /// @dev Owner 계정 반환
-  function getOwnerAddress() external view returns(address) {
-    return owner;
   }
 }
