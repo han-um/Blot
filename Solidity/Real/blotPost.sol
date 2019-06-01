@@ -4,7 +4,6 @@ import "./blotUser.sol";
 
 /***
  * @title BlotPost Contract
- * @dev
  *  번역요청글에 대한 정보 생성 & 보상금 송금받기
  *  번역요청글 정보(보상금, 작성자id) 조회
  *  번역요청글에 대한 사용자별 활동 내역을 이벤트로 저장
@@ -27,8 +26,7 @@ contract BlotPost is BlotUser {
   function createPost(uint _postId, uint _reward, string calldata _userId) external payable {
     require(msg.value >= _reward);
     require(msg.sender == userInfo[_userId].account);
-    postInfo[_postId].reward = _reward;
-    postInfo[_postId].writer=_userId;
+    postInfo[_postId] = Post(_reward, _userId);
   }
 
   // 글의 보상금 조회
