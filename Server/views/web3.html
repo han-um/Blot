@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>CryptoZombies front-end</title>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="dist/js/web3.min.js"></script>
+  </head>
+  <body>
+    <script>
+        console.log("hello");
+
+        function startApp() {
+            const contractAddress = "0x4a9e2d1aa6618d916adc1a0bc41087ec819887f7";
+            const abi = [
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userAccountList",
+			    "type": "address[]"
+			},
+			{
+			    "name": "_moneyList",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "sendRewardToUsersByAccount",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_otherAccount",
+			    "type": "address"
+			}
+	    ],
+	    "name": "setUserAccount",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_evaluatorId",
+			    "type": "string"
+			},
+			{
+			    "name": "_userShare",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_sentenceId",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "generateEvaluationEvent",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_exp",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "minusUserReliability",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "getPostReward",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "uint256"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "postInfo",
+	    "outputs": [
+			{
+			    "name": "reward",
+			    "type": "uint256"
+			},
+			{
+			    "name": "writer",
+			    "type": "string"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "",
+			    "type": "string"
+			}
+	    ],
+	    "name": "userInfo",
+	    "outputs": [
+			{
+			    "name": "account",
+			    "type": "address"
+			},
+			{
+			    "name": "reliability",
+			    "type": "uint256"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "getPostWriter",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "string"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_reward",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_userId",
+			    "type": "string"
+			}
+	    ],
+	    "name": "createPost",
+	    "outputs": [],
+	    "payable": true,
+	    "stateMutability": "payable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [],
+	    "name": "owner",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "address"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_account",
+			    "type": "address"
+			}
+	    ],
+	    "name": "getBalanceOfAccount",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "uint256"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_money",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "sendRewardToUserByUserId",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			}
+	    ],
+	    "name": "getUserReliability",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "uint256"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [],
+	    "name": "sendBalanceOfContractToOwner",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_translatorId",
+			    "type": "string"
+			},
+			{
+			    "name": "_userShare",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_sentenceId",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "generateTranslationEvent",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_exp",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "addUserReliability",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			}
+	    ],
+	    "name": "getUserAccount",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "address"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "newOwner",
+			    "type": "address"
+			}
+	    ],
+	    "name": "transferOwnership",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_userAccount",
+			    "type": "address"
+			}
+	    ],
+	    "name": "createUser",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "",
+			    "type": "address"
+			}
+	    ],
+	    "name": "userIdInfo",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "string"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "anonymous": false,
+	    "inputs": [
+			{
+			    "indexed": false,
+			    "name": "postId",
+			    "type": "uint256"
+			},
+			{
+			    "indexed": false,
+			    "name": "translatorId",
+			    "type": "string"
+			},
+			{
+			    "indexed": false,
+			    "name": "userShare",
+			    "type": "uint256"
+			},
+			{
+			    "indexed": false,
+			    "name": "sentenceId",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "NewTranslation",
+	    "type": "event"
+	},
+	{
+	    "anonymous": false,
+	    "inputs": [
+			{
+			    "indexed": false,
+			    "name": "postId",
+			    "type": "uint256"
+			},
+			{
+			    "indexed": false,
+			    "name": "evaluatorId",
+			    "type": "string"
+			},
+			{
+			    "indexed": false,
+			    "name": "userShare",
+			    "type": "uint256"
+			},
+			{
+			    "indexed": false,
+			    "name": "sentenceId",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "NewEvaluation",
+	    "type": "event"
+	},
+	{
+	    "anonymous": false,
+	    "inputs": [
+			{
+			    "indexed": true,
+			    "name": "previousOwner",
+			    "type": "address"
+			},
+			{
+			    "indexed": true,
+			    "name": "newOwner",
+			    "type": "address"
+			}
+	    ],
+	    "name": "OwnershipTransferred",
+	    "type": "event"
+	}
+];
+
+            // 컨트랙트 생성
+            var blotContract = web3.eth.contract(abi);
+            var blotContractInstance = blotContract.at(contractAddress);
+            console.log(blotContract);
+
+            console.log(web3.eth.accounts[0]);
+
+
+            // view 함수 호출
+            blotContractInstance.owner(function (error, result) {
+                if (!error) {
+                    console.log(JSON.stringify(result));
+                    alert(JSON.stringify(result));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+
+// 이벤트 넣기
+        // ["0xca35b7d915458ef540ade6068dfe2f44e8fa733c", 30, [3]]
+        // 컨트랙트 함수 호출
+        // event
+        /*
+        blotContractInstance.generateTranslationEvent(3, "user1", 30, [1, 2, 3], function(error, result) {
+          if(!error)
+            console.log(JSON.stringify(result));
+          else {
+            console.log(error);
+          }
+        });
+        */
+        
+
+// 이벤트 테스트
+
+    blotContractInstance.NewTranslation({}, { fromBlock: 0, toBlock: 'latest' }).get((error, eventResult) => {
+      if (error)
+        console.log('Error in myEvent event handler: ' + error);
+      else
+        console.log('myEvent: ' + JSON.stringify(eventResult[0].args));
+    });
+
+}
+
+
+      window.addEventListener('load', function() {
+        // Web3가 브라우저에 주입되었는지 확인(Mist/MetaMask)
+          alert("123");
+        if (typeof web3 !== 'undefined') {
+          // Mist/MetaMask의 프로바이더 사용
+          console.log("yes");
+          web3 = new Web3(web3.currentProvider);
+          console.log(web3);
+
+          // 메타마스크 계정을 Dapp에서 읽게하기 위함
+          ethereum.enable();
+
+          startApp();
+        } else {
+          console.log("no");
+        }
+      });
+
+    </script>
+  </body>
+</html>
