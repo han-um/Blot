@@ -99,6 +99,62 @@
             }
     });
 
+// earlyFinish : 조기 종료
+    app.get('/deadline', function(req, res) {
+        console.log(req.query.id);
+        
+        
+            // 만약 세션이 있다면 메인 페이지로 강제이동
+            if(!req.session.user){
+                console.log('[ViewProj-Server] NO SESSION ',req.session.user);
+               res.redirect('/');
+            // 세션이 없다면 로그인 가능
+            }else{
+                console.log('[ViewProj-Server] GET : ',req.query.id);
+                // !!!!!가져올때 일반 _id값으로 받아서 쓸땐 object처리해야함 
+                var tasks2 = [
+                // TASK1 : MongoDB로부터 해당 ID의 문서 가져오기
+                  function (callback) {
+                    MongoClient.connect(MongoConfig, { useNewUrlParser: true },function(err, db){  
+                    if (err) throw err;
+                    var dbo = db.db("blotMongo"); 
+                    
+                    // 여기서 MongoDB 쿼리 후 내부에서 반환
+                    dbo.collection("projects").find({ "_id": ObjectId(req.query.id) }).toArray(function(err, result) {
+                        if (err) throw err;
+                         console.log('[ViewProj-Server] MongoDB Result : ', result);
+                         callback(null,result);
+                    });  
+                db.close();
+                });
+                
+            },
+            // TASK 2: 최종적으로 나온 프로젝트 정보를 반환하여 페이지 렌더링
+            function (reviews, callback) {
+                // GET으로 받은 ID가 잘못들어왔을 경우, 메인 페이지로 보냄
+                console.log('[ViewProj-Server] Sended : ', reviews);
+                
+                var active =  {};
+                var sum = 0;
+                for(var i=0; i<Object.keys(reviews[0].doc.sentences).length; i++) {
+                    
+                    sum = sum + 1;
+                }
+                console.log(sum);
+                console.log(Object.keys(reviews[0].doc.sentences).length);
+                res.render('web3.html',{session_user : req.session.user, projectInfo : reviews });
+            }  
+            ];
+            
+            // TASK 1,2를 순차적으로 실행
+                async.waterfall(tasks2, function (err) {});
+                
+            }
+        
+    });
+
+
+
 // mylibrary : 내 서재 페이지 렌더링
 // 기능 : 해당 유저가 어떤 책들을 서재에 저장했는지 불러온다.
     app.get('/mylibrary',function(req,res){
