@@ -284,6 +284,7 @@
                     req.session.user = {
                         id: result[0].idUser,
                         name: result[0].nickname,
+                        real_id:result[0].username,
                         authorized: true
                     };
                 }else{ // 계정이 없다면 (로그인 실패)
