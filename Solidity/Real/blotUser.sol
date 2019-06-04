@@ -22,7 +22,6 @@ contract BlotUser is Ownable {
   // 매핑 : 사용자 Account 주소 => 사용자 아이디
   mapping(address => string) public userIdInfo;
 
-  /// @dev 사용자 정보(계정 주소, 신뢰도) 기록
   function createUser(string calldata _userId, address payable _userAccount) external {
     userInfo[_userId].account = _userAccount;
     userInfo[_userId].reliability = 0;
@@ -37,10 +36,12 @@ contract BlotUser is Ownable {
     return userInfo[_userId].reliability;
   }
 
-  /// @dev 사용자 계정 주소를 변경하는 함수
   function setUserAccount(string calldata _userId, address payable _otherAccount) external {
     // 기존 계정 주소를 가지고 계정 변경 함수를 호출해야함
     require(keccak256(abi.encodePacked(userIdInfo[msg.sender])) == keccak256(abi.encodePacked(_userId)));
+
+    // 기존 주소에 매핑된 아이디 없애기
+    userIdInfo[userInfo[_userId].account]='';
 
     // 사용자 아이디에 대한 Account 주소를 변경
     userInfo[_userId].account = _otherAccount;
@@ -49,12 +50,10 @@ contract BlotUser is Ownable {
     userIdInfo[_otherAccount] = _userId;
   }
 
-  /// @dev 사용자 신뢰도를 증가시키는 함수
   function addUserReliability(string calldata _userId, uint _exp) external onlyOwner {
     userInfo[_userId].reliability = userInfo[_userId].reliability + _exp;
   }
 
-  /// @dev 사용자 신뢰도를 감소시키는 함수
   function minusUserReliability(string calldata _userId, uint _exp) external onlyOwner {
     userInfo[_userId].reliability = userInfo[_userId].reliability - _exp;
   }

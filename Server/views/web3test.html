@@ -44,116 +44,635 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">  </script>
     <!-- VUE 동작 코드 -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script language="javascript" type="text/javascript" src="dist/js/web3.min.js"></script>
     <script>
-      $(document).ready(function(){
 
-          // VUE : 상단 메뉴 조작
-          // 기능1 : 로그인 여부를 판단하여 로그인 버튼을 표시함
-          // 기능2 : 로그인되어있다면 유저 이름을 보여줌
-            var username_app = new Vue({
-                  el: '#username_app',
-                  data: {
-                    isLoggedIn : false,
-                    s_username : ''
-                  },
-                 created: function () { // 문서를 불러오면 시작되는 훅
-                     //현재 세션이 만들어져있는지 판단(server.js에서 보내줌)
-                     <%if(session_user){
-                       console.log('[ViewProj-HTML] Recieved Session : ', session_user);%>
-                       this.isLoggedIn = true;
-                       this.s_username = '<%=session_user.name%>';
-                     <%}else{%>
-                       this.isLoggedIn = false;
-                     <%}%>
-                 }
-            });
+        var blotContract;
+        var blotContractInstance;
 
-            // VUE COMPONENT : 문장 컴포넌트
-            var data = { stcNum: 0 }
-             Vue.component('sentence',{
-                props:['stc','index'],
-                template: "<a href='#' v-on:click='selectStc(1)'>{{stc}} </a>",
-                   data: function () {
-                    return data;
-                  },
-              methods: {
-                    selectStc: function (input) {
-                    // 현재 선택한 문장 정보를 VUE에서 바꾸고
-                    view_app.currStcTxt = this.stc;
-                    view_app.currStcId = this.index;
-                    view_app.currStcTmp = "";
-                    // 해결법 : Sentence 전체 반복문을 돌리고
-                    // currStcId==%문장인덱스 로 if문 걸어서
-                    // 딱 맞을때만 출력하는걸로
-                    <% projectInfo[0].doc.sentences.forEach(function(element, index, array) {%>
-                        // 해당하는 문장을 판별
-                        if(Number(view_app.currStcId) == Number('<%=index%>')){
-                            // 문장 안에서 모든 번역 출력
-                            <% console.log("NOW : ",element.trans);%>
-                                view_app.transHTML = "";
-                            <% if(element.trans)
-                            {element.trans.forEach(function(e){
-                                %>view_app.transHTML += "<div class='info-box' style='padding:15px;'><span class='info-box-icon bg-green'><i class='fa fa-flag-o'></i></span><div class='info-box-content'><span class='info-box-number'>"+'<%=e.text%>'+"</span> <span class='info-box-text'>작성자 : "+'<%=e.idUser%>'+"</span></div></div>";
-                            <%});
-                            }%>
-                        }
-                    <%});%>
-                }
+        function address_reg() {
+            //alert("check");
+            blotContractInstance.createUser('<%=session_user.real_id%>', web3.eth.accounts[0], function(error, result) {
+              if(!error)
+                alert('User Create Transaction'+JSON.stringify(result));
+              else {
+                console.log(error);
               }
-            })
-
-          // VUE : 전체 프로젝트 보기 처리
-          // TODO : 기능 주석 작성
-            var view_app = new Vue({
-                  el: '#view_app',
-                  data: {
-                    currTit:"Default",
-                    currDesc:"Default",
-                    currDId:1,
-                    currStcId : 1,
-                    currStcTmp : [],
-                    currStcTxt : "Default",
-                    transHTML : "",
-                    compStc: ''
-                  },
-                 created: function () { // 문서를 불러오면 시작되는 훅
-                     <%console.log('[ViewProj-HTML] Recieved Param : ', projectInfo);%>
-                     // 현재 프로젝트의 정보 기입
-                     this.currTit = '<%=projectInfo[0].title%>';
-                     this.currDesc = '<%=projectInfo[0].description%>';
-                     this.currDId = '<%=projectInfo[0]._id%>';
-
-                     // 문장 목록을 Node.js에서 VUE변수로 변환해주는 과정
-                     this.compStc = [];
-                      <% projectInfo[0].doc.sentences.forEach(function(e) { %>
-                     this.compStc.push('<%=e.text%>');
-                    <%});%>
-
-                 },
-                 methods: { // 일반 메소드
-                     // 새 번역 등록 메소드
-                     submitTrans : function (event) {
-                         var input=$("#inpTrans").val();
-                         var url="/submitTrans";
-                         $.ajax({
-                            type:"POST",
-                            url:url,
-                            data:{"input":input,
-                                  "nowProj":view_app.currDId,
-                                  "nowStc":view_app.currStcId},
-                            success: function(data){
-                              // 추가되었으면 수동으로 번역DIV추가
-                            }
-                            ,
-                            error:function(e){
-                                alert(e.responseText);
-                            }
-                        });
-                     }
-                 }
             });
+        }
 
+        function address_chk() {
+            blotContractInstance.userInfo('<%=session_user.real_id%>', function (error, result) {
+                if (!error) {
+                    console.log(JSON.stringify(result));
+                    alert(JSON.stringify(result));
+                    $('#address_chk_div1').html(JSON.stringify(result[0]));
+                    $('#address_chk_div2').html(JSON.stringify(result[1]));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+
+        function address_chk2() {
+            blotContractInstance.userInfo('<%=session_user.real_id%>', function (error, result) {
+                if (!error) {
+                    //alert(web3.eth.accounts[0]);
+                    //console.log(JSON.stringify(result));
+                    alert('Get User Info Transaction : '+JSON.stringify(result));
+                    $('#address_chk_div3').html(JSON.stringify(result[0]));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+
+        function address_change() {
+            //alert($('#2_reg').val());
+            blotContractInstance.setUserAccount('<%=session_user.real_id%>', $('#2_reg').val(), function (error, result) {
+                if (!error) {
+                    //console.log(JSON.stringify(result));
+                    //alert(JSON.stringify(result));
+                    $('#chg_link').attr("href",'https://ropsten.etherscan.io/tx/' + result);
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+
+        function reliability_change() {
+            //alert($('#2_reg').val());
+            blotContractInstance.addUserReliability('<%=session_user.real_id%>', $('#4_reg').val(), function (error, result) {
+                if (!error) {
+                    //console.log(JSON.stringify(result));
+                    alert('Update User reliability transation : '+JSON.stringify(result));
+                    //$('#chg_link').attr("href",'https://ropsten.etherscan.io/tx/' + result);
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+
+        function bat() {
+            blotContractInstance.createPost(1, $('#3_reg').val(), '<%=session_user.real_id%>', {from: web3.eth.accounts[0], value:$('#3_reg').val()}, function (error, result) {
+                if (!error) {
+                    //console.log('JSON.stringify(result));
+                    alert('Created Post Transaction : '+JSON.stringify(result));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+
+        function bat_chk() {
+            blotContractInstance.getPostReward(1, function (error, result) {
+                if (!error) {
+                    //console.log(JSON.stringify(result));
+                    alert('post Reward is '+JSON.stringify(result));
+                    $('#bat_div').text(result);
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+
+        function post_reg() {
+            blotContractInstance.generateTranslationEvent($('#5_1').val(), $('#5_2').val(), $('#5_3').val(), [1,2,3], function(error, result) {
+              if(!error) {
+                alert('translation activity report transaction : '+JSON.stringify(result));
+              }
+              else {
+                console.log(error);
+              }
+            });
+        }
+
+        function post_chk() {
+            blotContractInstance.NewTranslation({}, { fromBlock: 0, toBlock: 'latest' }).get((error, eventResult) => {
+              if (error)
+                console.log('Error in myEvent event handler: ' + error);
+              else
+                console.log('myEvent: ' + JSON.stringify(eventResult[0].args));
+                console.log(eventResult);
+
+                $('#post_div').text(JSON.stringify(eventResult[eventResult.length-1].args));
+
+            });
+        }
+
+        function sendReward() {
+          blotContractInstance.sendRewardToUserByUserId('<%=session_user.real_id%>', $('#6_reg_money').val(), function (error, result) {
+              if (!error) {
+                  alert('reward transaction : '+JSON.stringify(result));
+                  $('#reward_link').attr("href",'https://ropsten.etherscan.io/tx/' + result);
+              }
+              else {
+                  console.log(error);
+              }
+          });
+
+        }
+
+        function startApp() {
+            const contractAddress = "0xdbb4a8157d2d795dc8581d3702af009453534db4";
+            //"0x4a9e2d1aa6618d916adc1a0bc41087ec819887f7";
+            const abi = [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_userAccountList",
+				"type": "address[]"
+			},
+			{
+				"name": "_moneyList",
+				"type": "uint256[]"
+			}
+		],
+		"name": "sendRewardToUsersByAccount",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_userId",
+				"type": "string"
+			},
+			{
+				"name": "_otherAccount",
+				"type": "address"
+			}
+		],
+		"name": "setUserAccount",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_postId",
+				"type": "uint256"
+			},
+			{
+				"name": "_evaluatorId",
+				"type": "string"
+			},
+			{
+				"name": "_userShare",
+				"type": "uint256"
+			},
+			{
+				"name": "_sentenceId",
+				"type": "uint256[]"
+			}
+		],
+		"name": "generateEvaluationEvent",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_userId",
+				"type": "string"
+			},
+			{
+				"name": "_exp",
+				"type": "uint256"
+			}
+		],
+		"name": "minusUserReliability",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_postId",
+				"type": "uint256"
+			}
+		],
+		"name": "getPostReward",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "postInfo",
+		"outputs": [
+			{
+				"name": "reward",
+				"type": "uint256"
+			},
+			{
+				"name": "writer",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "userInfo",
+		"outputs": [
+			{
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"name": "reliability",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_postId",
+				"type": "uint256"
+			}
+		],
+		"name": "getPostWriter",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_postId",
+				"type": "uint256"
+			},
+			{
+				"name": "_reward",
+				"type": "uint256"
+			},
+			{
+				"name": "_userId",
+				"type": "string"
+			}
+		],
+		"name": "createPost",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_account",
+				"type": "address"
+			}
+		],
+		"name": "getBalanceOfAccount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_userId",
+				"type": "string"
+			},
+			{
+				"name": "_money",
+				"type": "uint256"
+			}
+		],
+		"name": "sendRewardToUserByUserId",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_userId",
+				"type": "string"
+			}
+		],
+		"name": "getUserReliability",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "sendBalanceOfContractToOwner",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_postId",
+				"type": "uint256"
+			},
+			{
+				"name": "_translatorId",
+				"type": "string"
+			},
+			{
+				"name": "_userShare",
+				"type": "uint256"
+			},
+			{
+				"name": "_sentenceId",
+				"type": "uint256[]"
+			}
+		],
+		"name": "generateTranslationEvent",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_userId",
+				"type": "string"
+			},
+			{
+				"name": "_exp",
+				"type": "uint256"
+			}
+		],
+		"name": "addUserReliability",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_userId",
+				"type": "string"
+			}
+		],
+		"name": "getUserAccount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_userId",
+				"type": "string"
+			},
+			{
+				"name": "_userAccount",
+				"type": "address"
+			}
+		],
+		"name": "createUser",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "userIdInfo",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "postId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "translatorId",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "userShare",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "sentenceId",
+				"type": "uint256[]"
+			}
+		],
+		"name": "NewTranslation",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "postId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "evaluatorId",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "userShare",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "sentenceId",
+				"type": "uint256[]"
+			}
+		],
+		"name": "NewEvaluation",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	}
+];
+
+            // 컨트랙트 생성
+            blotContract = web3.eth.contract(abi);
+            blotContractInstance = blotContract.at(contractAddress);
+            console.log(blotContract);
+
+
+            // view 함수 호출
+            blotContractInstance.owner(function (error, result) {
+                if (!error) {
+                    console.log(JSON.stringify(result));
+                    //alert(JSON.stringify(result));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+
+
+        window.addEventListener('load', function() {
+            // Web3가 브라우저에 주입되었는지 확인(Mist/MetaMask)
+            //alert('<%=projectInfo[0]._id%>');
+            if (typeof web3 !== 'undefined') {
+              // Mist/MetaMask의 프로바이더 사용
+              console.log("yes");
+              web3 = new Web3(web3.currentProvider);
+              console.log(web3);
+
+              // 메타마스크 계정을 Dapp에서 읽게하기 위함
+              ethereum.enable();
+
+              startApp();
+            } else {
+              console.log("no");
+            }
         });
+
+
     </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini skin-yellow-light">
@@ -396,7 +915,7 @@
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="#">팔로워/a>
+                    <a href="#">팔로워</a>
                   </div>
                   <div class="col-xs-4 text-center">
                     <a href="#">가입일</a>
@@ -474,111 +993,93 @@
     <!-- 각 페이지 제목 표시  -->
     <section class="content-header">
       <h1>
-        프로젝트 상세보기
-        <small>View Project</small>
+        Web3와 Ropsten내 BlotMain 컨트랙트와의 연동 시연
+        <small>Contents</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">View Project</li>
+        <li class="active">Contents</li>
       </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" id="view_app">
-  <div class="row">
-      <!--프로젝트 제목 및 메뉴 표시-->
-      <div class="col-md-6">
-                    <blockquote><h1><i class="fa fa-users"></i> {{currTit}}</h1><small style="font-size:12px;">{{currDesc}}</small></blockquote>
-      </div>
-       <div class="col-md-6 "style="padding-top:40px;">
-      <a class="btn btn-app pull-right">
-                <span class="badge bg-green">300</span>
-                <i class="fa fa-barcode"></i> 완료처리
-              </a>
-              <a class="btn btn-app pull-right">
-                <span class="badge bg-purple">891</span>
-                <i class="fa fa-users"></i> 참여 인원
-              </a>
-              <a class="btn btn-app pull-right">
-                <span class="badge bg-teal">67</span>
-                <i class="fa fa-inbox"></i> 변경 내역
-              </a>
-              <a class="btn btn-app pull-right">
-                <span class="badge bg-aqua">12</span>
-                <i class="fa fa-envelope"></i> 연락처
-              </a>
-              <a href="/web3test?id=<%=projectInfo[0]._id%>" class="btn btn-app pull-right">
-                <span class="badge bg-red">531</span>
-                <i class="fa fa-heart-o"></i> Web3Test
-              </a>
-      </div>
-      </div>
-      <!--프로젝트 본문-->
-      <div class="row">
-          <div class="col-md-6">
-              <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">원문 보기</a></li>
-              <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">번역 모아보기</a></li>
+    <section class="content">
+      <div class="">
+        O 사용자 회원가입 시, <br>
+        <b>컨트랙트 내 사용자별 지갑주소와 신뢰도 점수 생성</b>
+        <br>
+        <input type="text" name="1_reg" placeholder= '<%=session_user.real_id%>'>
+        <input type="button" name="1_reg_btn" value="등록" onclick="address_reg();" />
+        <input type="button" name="1_reg_btn" value="조회" onclick="address_chk();" />
+        <br>
+        사용자 지갑주소 : <span style="border: thin solid grey" id="address_chk_div1" ></span>
+        사용자 신뢰도 : <span style="border: thin solid grey" id="address_chk_div2" ></span>
+        <br><br><br>
 
-              <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active trans_textbox" id="tab_1">
-                <sentence v-for="(item, index) in compStc" v-bind:stc="item" v-bind:index="index"></sentence>
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane trans_textbox" id="tab_2" >
-                <sentence v-for="(item, index) in compStc" v-bind:stc="item" v-bind:index="index"></sentence>
-              </div>
-            </div>
-            <!-- /.tab-content -->
-          </div>
-          </div>
-          <div class="col-md-6">
-              <div class="box">
-        <div class="box-header with-border">
-          <h4 class="box-title"><i class="fa fa-tag"></i> 선택한 번역</h4>
-        </div>
-                  <blockquote>
-                      <small>원문:</small><h3>"{{currStcTxt}}"</h3></blockquote>
-        <div v-html="transHTML">
-                  <div class="info-box" style="padding:15px;">
-            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+        O 사용자의 신뢰도를 증가 or 감소하고 싶은 경우, <br>
+        <b>사용자 신뢰도 조정</b>
+        <br>
+        <input type="text" id="4_reg" placeholder= "추가할 신뢰도 값">
+        <input type="button" name="4_reg_btn" value="반영" onclick="reliability_change();" />
+        <input type="button" name="4_reg_btn" value="조회" onclick="address_chk2();" />
+        <br><br><br>
 
-            <div class="info-box-content">
-              <span class="info-box-number">번역1</span>
-            <span class="info-box-text">작성자 : 1</span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-                  <div class="info-box" style="padding:15px;">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
+        O 번역 요청글 등록 시, <br>
+        <b>번역자와 평가자에게 지급될 번역 보상금 걸기</b> <br>
+        (글 ID, 보상 금액)이 입력값. 여기서 글 ID는 1로 설정해두었음.
+        <br>
+        <input type="text" id="3_reg" placeholder= "보상금액을 입력하시오.">
+        <input type="button" name="2_reg_btn" value="글등록" onclick="bat();" />
+        <input type="button" name="2_reg_btn" value="조회" onclick="bat_chk();" />
+        <br>
+        글 배팅금 : <span style="border: thin solid grey" id="bat_div"></span>
+        <br><br><br>
 
-            <div class="info-box-content">
-              <span class="info-box-number">번역1</span>
-            <span class="info-box-text">작성자 : 1</span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-        </div>
-                  <div class="box-footer">
-                <div class="alert alert-info alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <i class="icon fa fa-info"></i>
-                번역이 마음에 들지 않으세요? 새로운 번역을 직접 남겨주세요.
-              </div>
-                  <div class="input-group input-group-sm">
-                <input type="text" id="inpTrans" class="form-control">
-                    <span class="input-group-btn">
-                      <button v-on:click="submitTrans" type="button" class="btn btn-info btn-flat">새 번역 등록</button>
-                    </span>
-              </div>
-                  </div>
-              </div>
-          </div>
+        O 번역 활동 기록(Event로 저장)
+        <br>
+        <b>(글 id, 번역자 id, 지분, 번역 문장 번호 리스트)형태로 번역 활동 기록</b>을 저장
+        <br>
+        사용자의 신뢰도를 뒷받침할 정보로 사용
+        <br>
+        <input type="text" id="5_1" value=1> 글번호
+        <br>
+        <input type="text" id="5_2" value='<%=session_user.real_id%>'> 번역자id
+        <br>
+        <input type="text" id="5_3" value=10> 번역지분
+        <br>
+        <input type="text" id="5_4" value=[1,2,3]> 변역 문장번호
+        <br>
+        <input type="button" name="5_reg_btn" value="등록" onclick="post_reg();" />
+        <input type="button" name="5_reg_btn" value="조회" onclick="post_chk();" />
+        <br>
+        조회내용 : <span style="border: thin solid grey" id="post_div"></span>
+        <br><br><br>
+
+        O 번역 활동 기여도 계산으로 지분이 정해졌을 때, <br>
+        <b>번역 보상금 지급 수행</b>
+        <br>
+        <input type="text" id="6_reg_userId" value='<%=session_user.real_id%>'> 기여자id
+        <br>
+        <input type="text" id="6_reg_money" value=10> 보상
+        <br>
+        <input type="button" name="6_reg_btn" value="지급" onclick="sendReward();" />
+        <br>
+        <a href="#" id="reward_link">트랜잭션 확인하기</a>
+        <br><br><br>
+
+        O 사용자의 보상금 지급계좌인 지갑주소를 변경하고 싶은 경우, <br>
+        <b>사용자의 지갑주소 정보를 변경</b>
+        <br>
+        <input type="text" id="2_reg" placeholder= "바꿀 지갑주소 입력">
+        <input type="button" name="2_reg_btn" value="등록" onclick="address_change();" />
+        <input type="button" name="2_reg_btn" value="조회" onclick="address_chk2();" />
+        <br>
+        사용자 지갑주소 : <span style="border: thin solid grey" id="address_chk_div3"></span>
+        <br>
+        <a href="#" id="chg_link">트랜잭션 확인하기</a>
+        <br><br><br>
       </div>
-    </div>
+
     </section>
     <!-- /.content -->
   </div>
