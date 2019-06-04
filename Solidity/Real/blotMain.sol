@@ -15,30 +15,34 @@ contract BlotMain is BlotPost {
   event NewEvaluation(uint postId, string evaluatorId, uint userShare, uint[] sentenceId);
 
   /// @param _postId 글 id
-  /// @param _transActivity 번역자별 번역 문장 리스트
+  /// @param _translatorId 번역자id
+  /// @param _userShare 번역자 지분
+  /// @param _sentenceId 번역자별 번역 문장 리스트
   /// @dev 문장 번역 기록을 저장할 이벤트 호출
   function generateTranslationEvent(uint _postId, string calldata _translatorId, uint _userShare, uint[] calldata _sentenceId) external onlyOwner {
       emit NewTranslation(_postId, _translatorId, _userShare, _sentenceId);
   }
 
   /// @param _postId 글 id
-  /// @param _evalActivity 평가자별 평가 문장 리스트
+  /// @param _evaluatorId 평가자id
+  /// @param _userShare 평가자 지분
+  /// @param _sentenceId 평가자별 평가 문장 리스트
   /// @dev 문장 평가 기록을 저장할 이벤트 호출
   function generateEvaluationEvent(uint _postId, string calldata _evaluatorId, uint _userShare, uint[] calldata _sentenceId) external onlyOwner {
       emit NewTranslation(_postId, _evaluatorId, _userShare, _sentenceId);
   }
 
-  // @dev 다수 사용자에게 보상금 지급 by userAccount
-  // @param _userAccountList 보상받을 사용자 계정 리스트
-  // @param _moneyList 사용자가 보상받을 금액 리스트
+  /// @dev 다수 사용자에게 보상금 지급 by userAccount
+  /// @param _userAccountList 보상받을 사용자 계정 리스트
+  /// @param _moneyList 사용자가 보상받을 금액 리스트
   function sendRewardToUsersByAccount (address payable[] calldata _userAccountList, uint[] calldata _moneyList) external onlyOwner {
     for(uint i=0; i<_userAccountList.length; i++)
       _transferToAccount(_userAccountList[i], _moneyList[i]);
   }
 
-  // @dev 한 사용자에게 보상금 지급 by userId
-  // @param _userId 보상받을 사용자 id
-  // @param _money 사용자가 보상받을 금액
+  /// @dev 한 사용자에게 보상금 지급 by userId
+  /// @param _userId 보상받을 사용자 id
+  /// @param _money 사용자가 보상받을 금액
   function sendRewardToUserByUserId (string calldata _userId, uint _money) external onlyOwner {
     address payable userAccount = userInfo[_userId].account;
     _transferToAccount(userAccount, _money);
