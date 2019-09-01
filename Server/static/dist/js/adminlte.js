@@ -552,7 +552,7 @@ throw new Error('AdminLTE requires jQuery')
 
   var Default = {
     collapseScreenSize   : 767,
-    expandOnHover        : false,
+    expandOnHover        : true,
     expandTransitionDelay: 200
   };
 
