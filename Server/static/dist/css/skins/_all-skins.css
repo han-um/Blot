@@ -470,8 +470,8 @@
  */
 /* skin-black navbar */
 .skin-black-light .main-header {
-  -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+  /*-webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);*/
 }
 .skin-black-light .main-header .navbar-toggle {
   color: #333;
@@ -484,7 +484,7 @@
   background-color: #ffffff;
 }
 .skin-black-light .main-header .navbar .nav > li > a {
-  color: #333333;
+  color: #6B6B6B;
 }
 .skin-black-light .main-header .navbar .nav > li > a:hover,
 .skin-black-light .main-header .navbar .nav > li > a:active,
@@ -505,21 +505,21 @@
 }
 .skin-black-light .main-header .navbar > .sidebar-toggle {
   color: #333;
-  border-right: 1px solid #d2d6de;
+  /* border-right: 1px solid #d2d6de; */
 }
 .skin-black-light .main-header .navbar .navbar-nav > li > a {
-  border-right: 1px solid #d2d6de;
+  /* border-right: 1px solid #d2d6de; */
 }
 .skin-black-light .main-header .navbar .navbar-custom-menu .navbar-nav > li > a,
 .skin-black-light .main-header .navbar .navbar-right > li > a {
-  border-left: 1px solid #d2d6de;
-  border-right-width: 0;
+  /* border-left: 1px solid #d2d6de;
+  border-right-width: 0; */
 }
 .skin-black-light .main-header .logo {
   background-color: #ffffff;
   color: #333333;
-  border-bottom: 0 solid transparent;
-  border-right: 1px solid #d2d6de;
+  /* border-bottom: 0 solid transparent;
+  border-right: 1px solid #d2d6de; */
 }
 .skin-black-light .main-header .logo:hover {
   background-color: #fcfcfc;
@@ -545,7 +545,9 @@
 .skin-black-light .wrapper,
 .skin-black-light .main-sidebar,
 .skin-black-light .left-side {
-  background-color: #f9fafc;
+  background: url(../../img/blurwp.PNG) no-repeat;
+background-size:cover;
+  color:white;
 }
 .skin-black-light .main-sidebar {
   border-right: 1px solid #d2d6de;
@@ -569,8 +571,9 @@
 }
 .skin-black-light .sidebar-menu > li:hover > a,
 .skin-black-light .sidebar-menu > li.active > a {
-  color: #000000;
-  background: #f4f4f5;
+  font-size:15px;
+  color: white;
+  background: rgba(1,1,1,0.3);
 }
 .skin-black-light .sidebar-menu > li.active {
   border-left-color: #ffffff;
@@ -579,20 +582,22 @@
   font-weight: 600;
 }
 .skin-black-light .sidebar-menu > li > .treeview-menu {
-  background: #f4f4f5;
+  background: rgba(0,0,0,0.1)
 }
 .skin-black-light .sidebar a {
-  color: #444444;
+  font-size:13px;
+  font-weight: 100;
+  color: white;
 }
 .skin-black-light .sidebar a:hover {
   text-decoration: none;
 }
 .skin-black-light .sidebar-menu .treeview-menu > li > a {
-  color: #777777;
+  color: white;
 }
 .skin-black-light .sidebar-menu .treeview-menu > li.active > a,
 .skin-black-light .sidebar-menu .treeview-menu > li > a:hover {
-  color: #000000;
+  color: gainsboro;
 }
 .skin-black-light .sidebar-menu .treeview-menu > li.active > a {
   font-weight: 600;
