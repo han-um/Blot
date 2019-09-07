@@ -1,0 +1,121 @@
+
+/*position new box*/
+ input + label::before {
+    border: 2px solid;
+    content: "";
+    height: 40px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 40px;
+}
+
+/*create check symbol with pseudo element*/
+ input + label::after {
+    content: "";
+    border: 4px solid;
+    border-left: 0;
+    border-top: 0;
+    height: 20px;
+    left: 14px;
+    opacity: 0;
+    position: absolute;
+    top: 6px;
+    transform: rotate(45deg);
+    transition: opacity 0.2s ease-in-out;
+    width: 12px;
+}
+
+/*reveal check for 'on' state*/
+ input:checked + label::after {
+    opacity: 1;
+}
+
+.custom-icon {
+    color:#C5C5C5;
+    font-size:20px;
+    vertical-align: middle;
+    padding-bottom:10px;
+    padding-left:25px;
+    padding-right:20px;
+    /* border-left: solid #C5C5C5 1px; */
+}
+
+.navbar-search {
+    width:calc(100% - 47px);
+    font-size:17px;
+    color:#6B6B6B;
+    position:absolute;
+    margin-top:12px;
+    margin-left:2px;
+}
+
+.navbar-search a:hover {
+    color:#6B6B6B!important;
+}
+
+.search-box {
+    display:block;
+    margin-top:13px;
+    background-color:white;
+    width:100%;
+    height:800px;
+    padding:20px;
+}
+
+.search-input {
+    margin-left:35px;
+    font-size:70px;
+    color:#6B6B6B;
+    font-weight: 600;
+    border:0px;
+}
+
+.search-input:focus {
+    outline:none;
+}
+
+.search-checkbox-text {
+    margin-left:30px;
+    padding-left:20px;
+    font-size:13px;
+}
+
+.result-box ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.result-box li {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    border : 0;
+    float: left;
+}
+
+.result-icon {
+    padding-top:10px!important;
+    height:75px;width:75px; background-color:#5CD590;
+    
+}
+.result-name {
+    height:75px;
+    background-color:#5CD590;
+    display:table-cell;vertical-align:middle;
+    width: calc(100% - 130px);
+}
+.result-button {
+    padding-top:10px!important;
+    height:75px; width:55px!important; background-color:#EFEFEF; 
+}
+
+.search-detail-icon {
+    vertical-align:40px;
+    font-size:35px;
+}
+
+.search-result-icon {
+    font-size: 30px;
+    color:white;
+}
