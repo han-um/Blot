@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Dashboard</title>
+  <!-- Blot custom Theme -->
+  <link rel="stylesheet" href="dist/css/blot.css">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -57,7 +59,53 @@
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
-
+        <a class="navbar-search"><i class="remixicon-search-line custom-icon"></i><b>번역중인 프로젝트</b>를 검색하세요
+        <div class="search-box checkbox-btn">
+            <input type="text" name="firstname" class="search-input" placeholder="검색하기..."><br>
+            <span class="search-checkbox-text"><input type="checkbox" name="chk_info" value="웹디자인"> 완료된 프로젝트만</span>
+            <hr style="border-color:white;">
+            <div class="row">
+                    <div class="col-lg-7">
+                        
+                        <div class="row result-box">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                                <ul>
+                                    <li class="result-icon"><center><i class="remixicon-hospital-line search-result-icon"></i></center></li>
+                                    <li class="result-name">Name</li>
+                                    <li class="result-button"><center><i class="remixicon-arrow-right-s-line search-detail-icon"></i></center></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                                <ul>
+                                    <li class="result-icon">1</li>
+                                    <li class="result-name">2</li>
+                                    <li class="result-button">3</li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                                <ul>
+                                    <li class="result-icon">1</li>
+                                    <li class="result-name">2</li>
+                                    <li class="result-button">3</li>
+                                </ul>
+                            </div>
+                        </div>
+           
+                    </div>
+                     <div class="col-lg-5 search-detail-box" style="background-color:orange">
+                        detailbox
+                    </div>
+                    <!--
+                    <div class="search-result-box search-result-1">
+                        <ul>
+                            <li class="result-icon">1</li>
+                            <li class="result-name">2</li>
+                            <li class="result-button">3</li>
+                        </ul>
+                    </div>
+                    -->
+                </div>
+        </div></a>
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- User Account: style can be found in dropdown.less -->
@@ -160,6 +208,7 @@
         
       </ul>
     </section>
+    <!-- /.sidebar -->
     <!-- /.sidebar -->
   </aside>
 
@@ -427,9 +476,12 @@
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- Vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- Search -->
+<script src="dist/js/pages/search.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes)
 <script src="dist/js/pages/dashboard.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<script src="dist/js/demo.js"></script>-->
 </body>
 </html>

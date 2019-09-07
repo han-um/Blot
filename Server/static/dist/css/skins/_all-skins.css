@@ -545,9 +545,8 @@
 .skin-black-light .wrapper,
 .skin-black-light .main-sidebar,
 .skin-black-light .left-side {
-  background: url(../../img/blurwp.PNG) no-repeat;
-background-size:cover;
-  color:white;
+  background: url(../../img/blurwp.PNG) no-repeat center center/cover;
+  color:white; 
 }
 .skin-black-light .main-sidebar {
   border-right: 1px solid #d2d6de;
