@@ -232,6 +232,9 @@
                                     I suspect the real reason that was decided is because it would be too easy for authors to screw up. background: green, url(image.jpg); would "fail" in a sense in that it would just flood the background green. Forcing the color to be last makes the color kind of like a "fallback" rather than a layer like any other.
                                     </a>
                                 </div>
+                                <div class="box-body">
+                                    <sentence v-bind:index="1" v-bind:content="'news'"></sentence>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-5">
@@ -568,11 +571,19 @@ CSS의 배경 속성은 쉼표로 구분 된 값을 허용 할 수 있습니다.
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
     $(document).ready(function(){
+        
+        Vue.component('sentence',{
+            props:['index','content'],
+            template: "<a href='#' v-on:click='switchmod(1)'>{{index}} {{content}} </a>"
+        });
+        
         var trans_app = new Vue({
                   el: '#proj-box',
                   data: {
                     editmod:'new',
-                    selectedStc:1
+                    now_stc:1,
+                    now_stcnum:1,
+                    test_arr : [1,2,3,4,5,5]
                   },
                  created: function () { // 생성자
                      
