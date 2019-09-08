@@ -1,0 +1,56 @@
+.login-box-body {
+ padding : 15px!important;   
+}
+.login-page {
+    background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%)!important;
+}
+
+.login-logo a{
+    color:white!important;
+}
+
+.user-panel {
+    display:none!important;
+}
+
+.skin-yellow-light .main-header .navbar {
+   background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%)!important;
+}
+
+.skin-yellow-light .main-header .logo {
+   background-image: linear-gradient(-60deg, #f09819 0%, #f09819 100%)!important;   
+}
+
+.btn-logout {
+    margin-top:7px!important;
+    width : 100%!important;
+}
+s
+.alert-gdblue {
+    background-image: linear-gradient(-60deg, #f4d03f 0%, #16a085 100%)!important;
+    border:0px;
+}
+
+.alert-gdpink {
+    background-image: linear-gradient(to right, #ec77ab 0%, #7873f5 100%)!important;
+    border:0px;
+}
+
+.proj-box {
+      background: url(../img/photo1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.trans_box {
+    margin-bottom:5px !important;
+}
+
+.trans_textbox a{
+    color:black;
+}
+
+.trans_textbox a:hover{
+    color:white;
+    background-color:#51A0D5;
+}

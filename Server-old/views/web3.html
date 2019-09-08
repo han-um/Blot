@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>CryptoZombies front-end</title>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="dist/js/web3.min.js"></script>
+  </head>
+  <body>
+    <script>
+        
+        var blotContract;
+        var blotContractInstance;
+        
+        function address_reg() {
+            //alert("check");
+            blotContractInstance.createUser('<%=session_user.real_id%>', web3.eth.accounts[0], function(error, result) {
+              if(!error)
+                console.log(JSON.stringify(result));
+              else {
+                console.log(error);
+              }
+            });
+        }
+        
+        function address_chk() {
+            blotContractInstance.userInfo('<%=session_user.real_id%>', function (error, result) {
+                if (!error) {
+                    console.log(JSON.stringify(result));
+                    alert(JSON.stringify(result));
+                    $('#address_chk_div1').html(JSON.stringify(result[0]));
+                    $('#address_chk_div2').html(JSON.stringify(result[1]));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+        
+        function address_chk2() {
+            blotContractInstance.userInfo('<%=session_user.real_id%>', function (error, result) {
+                if (!error) {
+                    alert(web3.eth.accounts[0]);
+                    console.log(JSON.stringify(result));
+                    alert(JSON.stringify(result));
+                    $('#address_chk_div3').html(JSON.stringify(result[0]));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+        
+        function address_change() {
+            //alert($('#2_reg').val());
+            blotContractInstance.setUserAccount('<%=session_user.real_id%>', $('#2_reg').val(), function (error, result) {
+                if (!error) {
+                    console.log(JSON.stringify(result));
+                    alert(JSON.stringify(result));
+                    $('#chg_link').attr("href",'https://ropsten.etherscan.io/tx/' + result);
+                }
+                else {
+                    console.log(error);
+                }
+            });        
+        }
+        
+        function bat() {
+            blotContractInstance.createPost(1, $('#3_reg').val(), '<%=session_user.real_id%>', {from: web3.eth.accounts[0], value:$('#3_reg').val()}, function (error, result) {
+                if (!error) {
+                    console.log(JSON.stringify(result));
+                    alert(JSON.stringify(result));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+        
+        function bat_chk() {
+            blotContractInstance.getPostReward(1, function (error, result) {
+                if (!error) {
+                    console.log(JSON.stringify(result));
+                    alert(JSON.stringify(result));
+                    $('#bat_div').text(result);
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+        
+        function post_reg() {
+            blotContractInstance.generateTranslationEvent($('#5_1').val(), $('#5_2').val(), $('#5_3').val(), [1,2,3], function(error, result) {
+              if(!error) {
+                console.log(JSON.stringify(result));
+              }
+              else {
+                console.log(error);
+              }
+            });
+        }
+        
+        function post_chk() {
+            blotContractInstance.NewTranslation({}, { fromBlock: 0, toBlock: 'latest' }).get((error, eventResult) => {
+              if (error)
+                console.log('Error in myEvent event handler: ' + error);
+              else
+                console.log('myEvent: ' + JSON.stringify(eventResult[0].args));
+                console.log(eventResult);
+                
+                $('#post_div').text(JSON.stringify(eventResult[0].args));
+                
+            });
+        }
+        
+        function sendReward() {
+          blotContractInstance.sendRewardToUserByUserId('<%=session_user.real_id%>', $('#6_reg_money').val(), function (error, result) {
+              if (!error) {
+                  alert(JSON.stringify(result));
+                  $('#reward_link').attr("href",'https://ropsten.etherscan.io/tx/' + result);
+              }
+              else {
+                  console.log(error);
+              }
+          });
+
+        }
+        
+        function startApp() {
+            const contractAddress = "0x4a9e2d1aa6618d916adc1a0bc41087ec819887f7";
+            const abi = [
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userAccountList",
+			    "type": "address[]"
+			},
+			{
+			    "name": "_moneyList",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "sendRewardToUsersByAccount",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_otherAccount",
+			    "type": "address"
+			}
+	    ],
+	    "name": "setUserAccount",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_evaluatorId",
+			    "type": "string"
+			},
+			{
+			    "name": "_userShare",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_sentenceId",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "generateEvaluationEvent",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_exp",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "minusUserReliability",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "getPostReward",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "uint256"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "postInfo",
+	    "outputs": [
+			{
+			    "name": "reward",
+			    "type": "uint256"
+			},
+			{
+			    "name": "writer",
+			    "type": "string"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "",
+			    "type": "string"
+			}
+	    ],
+	    "name": "userInfo",
+	    "outputs": [
+			{
+			    "name": "account",
+			    "type": "address"
+			},
+			{
+			    "name": "reliability",
+			    "type": "uint256"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "getPostWriter",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "string"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_reward",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_userId",
+			    "type": "string"
+			}
+	    ],
+	    "name": "createPost",
+	    "outputs": [],
+	    "payable": true,
+	    "stateMutability": "payable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [],
+	    "name": "owner",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "address"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_account",
+			    "type": "address"
+			}
+	    ],
+	    "name": "getBalanceOfAccount",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "uint256"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_money",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "sendRewardToUserByUserId",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			}
+	    ],
+	    "name": "getUserReliability",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "uint256"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [],
+	    "name": "sendBalanceOfContractToOwner",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_postId",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_translatorId",
+			    "type": "string"
+			},
+			{
+			    "name": "_userShare",
+			    "type": "uint256"
+			},
+			{
+			    "name": "_sentenceId",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "generateTranslationEvent",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_exp",
+			    "type": "uint256"
+			}
+	    ],
+	    "name": "addUserReliability",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			}
+	    ],
+	    "name": "getUserAccount",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "address"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "newOwner",
+			    "type": "address"
+			}
+	    ],
+	    "name": "transferOwnership",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": false,
+	    "inputs": [
+			{
+			    "name": "_userId",
+			    "type": "string"
+			},
+			{
+			    "name": "_userAccount",
+			    "type": "address"
+			}
+	    ],
+	    "name": "createUser",
+	    "outputs": [],
+	    "payable": false,
+	    "stateMutability": "nonpayable",
+	    "type": "function"
+	},
+	{
+	    "constant": true,
+	    "inputs": [
+			{
+			    "name": "",
+			    "type": "address"
+			}
+	    ],
+	    "name": "userIdInfo",
+	    "outputs": [
+			{
+			    "name": "",
+			    "type": "string"
+			}
+	    ],
+	    "payable": false,
+	    "stateMutability": "view",
+	    "type": "function"
+	},
+	{
+	    "anonymous": false,
+	    "inputs": [
+			{
+			    "indexed": false,
+			    "name": "postId",
+			    "type": "uint256"
+			},
+			{
+			    "indexed": false,
+			    "name": "translatorId",
+			    "type": "string"
+			},
+			{
+			    "indexed": false,
+			    "name": "userShare",
+			    "type": "uint256"
+			},
+			{
+			    "indexed": false,
+			    "name": "sentenceId",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "NewTranslation",
+	    "type": "event"
+	},
+	{
+	    "anonymous": false,
+	    "inputs": [
+			{
+			    "indexed": false,
+			    "name": "postId",
+			    "type": "uint256"
+			},
+			{
+			    "indexed": false,
+			    "name": "evaluatorId",
+			    "type": "string"
+			},
+			{
+			    "indexed": false,
+			    "name": "userShare",
+			    "type": "uint256"
+			},
+			{
+			    "indexed": false,
+			    "name": "sentenceId",
+			    "type": "uint256[]"
+			}
+	    ],
+	    "name": "NewEvaluation",
+	    "type": "event"
+	},
+	{
+	    "anonymous": false,
+	    "inputs": [
+			{
+			    "indexed": true,
+			    "name": "previousOwner",
+			    "type": "address"
+			},
+			{
+			    "indexed": true,
+			    "name": "newOwner",
+			    "type": "address"
+			}
+	    ],
+	    "name": "OwnershipTransferred",
+	    "type": "event"
+	}
+];
+
+            // 컨트랙트 생성
+            blotContract = web3.eth.contract(abi);
+            blotContractInstance = blotContract.at(contractAddress);
+            console.log(blotContract);
+
+
+            // view 함수 호출
+            blotContractInstance.owner(function (error, result) {
+                if (!error) {
+                    console.log(JSON.stringify(result));
+                    //alert(JSON.stringify(result));
+                }
+                else {
+                    console.log(error);
+                }
+            });
+
+            // 이벤트 넣기
+            // ["0xca35b7d915458ef540ade6068dfe2f44e8fa733c", 30, [3]]
+            // 컨트랙트 함수 호출
+            // event
+            /*
+            blotContractInstance.generateTranslationEvent(3, "user1", 30, [1, 2, 3], function(error, result) {
+              if(!error)
+                console.log(JSON.stringify(result));
+              else {
+                console.log(error);
+              }
+            });
+            */
+        
+
+            // 이벤트 테스트
+            /*
+            blotContractInstance.NewTranslation({}, { fromBlock: 0, toBlock: 'latest' }).get((error, eventResult) => {
+              if (error)
+                console.log('Error in myEvent event handler: ' + error);
+              else
+                console.log('myEvent: ' + JSON.stringify(eventResult[0].args));
+            });
+            */
+        }
+
+
+        window.addEventListener('load', function() {
+            // Web3가 브라우저에 주입되었는지 확인(Mist/MetaMask)
+              alert("123");
+            //alert('<%=projectInfo[0]._id%>');
+            if (typeof web3 !== 'undefined') {
+              // Mist/MetaMask의 프로바이더 사용
+              console.log("yes");
+              web3 = new Web3(web3.currentProvider);
+              console.log(web3);
+
+              // 메타마스크 계정을 Dapp에서 읽게하기 위함
+              ethereum.enable();
+
+              startApp();
+            } else {
+              console.log("no");
+            }
+        });
+        
+
+    </script>
+    
+    1번 사용자 지갑주소 등록
+    <br>
+    <input type="text" name="1_reg" placeholder= '<%=session_user.real_id%>'>
+    <input type="button" name="1_reg_btn" value="등록" onclick="address_reg();" />
+    <input type="button" name="1_reg_btn" value="조회" onclick="address_chk();" />   
+    <br>
+    사용자 지갑주소 : <span style="border: thin solid grey" id="address_chk_div1" ></span>
+    사용자 신뢰도 : <span style="border: thin solid grey" id="address_chk_div2" ></span>
+    <br><br><br>
+      
+    2번 사용자 지갑주소 변경
+    <br>
+    <input type="text" id="2_reg" placeholder= "지갑주소를 입력하시오.">
+    <input type="button" name="2_reg_btn" value="등록" onclick="address_change();" />
+    <input type="button" name="2_reg_btn" value="조회" onclick="address_chk2();" />
+    <br>
+    사용자 지갑주소 : <span style="border: thin solid grey" id="address_chk_div3"></span>
+    <br>
+    <a href="#" id="chg_link">트랜잭션 확인하기</a>
+    <br><br><br>
+      
+    3번 보상금 걸기
+    <br>
+    <input type="text" id="3_reg" placeholder= "보상금액을 입력하시오.">
+    <input type="button" name="2_reg_btn" value="글등록" onclick="bat();" />
+    <input type="button" name="2_reg_btn" value="조회" onclick="bat_chk();" />
+    <br>
+    글 배팅금 : <span style="border: thin solid grey" id="bat_div"></span>
+    <br><br><br>
+      
+    5번 번역 활동 기록(Event로 저장)
+    <br>
+    글 id, 번역자 id, 지분, 번역 문장 번호 리스트 형태로 활동 기록을 저장
+    <br>
+    <input type="text" id="5_1" value=1> 글번호
+    <br>
+    <input type="text" id="5_2" value='<%=session_user.real_id%>'> 번역자id
+    <br>
+    <input type="text" id="5_3" value=10> 번역지분
+    <br>
+    <input type="text" id="5_4" value=[1,2,3]> 변역 문장번호
+    <br>
+    <input type="button" name="5_reg_btn" value="등록" onclick="post_reg();" />
+    <input type="button" name="5_reg_btn" value="조회" onclick="post_chk();" />
+    <br>
+    조회내용 : <span style="border: thin solid grey" id="post_div"></span>
+    <br><br><br>
+      
+    6번 번역 보상금 지급
+    <br>
+    <input type="text" id="6_reg_userId" value='<%=session_user.real_id%>'> 기여자id
+    <br>
+    <input type="text" id="6_reg_money" value=10> 보상
+    <br>
+    <input type="button" name="6_reg_btn" value="지급" onclick="sendReward();" />
+    <br>
+    <a href="#" id="reward_link">트랜잭션 확인하기</a>
+    <br><br><br>
+    
+  </body>
+</html>
