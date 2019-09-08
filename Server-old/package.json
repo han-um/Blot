@@ -1,0 +1,24 @@
+{
+  "name": "Server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "async": "^3.0.1",
+    "body-parser": "^1.19.0",
+    "connect": "^3.7.0",
+    "ejs": "^2.6.1",
+    "express": "4.17.1",
+    "express-session": "^1.16.1",
+    "mongodb": "^3.2.6",
+    "mysql": "2.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
