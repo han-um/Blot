@@ -13,3 +13,29 @@ export default new Router({
     }
   ]
 })
+
+/*
+번역보기화면 설계
+
+-app
+    -(router)
+        -sidebar
+        -headerbar
+            -search
+            -userinfo
+        -(router)
+            -trans
+                -info
+                -view
+                    -sentences
+                        -sentence !emit call to trans
+                    -trans
+                        -origin
+                        -(router)
+                            -new
+                            -eval
+                                -eachtrans
+                -user
+        
+
+*/
