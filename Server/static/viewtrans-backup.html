@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 2 | Dashboard</title>
+  <!-- Blot custom Theme -->
+  <link rel="stylesheet" href="dist/css/blot.css">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="dist/css/skins/_all-skins.css">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="bower_components/morris.js/morris.css">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+  <!-- Remix Icon -->
+  <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean" rel="stylesheet">
+</head>
+<body class="sidebar-mini wysihtml5-supported skin-black-light">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><i class="remixicon-shape-2-fill logo-padding"></i></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><i class="remixicon-shape-2-fill logo-padding"></i><b>blot</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+        <a class="navbar-search hidden-xs"><i class="remixicon-search-line custom-icon"></i><b>번역중인 프로젝트</b>를 검색하세요
+        <div class="search-box checkbox-btn" style="display:none;">
+            <input type="text" name="firstname" class="search-input" placeholder="검색하기..."><br>
+            <span class="search-checkbox-text"><input type="checkbox" name="chk_info" value="웹디자인"> 완료된 프로젝트만</span>
+            <hr style="border-color:white;">
+            
+        </div></a>
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs"><small>구본철</small>
+                <span class="coins"> <i class="remixicon-copper-coin-line "></i> <b>25</b> blots</span></span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                <p>
+                  Alexander Pierce - Web Developer
+                  <small>Member since Nov. 2012</small>
+                </p>
+              </li>
+              <!-- Menu Body -->
+              <li class="user-body">
+                <div class="row">
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Followers</a>
+                  </div>
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Sales</a>
+                  </div>
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Friends</a>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="active treeview">
+          <a href="#">
+              <span class="blank-line"></span>
+            <i class="remixicon-stack-line sidebar-icon"></i><span class="blank"></span><span>메인화면</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>인기 프로젝트</a></li>
+            <li><a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역이 끝난 프로젝트</a></li>
+            <li><a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역을 기다리는 프로젝트</a></li>
+            <li><a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>태그별 프로젝트</a></li>
+          </ul>
+        </li>
+         <li class="active treeview">
+          <a href="#">
+              <span class="blank-line"></span>
+            <i class="remixicon-chat-smile-2-line sidebar-icon"></i><span class="blank"></span><span>내 정보</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</a></li>
+            <li><a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>내 정보 수정</a></li>
+            <li><a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>코인 충전</a></li>
+            <li><a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a></li>
+          </ul>
+        </li>
+         <li class="active treeview">
+          <a href="#">
+              <span class="blank-line"></span>
+           <i class="remixicon-heart-2-line sidebar-icon"></i><span class="blank"></span><span>즐겨찾기</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            
+          </ul>
+        </li>          
+        
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+          <div class="col-md-12">
+            <div id="proj-box" class="box proj-box">
+                <div class="box-header with-border">
+                    <div class="proj-icon">
+                    <i class="remixicon-chat-smile-2-line"></i>
+                    </div>
+                    <div class="proj-title">
+                         <h4>프로젝트 이름 1</h4>
+                         <small>2019년 5월 20일 ~ 2019년 7월 27일</small>
+                        <br>
+                    </div>
+                    <div class="line-menu proj-header-menu">
+                        <a class="btn"> 요약 </a>
+                        <a class="btn now"> 번역 보기 </a>
+                        <a class="btn"> 참여자 </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7" style="padding-right:0px;">
+                            <div id="contents-box" class="box inner-box">
+                                <div class="box-header with-border">
+                                <i class="remixicon-t-box-line"></i> 내용
+                                </div>
+                                <div class="box-header-menu">
+                                    <div class = "line-menu">
+                                        <a class="btn now"> 원문보기 </a>
+                                        <!--
+                                        <a class="btn"> 번역보기 </a>
+                                        <a class="btn"> 모두보기 </a>
+                                        -->
+                                    </div>
+                                    <div class="toolbox">
+                                        <!--TODO:보기방식 바꾸기-->
+                                        <!--
+                                        <a class="btn"> <i class="remixicon-arrow-left-line"></i></a>
+                                        <input class="btn" type="text" placeholder="1">
+                                        <a class="btn"> <i class="remixicon-arrow-right-line"></i></a>
+                                        -->
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <br>
+                                    <a class="now">
+                                    The background property in CSS can accept comma separated values. "Multiple" backgrounds, if you will. You can also think of them as layered backgrounds since they have a stacking order. </a><br><br><a>
+                                    Unfortunately, that's not valid. I'm not entirely sure why. A while back when I whined on Twitter about it I got a variety of ideas/reasons/excuses. None of them rang quite true for me. It's true you cannot comma-separate background-color, but I don't think that's relevant here as I'm comma separating the background shorthand not specifically background-color (not to mention ordering those values the other way around works fine).</a>
+                                    <br><br>
+                                    <a>
+                                    I suspect the real reason that was decided is because it would be too easy for authors to screw up. background: green, url(image.jpg); would "fail" in a sense in that it would just flood the background green. Forcing the color to be last makes the color kind of like a "fallback" rather than a layer like any other.
+                                    </a>
+                                </div>
+                                <div class="box-body">
+                                    <sentence v-bind:index="1" v-bind:content="'news'"></sentence>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div id="trans-box" class="box inner-box">
+                                <div class="box-header with-border">
+                                <i class="remixicon-global-line"></i> 번역
+                                </div>
+                                <div class="box-header-menu">
+                                    <div class = "line-menu">
+                                        <a class="btn" v-on:click="switchmod('eval')" v-bind:class="{ now: editmod === 'eval' }"> 평가 </a>
+                                        <a class="btn" v-on:click="switchmod('new')"v-bind:class="{ now: editmod === 'new' }"> 새 번역 </a>
+                                    </div>
+                                </div>
+                                <!-- 평가 박스 -->
+                                <template v-if="editmod === 'eval'">
+                                <div class="box-body">
+                                    <br>
+                                    <span class="small-alert origin-top">
+                                        선택한 원문
+                                    </span><br>
+                                    <div class="now-sentence">
+                                    The background property in CSS can accept comma separated values. "Multiple" backgrounds, if you will. You can also think of them as layered backgrounds since they have a stacking order.
+                                    </div>
+                                </div>
+                                <div class="trans-list now">
+                                    <span class="small-alert">
+                                        내가 지지하는 번역
+                                    </span><img src="dist/img/user2-160x160.jpg" class="user-image circle" alt="User Image"><b>익명</b><br>
+                                    <div class="contents">
+CSS의 배경 속성은 쉼표로 구분 된 값을 허용 할 수 있습니다. "여러"배경. 스택 순서가 있기 때문에 배경을 레이어 배경으로 생각할 수도 있습니다.
+                                    </div>
+                                </div>
+                                <div class="trans-list list-1">
+                                    <span class="small-alert">
+                                        번역 1
+                                    </span><img src="dist/img/user2-160x160.jpg" class="user-image circle" alt="User Image"><b>익명</b>
+                                    <span class="agree-text"><i class="remixicon-chat-smile-3-line"></i> 이 번역이 좋아요!</span>
+                                    <br>
+                                    <div class="contents">
+CSS의 배경 속성은 쉼표로 구분 된 값을 허용 할 수 있습니다. "여러"배경. 스택 순서가 있기 때문에 배경을 레이어 배경으로 생각할 수도 있습니다.
+                                    </div>
+                                </div>
+                                <div class="trans-list list-2">
+                                    <span class="small-alert">
+                                        번역 2
+                                    </span><img src="dist/img/user2-160x160.jpg" class="user-image circle" alt="User Image"><b>익명</b><span class="agree-text"><i class="remixicon-chat-smile-3-line"></i> 이 번역이 좋아요!</span>
+                                    <br>
+                                    <div class="contents">
+CSS의 배경 속성은 쉼표로 구분 된 값을 허용 할 수 있습니다. "여러"배경. 스택 순서가 있기 때문에 배경을 레이어 배경으로 생각할 수도 있습니다.
+                                    </div>
+                                </div>
+                                </template>
+                                <!-- 새 번역 박스 -->
+                                <template v-else-if="editmod === 'new' ">
+                                <div class="box-body">
+                                    <br>
+                                    <span class="small-alert origin-top">
+                                        선택한 원문
+                                    </span><br>
+                                    <div class="now-sentence">
+                                    The background property in CSS can accept comma separated values. "Multiple" backgrounds, if you will. You can also think of them as layered backgrounds since they have a stacking order.
+                                    </div>
+                                </div>
+                                <div class="trans-list list-1">
+                                    <span class="small-alert">
+                                       <i class="remixicon-google-line"></i> Google Translate
+                                    </span>
+                                    
+                                    <br>
+                                    <div class="contents">
+CSS의 배경 속성은 쉼표로 구분 된 값을 허용 할 수 있습니다. "여러"배경. 스택 순서가 있기 때문에 배경을 레이어 배경으로 생각할 수도 있습니다.
+                                    </div>
+                                </div>
+                                    <br>
+                                    <form class="trans-input">
+                                    <textarea></textarea>
+                                    <button><i class="remixicon-send-plane-2-line"></i> 새 번역 등록하기</button>
+                                    </form>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+      </div>
+      <!-- /.row -->
+      <!-- Main row -->
+      <div class="row">
+        <!-- Left col -->
+        
+        <!-- /.Left col -->
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark" style="display: none;">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Home tab content -->
+      <div class="tab-pane" id="control-sidebar-home-tab">
+        <h3 class="control-sidebar-heading">Recent Activity</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                <p>Will be 23 on April 24th</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-user bg-yellow"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+
+                <p>New phone +1(800)555-1234</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+
+                <p>nora@example.com</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-file-code-o bg-green"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+
+                <p>Execution time 5 seconds</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Custom Template Design
+                <span class="label label-danger pull-right">70%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Update Resume
+                <span class="label label-success pull-right">95%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Laravel Integration
+                <span class="label label-warning pull-right">50%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Back End Framework
+                <span class="label label-primary pull-right">68%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+      <!-- /.tab-pane -->
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+        <form method="post">
+          <h3 class="control-sidebar-heading">General Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Report panel usage
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Some information about this general settings option
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Allow mail redirect
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Other sets of options are available
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Expose author name in posts
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Allow the user to show his name in blog posts
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Show me as online
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Turn off notifications
+              <input type="checkbox" class="pull-right">
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Delete chat history
+              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+            </label>
+          </div>
+          <!-- /.form-group -->
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.7 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Morris.js charts -->
+<script src="bower_components/raphael/raphael.min.js"></script>
+<script src="bower_components/morris.js/morris.min.js"></script>
+<!-- Sparkline -->
+<script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- jvectormap -->
+<script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="bower_components/moment/min/moment.min.js"></script>
+<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- datepicker -->
+<script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<!-- Slimscroll -->
+<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<!-- Vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    $(document).ready(function(){
+        
+        Vue.component('sentence',{
+            props:['index','content'],
+            template: "<a href='#' v-on:click='switchmod(1)'>{{index}} {{content}} </a>"
+        });
+        
+        var trans_app = new Vue({
+                  el: '#proj-box',
+                  data: {
+                    editmod:'new',
+                    now_stc:1,
+                    now_stcnum:1,
+                    test_arr : [1,2,3,4,5,5]
+                  },
+                 created: function () { // 생성자
+                     
+                 },methods: { // 일반 메소드 
+                     switchmod : function (mod) {
+                         this.editmod=mod;
+                     }
+                 }
+            });
+    });
+</script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes)
+<script src="dist/js/pages/dashboard.js"></script>
+<script src="dist/js/demo.js"></script>-->
+</body>
+</html>
