@@ -2,7 +2,6 @@
   <div>
     <h1 class="text-center">Repos</h1>
     <h4 class="text-center">Github Repos</h4>
-
     <section class="content">
       <div class="row">
         <div v-if="error">
