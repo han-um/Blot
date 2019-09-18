@@ -215,7 +215,7 @@ export default {
     
     .treeview > ul.treeview-menu {
         padding-top:10px;
-        padding-bottom:10px;
+        padding-bottom:15px;
     }
     
 /* Co-Pilot Style */

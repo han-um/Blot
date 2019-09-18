@@ -4,8 +4,9 @@
       <div class="row">
         <div class="col-md-12">
             <div class="box">
-                <div class="box-header with-border">
-                    프로젝트 이름 1
+                <div class="p-0 box-header with-border">
+                    <div class="icon-box"></div>
+                     프로젝트 이름 1
                 </div>
                 <router-view></router-view>
             </div>
@@ -54,7 +55,12 @@ export default {
 </script>
 
 <style scope="local">
-    .box {
-        border-top:none;
+    .box-header > .icon-box {
+        background-color:#5CD590;
+        width:50px;
+        height:50px;
+        float:left;
     }
+    
+    
 </style>
