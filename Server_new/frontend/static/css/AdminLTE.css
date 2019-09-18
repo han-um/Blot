@@ -10,6 +10,97 @@
  * Core: General Layout Style
  * -------------------------
  */
+
+/* BLOT STYLE*/
+    .blot-box {
+        border: solid #ECECEC 0.5px;
+    }
+
+    .blot-box > .box-header {
+        color: #6B6B6B;
+        padding:5px;
+        padding-left:10px;
+        font-size:15px;
+        font-weight: 500;
+    }
+    
+    .blot-box > .box-header > i {
+        font-weight: 100;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    .blot-box > .box-header-menu {
+        background-color:#E9E9E9;
+        padding:0px;
+        padding-left:15px;
+        margin-top:5px;
+        height:32px;
+    }
+
+    .blot-box > .box-header-menu > ul {
+        list-style:none;
+        margin:0;
+        padding:0;
+    }
+
+    .blot-box > .box-header-menu > ul > li {
+        margin: 0 0 0 0;
+        padding:5px;
+        padding-left:20px;
+        padding-right:20px;
+        border : 0;
+        float: left;
+        color:#6B6B6B;
+    }
+
+    .blot-box > .box-header-menu > ul > .active {
+        /*color:white;
+        background-color:#6B6B6B;
+        font-weight: 100;*/
+        font-weight: 600;
+        border-bottom:solid #707070 2px;
+    }
+
+    .blot-box > .box-header-menu > ul > li > input {
+        padding:0px;
+        -webkit-appearance: none;
+        -webkit-border-radius: 0;
+        border:solid #E9E9E9 0.5px;
+        line-height:31px;
+        width:31px;
+        text-align: center;
+        font-weight: 100;
+    }
+
+    .blot-box > .box-header-menu > ul > .inputbox {
+        padding:0px;
+        padding-left:10px;
+        padding-right:10px;
+        height:100%;
+    }
+
+    .blot-box > .box-header-menu > ul > .inputbox > i {
+        padding:10px;
+    }
+
+    .small-alert {
+        color: white;
+        font-size: 13px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 10px 0px 0px 0px;
+        background-color: #6A6767;
+    }
+
+    .m-20 {
+        margin : 20px;
+    }
+    
+    .p-20 {
+        padding : 20px;
+    }
+
 html,
 body {
   height: 100%;
@@ -19,6 +110,11 @@ body {
 display:none;
 
 } 
+
+.p-0 {
+    padding: 0px!important;
+}
+
 .layout-boxed html,
 .layout-boxed body {
   height: 100%;

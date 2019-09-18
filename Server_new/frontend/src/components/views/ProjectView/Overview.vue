@@ -17,8 +17,5 @@ export default {
 }
 </script>
 
-<style scope="local">
-    .box {
-        border-top:none;
-    }
+<style scoped>
 </style>

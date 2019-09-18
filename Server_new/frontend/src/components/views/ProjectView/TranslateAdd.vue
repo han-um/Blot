@@ -1,6 +1,6 @@
 <template>
   <div>
-    번역 페이지 내용입니다.
+    번역 추가 기능
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 // import axios from 'axios'
 
 export default {
-  name: 'ProjectViewTranslate',
+  name: 'TranslateAdd',
   data () {
     return {}
   },
@@ -17,8 +17,5 @@ export default {
 }
 </script>
 
-<style scope="local">
-    .box {
-        border-top:none;
-    }
+<style scoped>
 </style>

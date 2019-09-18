@@ -218,6 +218,15 @@ export default {
         padding-bottom:20px;
     }
     
+    .user-image.circle {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: -2px;
+    }
+    
 /* Co-Pilot Style */
     .sidebar-menu > li > a {
         color:white;

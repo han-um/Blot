@@ -3,18 +3,24 @@
     <section class="content">
       <div class="row">
         <div class="col-md-12">
-            <div class="box">
+            <div class="box project-contents">
                 <div class="p-0 box-header with-border">
                     <div class="icon-box"><i class="ri-building-line"></i></div>
-                    <h4>프로젝트 이름 1</h4>
-                     <small>2019년 5월 20일 ~ 2019년 7월 27일</small>
+                    <div class="proj-title">
+                        <h4>프로젝트 이름 1</h4>
+                        <small>2019년 5월 20일 ~ 2019년 7월 27일</small>
+                    </div>
                     <div class="proj-submenu">
                         <router-link to="overview">요약</router-link>
                         <router-link to="trans">번역 보기</router-link>
                         <router-link to="users">참여자</router-link>
                     </div>
                 </div>
-                <router-view></router-view>
+                <div class="box-body">
+                    <transition enter-active-class="animated fadeIn">
+                        <router-view></router-view>
+                    </transition>
+                </div>
             </div>
         </div>
       </div>
@@ -60,37 +66,45 @@ export default {
 }
 </script>
 
-<style scope="local">
-    .box-header h4 {
-        font-size:17px;
-        font-weight:400;
-        padding:0px;
-        padding-top:21px;
-        margin:0px;
+<style scoped>
+    .proj-title {
+        color: #6B6B6B;
+        margin: 13px;
+        float: left;
+        vertical-align: middle;
+        display:inline;
+    }
+    
+    .proj-title h4 {
+        font-size: 18px;
+        font-weight: 400;
+        padding-top: 9px;
+        padding-bottom: 0px;
+        margin-top: 0px;
+        margin-bottom: 0px;
         line-height: 10px;
     }
     
-    .box-header small {
-        font-size:12px;
+    .proj-title small {
+        font-size: 12px;
         font-weight: 100;
     }
     
     .box-header > .icon-box {
-        background-color:#5CD590;
-        width:65px;
-        height:65px;
-        float:left;
-        color:white;
-        font-size:38px;
-        padding:12px;
-        margin-right:20px;
-        line-height: 45px;
+        padding: 5px;
+        background-color: #5CD590;
+        float: left;
+        width: 65px;
+        height: 65px;
         vertical-align: middle;
+        text-align: center;
+        font-size: 40px;
+        color: white;
     }
     
     .proj-submenu {
         float:right;
-        margin-top:9px;
+        margin-top:38px;
         margin-right:20px;
     }
     
@@ -104,6 +118,10 @@ export default {
     .proj-submenu > .active{
         font-weight: 600;
         border-bottom:solid #707070 2px;
+    }
+    
+    .project-contents{
+        height:100%;    
     }
     
     
