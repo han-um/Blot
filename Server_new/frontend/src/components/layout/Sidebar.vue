@@ -4,7 +4,6 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <ul class="sidebar-menu">
-        
             <li class="treeview active">
           <a href="#">
               <span class="blank-line"></span>
@@ -17,22 +16,39 @@
           </a>
           <ul class="treeview-menu">
             <li>
-              <a href="#">
-                <i class="fa fa-file-word-o"></i> Item 1
-              </a>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>인기 프로젝트</a>
             </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역이 끝난 프로젝트</a>
+            </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역을 기다리는 프로젝트</a>
+            </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>태그별 프로젝트</a>
+            </li>
+          </ul>
+        </li>
+            
+         <li class="treeview active">
+          <a href="#">
+              <span class="blank-line"></span>
+            <i class="ri-stack-line"></i>
+              <span class="blank"></span>
+            <span class="treeview-title">메인화면</span>
+            <span class="pull-right-container pull-right">
+              <i class="fa fa-angle-left fa-fw"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
             <li>
               <a href="#">
-                <i class="fa fa-file-picture-o"></i> Item 2
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa fa-file-pdf-o"></i> Item 3
+                 Item 1
               </a>
             </li>
           </ul>
         </li>
+            
         <br><br><br><br><br><br><br><br><br><br>
         <!--TODO : 삭제할것-->    
         <li class="header">DEBUG MENU</li>
@@ -149,7 +165,6 @@ export default {
     }
 
 /* BLOT : Sidebar Style */
-    .skin-black-light .wrapper,
     .skin-black-light .main-sidebar,
     .skin-black-light .left-side {
       background: url(/static/img/blurwp.PNG) no-repeat center center/cover;
@@ -181,6 +196,8 @@ export default {
         height:50px;
         font-weight:600;
     }
+    
+    
     .sidebar .blank {
         padding: 25px;
         margin: 15px;
@@ -188,6 +205,17 @@ export default {
     
     .fa, .fa-angle-left, .fa-fw {
         margin-bottom:20px;
+    }
+    
+    .treeview-menu > li > a {
+        font-size:13px;
+        font-weight:100;
+        padding: 7px 5px 7px 15px;
+    }
+    
+    .treeview > ul.treeview-menu {
+        padding-top:10px;
+        padding-bottom:10px;
     }
     
 /* Co-Pilot Style */
