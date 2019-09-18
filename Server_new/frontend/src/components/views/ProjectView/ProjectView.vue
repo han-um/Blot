@@ -5,8 +5,14 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="p-0 box-header with-border">
-                    <div class="icon-box"></div>
-                     프로젝트 이름 1
+                    <div class="icon-box"><i class="ri-building-line"></i></div>
+                    <h4>프로젝트 이름 1</h4>
+                     <small>2019년 5월 20일 ~ 2019년 7월 27일</small>
+                    <div class="proj-submenu">
+                        <router-link to="overview">요약</router-link>
+                        <router-link to="trans">번역 보기</router-link>
+                        <router-link to="users">참여자</router-link>
+                    </div>
                 </div>
                 <router-view></router-view>
             </div>
@@ -55,11 +61,49 @@ export default {
 </script>
 
 <style scope="local">
+    .box-header h4 {
+        font-size:17px;
+        font-weight:400;
+        padding:0px;
+        padding-top:21px;
+        margin:0px;
+        line-height: 10px;
+    }
+    
+    .box-header small {
+        font-size:12px;
+        font-weight: 100;
+    }
+    
     .box-header > .icon-box {
         background-color:#5CD590;
-        width:50px;
-        height:50px;
+        width:65px;
+        height:65px;
         float:left;
+        color:white;
+        font-size:38px;
+        padding:12px;
+        margin-right:20px;
+        line-height: 45px;
+        vertical-align: middle;
+    }
+    
+    .proj-submenu {
+        float:right;
+        margin-top:9px;
+        margin-right:20px;
+    }
+    
+    .proj-submenu a {
+        padding-right:10px;
+        padding-left:10px;
+        padding-bottom:5px;
+        font-weight: 400;
+    }
+    
+    .proj-submenu > .active{
+        font-weight: 600;
+        border-bottom:solid #707070 2px;
     }
     
     

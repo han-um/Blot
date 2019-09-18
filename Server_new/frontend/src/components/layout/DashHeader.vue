@@ -44,13 +44,14 @@ export default {
      background-color:white;   
     }
     
-    .skin-blue .main-header .logo {
+    .main-header .logo {
         background:none;
     }
     .main-header .logo {
         font-family: 'Noto Sans KR', sans-serif;
-        width:320px;
+        width:278px;
         text-align:left;
+        padding-left:15px;
     }
     
     .logo i {
@@ -62,13 +63,13 @@ export default {
     
     .logo span {
         color: #6B6B6B;
-        height:50px;
+        height:30px;
         vertical-align:top;
         font-size:20px;
         font-weight:600;
     }
     
     .main-header>.navbar{
-        margin-left:320px;
+        margin-left:278px;
     }
 </style>

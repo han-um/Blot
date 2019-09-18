@@ -43,14 +43,13 @@
           <ul class="treeview-menu">
             <li>
               <a href="#">
-                 Item 1
               </a>
             </li>
           </ul>
         </li>
-            
-        <br><br><br><br><br><br><br><br><br><br>
-        <!--TODO : 삭제할것-->    
+       
+        <!--TODO : 삭제할것--> 
+            <!--
         <li class="header">DEBUG MENU</li>
         <router-link tag="li" class="pageLink" to="/">
           <a>
@@ -139,6 +138,7 @@
             <span class="page"> 404</span>
           </a>
         </router-link>
+        -->
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -161,7 +161,7 @@ export default {
 /* BLOT : Resize Width */   
 
     .main-sidebar, .left-side {
-        width:360px;
+        width:310px;
     }
 
 /* BLOT : Sidebar Style */
@@ -179,7 +179,7 @@ export default {
         top: 0px;
         left: 50px;
         position: fixed;
-        padding: 25px;
+        padding: 12px;
         height: 100%;
         background-color: white;
         box-shadow: 0 0 black;
@@ -188,9 +188,9 @@ export default {
     
     .sidebar-menu > li > a {
         display: table-cell;
-        width:360px;
+        width:320px;
         vertical-align: middle;
-        font-size: 15px;
+        font-size: 14px;
         color: white;
         background: rgba(1,1,1,0.3);
         height:50px;
@@ -199,7 +199,7 @@ export default {
     
     
     .sidebar .blank {
-        padding: 25px;
+        padding: 15px;
         margin: 15px;
     }
     
@@ -208,20 +208,20 @@ export default {
     }
     
     .treeview-menu > li > a {
-        font-size:13px;
+        font-size:12px;
         font-weight:100;
-        padding: 7px 5px 7px 15px;
+        padding: 3px 3px 3px 15px;
     }
     
     .treeview > ul.treeview-menu {
-        padding-top:10px;
-        padding-bottom:15px;
+        padding-top:5px;
+        padding-bottom:20px;
     }
     
 /* Co-Pilot Style */
     .sidebar-menu > li > a {
         color:white;
-      padding: 15px 15px 15px 17px;
+      padding: 7px 7px 7px 17px;
     }
 
     .sidebar-menu li.active > a > .fa-angle-left,
