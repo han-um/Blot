@@ -10,7 +10,9 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      <section class="content-header">
+        <!--
+        <section class="content-header">
+        
         <h1>
           {{$route.name.toUpperCase() }}
           <small>{{ $route.meta.description }}</small>
@@ -22,8 +24,9 @@
           </li>
           <li class="active">{{$route.name.toUpperCase()}}</li>
         </ol>
+    
       </section>
-
+        -->
       <router-view></router-view>
     </div>
     <!-- /.content-wrapper -->

@@ -109,7 +109,6 @@ html,
 body,
 .container-table {
   height: 100%;
-  background-color: #282b30 !important;
 }
 .container-table {
   display: table;

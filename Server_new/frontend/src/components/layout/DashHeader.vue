@@ -1,7 +1,7 @@
 <template>
   <header class="main-header">
     <span class="logo-mini">
-      <a href="/"><img src="/static/img/copilot-logo-white.svg" alt="Logo" class="img-responsive center-block logo"></a>
+      <div class="logo"><i class="ri-shape-2-fill"></i> <span> blot</span></div>
     </span>
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -13,9 +13,6 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <messages-menu></messages-menu>
-          <notifications-menu></notifications-menu>
-          <tasks-menu></tasks-menu>
           <user-menu :user="user"></user-menu>
         </ul>
       </div>
@@ -25,17 +22,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import MessagesMenu from './MessagesMenu'
-import NotificationsMenu from './NotificationsMenu'
-import TasksMenu from './TasksMenu'
 import UserMenu from './UserMenu'
 
 export default {
   name: 'DashHeader',
   components: {
-    MessagesMenu,
-    NotificationsMenu,
-    TasksMenu,
     UserMenu
   },
   props: ['user'],
@@ -46,3 +37,39 @@ export default {
   }
 }
 </script>
+
+<style>
+/* BLOT : style */
+    .main-header{
+     background-color:white;   
+    }
+    
+    .main-header .logo {
+        background:none;
+    }
+    .main-header .logo {
+        font-family: 'Noto Sans KR', sans-serif;
+        width:278px;
+        text-align:left;
+        padding-left:15px;
+    }
+    
+    .logo i {
+        color: #6B6B6B;
+        font-weight:100;
+        font-size:20px;
+        padding-right:20px;
+    }
+    
+    .logo span {
+        color: #6B6B6B;
+        height:30px;
+        vertical-align:top;
+        font-size:20px;
+        font-weight:600;
+    }
+    
+    .main-header>.navbar{
+        margin-left:278px;
+    }
+</style>

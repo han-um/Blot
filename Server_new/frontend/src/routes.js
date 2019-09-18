@@ -2,6 +2,14 @@ import DashView from './components/Dash.vue'
 import LoginView from './components/Login.vue'
 import NotFoundView from './components/404.vue'
 
+// Import Views - BLOT
+
+// ProjectView
+import ProjectView from './components/views/ProjectView/ProjectView.vue'
+import ProjectViewOverview from './components/views/ProjectView/Overview.vue'
+import ProjectViewTranslate from './components/views/ProjectView/Translate.vue'
+import ProjectViewUsers from './components/views/ProjectView/Users.vue'
+
 // Import Views - Dash
 import DashboardView from './components/views/Dashboard.vue'
 import TablesView from './components/views/Tables.vue'
@@ -58,10 +66,28 @@ const routes = [
         name: 'Repository',
         meta: {description: 'List of popular javascript repos'}
       }, {
-        path: 'viewproj',
-        component: ReposView,
-        name: 'VieProj',
-        meta: {description: '프로젝트 상세보기 페이지'}
+        path: 'projview',
+        component: ProjectView,
+        name: 'ProjectView',
+        meta: {description: '프로젝트 상세보기 페이지(최상위헤더)'},
+        children: [
+          {
+            path: 'overview',
+            component: ProjectViewOverview,
+            name: 'Overview',
+            meta: {description: '프로젝트 개요'}
+          }, {
+            path: 'trans',
+            component: ProjectViewTranslate,
+            name: 'Translate',
+            meta: {description: '프로젝트 진행중 번역'}
+          }, {
+            path: 'users',
+            component: ProjectViewUsers,
+            name: 'Users',
+            meta: {description: '사용자 목록 및 게시판'}
+          }
+        ]
       }
     ]
   }, {
