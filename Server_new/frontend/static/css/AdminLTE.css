@@ -81,7 +81,22 @@
     }
 
     .blot-box > .box-header-menu > ul > .inputbox > i {
-        padding:10px;
+        vertical-align: middle;
+        padding:9px;
+    }
+
+    .blot-box > .box-header-menu > ul > .icon {
+        text-align: center;
+        vertical-align: middle;
+        width:32px;
+        padding:3px;
+        padding-top:7px;
+        background-color:#EBEBEB;
+        font-weight:600;
+    }
+
+    .blot-box > .box-header-menu > ul > .icon.disabled {
+        color:#D1D1D1;
     }
 
     .small-alert {

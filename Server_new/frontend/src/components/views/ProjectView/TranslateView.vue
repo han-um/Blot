@@ -4,10 +4,13 @@
       <div class="box-header-menu">
          <ul>
            <li class="active">원본보기</li>
-           <li class="inputbox" style="float:right"><i class="ri-font-size"></i><input type="text"></li>
+           <li class="icon" style="float:right" v-on:click="fontsize--" v-if="fontsize>10"><i class="ri-subtract-fill"></i></li>
+           <li class="icon disabled" style="float:right" v-if="fontsize<=10"><i class="ri-subtract-fill"></i></li>
+           <li class="icon" style="float:right" v-on:click="fontsize++"><i class="ri-add-line"></i></li>
+           <li class="inputbox" style="float:right"><i class="ri-font-size"></i><input type="text" v-model="fontsize"></li>
          </ul>
       </div>
-      <div class="box-body">
+      <div class="box-body" v-bind:style="{ fontSize: fontsize + 'px' }">
           <br> <a class="now">
                                     The background property in CSS can accept comma separated values. "Multiple" backgrounds, if you will. You can also think of them as layered backgrounds since they have a stacking order. </a><br><br><a>
                                     Unfortunately, that's not valid. I'm not entirely sure why. A while back when I whined on Twitter about it I got a variety of ideas/reasons/excuses. None of them rang quite true for me. It's true you cannot comma-separate background-color, but I don't think that's relevant here as I'm comma separating the background shorthand not specifically background-color (not to mention ordering those values the other way around works fine).</a> <br><br> <a>
@@ -30,7 +33,9 @@
 export default {
   name: 'TranslateView',
   data () {
-    return {}
+    return {
+      fontsize: 40
+    }
   },
   methods: {},
   mounted () {}
@@ -39,7 +44,7 @@ export default {
 
 <style scoped>
     .box-body > a {
-        font-size:12px;
+        fontsize:12px;
     }
  .box-body > .now {
     padding: 5px;
