@@ -1,9 +1,9 @@
 <template>
   <div>
-      <div class="col-md-7 col-lg-8" style="padding-left: 0px; padding-right:7px">
+      <div class="col-md-6 col-lg-7 col-xl-8" style="padding-left: 0px; padding-right:7px">
           <TranslateView></TranslateView>
       </div>
-      <div class="col-md-5 col-lg-4" style="padding-left: 7px; padding-right: 0px;">
+      <div class="col-md-6 col-lg-5 col-xl-4" style="padding-left: 7px; padding-right: 0px;">
           <div class="blot-box box">
               <div class="box-header with-border"><i class="ri-global-line"></i> 번역</div>
               <div class="box-header-menu">
