@@ -34,7 +34,6 @@ export default {
       background: url(/static/img/blurwp.PNG) no-repeat center center/cover; 
     }
     .div-middle {
-        background-color: black;
           margin: 0;
   position: absolute;
   top: 50%;
