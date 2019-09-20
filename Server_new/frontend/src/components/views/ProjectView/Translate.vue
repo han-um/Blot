@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div class="col-md-6 col-lg-7 col-xl-8" style="padding-left: 0px; padding-right:7px">
+      <div class="col-md-6 col-lg-7 col-xl-8" style="padding-left: 0px; padding-right:7px; ">
           <TranslateView></TranslateView>
       </div>
       <div class="col-md-6 col-lg-5 col-xl-4" style="padding-left: 7px; padding-right: 0px;">
@@ -12,7 +12,7 @@
                       <li>번역</li>
                   </ul>
               </div>
-              <div class="p-0 box-body">
+              <div class="p-0 vh-75 box-body scrollable ">
                   <br><br>
                   <span class="small-alert m-20">선택한 원문</span>
                   <div class="original-sentence">The background property in CSS can accept comma separated values. "Multiple" backgrounds, if you will. You can also think of them as layered backgrounds since they have a stacking order.</div>

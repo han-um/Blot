@@ -1,8 +1,12 @@
 import DashView from './components/Dash.vue'
-import LoginView from './components/Login.vue'
 import NotFoundView from './components/404.vue'
 
 // Import Views - BLOT
+
+// LoginView
+import LoginView from './components/views/LoginView/LoginView.vue'
+import Login from './components/views/LoginView/Login.vue'
+import Register from './components/views/LoginView/Register.vue'
 
 // ProjectView
 import ProjectView from './components/views/ProjectView/ProjectView.vue'
@@ -23,7 +27,22 @@ import ReposView from './components/views/Repos.vue'
 const routes = [
   {
     path: '/login',
-    component: LoginView
+    component: LoginView,
+    children: [
+      {
+        path: 'login',
+        alias: '',
+        component: Login,
+        name: 'login',
+        meta: {description: '로그인 페이지'}
+      }, {
+        path: 'register',
+        alias: '',
+        component: Register,
+        name: 'register',
+        meta: {description: '회원가입 페이지'}
+      }
+    ]
   },
   {
     path: '/',

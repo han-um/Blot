@@ -12,6 +12,23 @@
  */
 
 /* BLOT STYLE*/
+    .vh-75 {
+        height:70vh;
+    }
+    .scrollable {
+        overflow-y:scroll;
+        overflow-x:hidden;
+        width:100%;
+    }
+    #app {
+        height:100%;
+    }
+    .content-wrapper {
+        height:calc(100% - 60px);
+        overflow-x:hidden;
+        overflow-y:auto;
+    }
+
     .blot-box {
         border: solid #ECECEC 0.5px;
     }
@@ -116,15 +133,25 @@
         padding : 20px;
     }
 
+/*Scrollbar*/
+
+::-webkit-scrollbar {width: 7px; height: 0;}
+::-webkit-scrollbar-track {margin: 0px}
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.0);
+    border-radius: 10px;
+    box-shadow: rgba(255,255,255,0.3) 0 0 0 1px;
+}
+::-webkit-scrollbar-thumb {background: rgba(0,0,0,0.45)}
+::-webkit-scrollbar-thumb:hover {background: rgba(0,0,0,0.55)}
+
+
+
 html,
 body {
   height: 100%;
 }
-::-webkit-scrollbar {
 
-display:none;
-
-} 
 
 .p-0 {
     padding: 0px!important;
