@@ -10,7 +10,7 @@
            <li class="inputbox" style="float:right"><i class="ri-font-size"></i><input type="text" v-model="fontsize"></li>
          </ul>
       </div>
-      <div class="box-body" v-bind:style="{ fontSize: fontsize + 'px' }">
+      <div class="box-body scrollable vh-75" v-bind:style="{ fontSize: fontsize + 'px' }">
           <br> <a class="now">
                                     The background property in CSS can accept comma separated values. "Multiple" backgrounds, if you will. You can also think of them as layered backgrounds since they have a stacking order. </a><br><br><a>
                                     Unfortunately, that's not valid. I'm not entirely sure why. A while back when I whined on Twitter about it I got a variety of ideas/reasons/excuses. None of them rang quite true for me. It's true you cannot comma-separate background-color, but I don't think that's relevant here as I'm comma separating the background shorthand not specifically background-color (not to mention ordering those values the other way around works fine).</a> <br><br> <a>
@@ -34,7 +34,7 @@ export default {
   name: 'TranslateView',
   data () {
     return {
-      fontsize: 40
+      fontsize: 12
     }
   },
   methods: {},

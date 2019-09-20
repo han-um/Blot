@@ -156,10 +156,9 @@ export default {
   }
 }
 </script>
-<style scope="local">
+<style>
 
 /* BLOT : Resize Width */   
-
     .main-sidebar, .left-side {
         width:310px;
     }
