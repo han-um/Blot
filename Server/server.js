@@ -34,7 +34,10 @@
 // Static파일(폴더) 사용 설정
     app.use(express.static('static'));
 // 모델
-    var login    = require('login.js');
+    //var login    = require('login.js');
+
+// 문장 분할
+    var splitter = require("sentence-splitter");
 
 
 
@@ -45,6 +48,18 @@
 
 // / : INDEX
     app.get('/',function(req,res){
+        
+            // splitter test
+            /*
+            var simplePost = "Her email is Jane.Doe@example.com... I sent her an email.";
+            console.log(simplePost);    
+            var sentences = splitter.split(simplePost);
+            
+            for(var i=0; i<sentences.length; i++) {
+                console.log(sentences[i].raw);
+                //alert(setences[i].raw);
+            }
+            */
             res.render('index.html',{session_user : req.session.user});
     });
 
@@ -59,4 +74,15 @@
 
 var server = app.listen(3000, function(){
     console.log("[Server] Express server has started on port 3000")
+    
+    var simplePost="Her email is Jane.Doe@example.com... I sent her an email. How are you?";
+    console.log(simplePost);
+    let sentences = splitter.split(simplePost);
+    
+    console.log(sentences.length);
+    for(var i=0; i<sentences.length; i++) {
+        if(i%2 == 1) continue;
+        console.log(sentences[i].raw);
+    }
+    
 });
