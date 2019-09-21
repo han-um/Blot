@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<body>
+    
+    <h1> Mongoose Test Example</h1>
+    <form method='post' action='/insert' name='mongoform'>
+        user
+        <input type='text' size='10' name='userid'>
+        <input type='submit' value='delete' onclick='this.form.action="/delete"'>
+        <input type='button' value='get' onclick='location.href="/get?userid="+document.mongoform.userid.value'>
+        <p>
+            city
+            <input type='text' size='10' name='city'>
+            sex
+            <input type='radio' name='sex' value='male'>male
+            <input type='radio' name='sex' value='female'>female
+        </p>
+        <input type='submit' value='insert' onclick='this.form.action="/insert"'>
+        <input type='submit' value='update' onclick='this.form.action="/update"'>
+        <input type='button' value='list' onclick='location.href="/list"'>
+    </form>
+    
+</body>
+    
+</html>
