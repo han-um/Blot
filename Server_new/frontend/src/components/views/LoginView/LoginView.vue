@@ -7,11 +7,14 @@
         </span>
         <nav class="navbar navbar-static-top" role="navigation"></nav>
       </header>
+      <div class="box-wrapper">
       <div class="col-md-2"></div>
-      <div class="col-md-8 align-middle div-middle">      
+      <div class="col-md-8 col-centered div-middle">      
           <!-- Router -->
           <router-view></router-view>
       </div>
+      <div class="col-md-2"></div>
+    </div>
   </div>
 </template>
 
@@ -32,13 +35,14 @@ export default {
 <style scoped>
     .login-wrapper {
       background: url(/static/img/blurwp.PNG) no-repeat center center/cover; 
+        overflow-y:scroll;
+        height: 100%;
     }
     .div-middle {
-          margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+        min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 90vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
     }
 </style>
