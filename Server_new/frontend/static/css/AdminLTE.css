@@ -12,16 +12,25 @@
  */
 
 /* BLOT STYLE*/
+    .login-buttons button {
+        background-color:rgba(255,255,255,0.7);
+        border:0px;
+        color:#3B3B3B;
+        padding:5px;
+        padding-left:15px;
+        padding-right:15px;
+        margin:2px;
+    }
     .vh-75 {
         height:70vh;
     }
     .scrollable {
         overflow-y:scroll;
         overflow-x:hidden;
-        width:100%;
     }
     #app {
         height:100%;
+        overflow-y: hidden;
     }
     .content-wrapper {
         height:calc(100% - 60px);
@@ -136,16 +145,18 @@
 /*Scrollbar*/
 
 ::-webkit-scrollbar {width: 7px; height: 0;}
-::-webkit-scrollbar-track {margin: 0px}
+::-webkit-scrollbar-track {margin: 5px}
 ::-webkit-scrollbar-thumb {
     background: rgba(0,0,0,0.0);
     border-radius: 10px;
-    box-shadow: rgba(255,255,255,0.3) 0 0 0 1px;
 }
-::-webkit-scrollbar-thumb {background: rgba(0,0,0,0.45)}
-::-webkit-scrollbar-thumb:hover {background: rgba(0,0,0,0.55)}
+::-webkit-scrollbar-thumb {background: rgba(233,233,233,0.95)}
+::-webkit-scrollbar-thumb:hover {background: rgba(233,233,233,0.95)}
+
+/*checkbox*/
 
 
+/*AdminLTE*/
 
 html,
 body {
@@ -172,7 +183,7 @@ body {
   height: 100%;
   position: relative;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 .wrapper:before,
 .wrapper:after {
@@ -237,6 +248,7 @@ body {
 @media (max-width: 767px) {
   .content-wrapper {
     min-height: calc(100vh - 151px);
+    width:100%;
   }
 }
 .main-footer {
