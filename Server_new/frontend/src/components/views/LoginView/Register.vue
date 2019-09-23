@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="width:100%">
       <div class="register-div" v-if="nowPage==='agree'">
           <h1>회원가입</h1>
           <div class="row title-box">
@@ -43,6 +43,12 @@
       </div>
       <div class="register-div" v-if="nowPage==='input'">
           <div class="row">
+              <div class="p-0 col-xs-12 col-md-6">
+                  <div class="inner-box">1</div>
+              </div>
+              <div class="p-0 col-xs-12 col-md-6">
+                  <div class="inner-box">1</div>
+              </div>
           </div>
           <div class="login-buttons">
             <center><button v-on:click="nowPage='agree'">이전</button></center>
@@ -162,6 +168,11 @@ export default {
     .agree-next-button:disabled {
         color:white;
         background-color:gray;
+    }
+    
+    .inner-box {
+        border:0.5px solid white;
+        margin:5px;
     }
     
 </style>
