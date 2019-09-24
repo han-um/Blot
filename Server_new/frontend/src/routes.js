@@ -85,8 +85,9 @@ const routes = [
         name: 'Repository',
         meta: {description: 'List of popular javascript repos'}
       }, {
-        path: 'projview',
+        path: 'projview/:id',
         component: ProjectView,
+        props: true,
         name: 'ProjectView',
         meta: {description: '프로젝트 상세보기 페이지(최상위헤더)'},
         children: [
