@@ -1,5 +1,6 @@
 <template>
     <div style="width:100%">
+      <transition enter-active-class="animated fadeIn">
       <div class="register-div" v-if="nowPage==='agree'">
           <h1>회원가입</h1>
           <div class="row title-box">
@@ -41,19 +42,41 @@
               <center><button>로그인</button><button class="agree-next-button" v-on:click="nowPage='input'" :disabled="!(agreeChecked1 && agreeChecked2 && agreeChecked3)">다음</button></center>
           </div>
       </div>
+      </transition>
+      <transition enter-active-class="animated fadeIn">
       <div class="register-div" v-if="nowPage==='input'">
-          <div class="row">
+          <div class="row" style="padding:6px;">
+              <h1>회원가입</h1>
               <div class="p-0 col-xs-12 col-md-6">
-                  <div class="inner-box">1</div>
+                  <h4>계정 정보 (필수)</h4>
+                  <div class="inner-box">
+                      <form>
+                          <input type="text" placeholder="이름" name="username" id="username">
+                          <input type="password" placeholder="비밀번호" name="password" id="password">
+                          <input type="password" placeholder="비밀번호 재입력" name="password-re" id="password-re">
+                          <input type="text" placeholder="이메일" name="email" id="email">
+                          <button class="email-button"><i class="ri-send-plane-fill"></i></button>
+                      </form>
+                  </div>
               </div>
               <div class="p-0 col-xs-12 col-md-6">
-                  <div class="inner-box">1</div>
+                  <h4>블록체인 정보</h4>
+                  <div class="inner-box">
+                      <button class="klaytn-button">Klaytn 계정 만들기</button>
+                      <center><small>Klaytn 에 어떻게 등록하나요?</small></center>
+                      <input type="text" placeholder="지갑 주소" name="blockchain" id="blockchain">
+                      <div class="caution">
+                      > 입력하지 않을 경우, 열람 이외의 활동을 할 수 없습니다. <u>왜 필요한가요?</u> <br> > 블록체인 정보는 회원가입 이후에도 입력할 수 있습니다.
+                      </div>
+                  </div>
               </div>
           </div>
+          <center><span class="error-msg">{{errorMsg}}</span></center>
           <div class="login-buttons">
-            <center><button v-on:click="nowPage='agree'">이전</button></center>
+            <center><button v-on:click="nowPage='agree'">이전</button><button v-on:click="nowPage='agree'">회원가입</button></center>
           </div>
       </div>
+      </transition>
     </div>
 </template>
 
@@ -68,7 +91,8 @@ export default {
       agreeChecked1: false,
       agreeChecked2: false,
       agreeChecked3: false,
-      nowPage: 'agree'
+      nowPage: 'agree',
+      errorMsg: ''
     }
   },
   methods: {
@@ -76,6 +100,8 @@ export default {
       this.agreeChecked1 = true
       this.agreeChecked2 = true
       this.agreeChecked3 = true
+    },
+    ValidCheck: function (event) {
     }
   },
   computed: {
@@ -172,7 +198,62 @@ export default {
     
     .inner-box {
         border:0.5px solid white;
-        margin:5px;
+        margin:3px;
+        padding:6px;
+        height:150px;
+    }
+    
+    .inner-box input {
+        background-color:rgba(255,255,255,0.16);
+        color:white;
+        text-align:center;
+        width:100%;
+        margin-bottom:6px;
+        font-size:12px;
+        height:30px;
+    }
+    
+    #email {
+        margin-bottom:0px;
+        width:calc(100% - 36px)
+    }
+    
+    .email-button {
+        padding:2px;
+        vertical-align: middle;
+        background-color:rgba(255,255,255,0.7);
+        color:gray;
+        width:30px;
+        height:30px;
+        float:right;
+        border:0px;
+    }
+    
+    .klaytn-button {
+        background-color:rgba(255,255,255,0.7);
+        color:gray;
+        border:0px;
+        width:100%;
+        height:30px;
+        margin-bottom:6px;
+    }
+    
+    #blockchain {
+        margin-top:6px;
+        margin-bottom:0px;
+    }
+    
+    .caution {
+        margin-top:12px;
+        font-size:10px;
+        font-weight: 100;
+        text-align: center;
+    }
+    
+    .error-msg {
+        text-align: center;
+        font-size:12px;
+        color:red;
     }
     
 </style>
