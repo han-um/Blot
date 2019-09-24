@@ -17,7 +17,7 @@ router.get('/project', function(req, res, next){
 // 프로젝트 정보 가져오기
 router.get('/project/:projectid', function(req, res, next){
     var project_id = req.params.projectid;
-    Project.findOne({'idx':project_id},{"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
+    Project.findOne({'_id':project_id},{"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
         if(err) console.log('err');
         else {
             res.send(doc);

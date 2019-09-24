@@ -35,22 +35,19 @@ export default {
   name: 'ProjectView',
   data () {
     return {
-      githubUrl: 'https://api.github.com/search/repositories?q=language%3Ajavascript&sort=stars',
       response: null,
       error: null
     }
   },
   methods: {
     callGitHub () {
-      axios.get(this.githubUrl)
+      axios.get('/api/project')
         .then(response => {
-          console.log('GitHub Response:', response)
-
+          console.log('Response:', response)
           if (response.status !== 200) {
             this.error = response.statusText
             return
           }
-
           this.response = response.data.items
         })
         .catch(error => {
