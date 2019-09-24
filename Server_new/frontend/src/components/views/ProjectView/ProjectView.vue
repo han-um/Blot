@@ -7,7 +7,7 @@
                 <div class="p-0 box-header with-border">
                     <div class="icon-box"><i class="ri-building-line"></i></div>
                     <div class="proj-title">
-                        <h4>프로젝트 이름 1</h4>
+                        <h4>{{title}}</h4>
                         <small>2019년 5월 20일 ~ 2019년 7월 27일</small>
                     </div>
                     <div class="proj-submenu">
@@ -33,22 +33,24 @@ import axios from 'axios'
 
 export default {
   name: 'ProjectView',
+  props: ['id'],
   data () {
     return {
       response: null,
-      error: null
+      error: null,
+      title: ''
     }
   },
   methods: {
     callGitHub () {
-      axios.get('/api/project')
+      axios.get('/api/project/' + this.$route.params.id)
         .then(response => {
-          console.log('Response:', response)
+          console.log('Response:', response.data.title)
           if (response.status !== 200) {
             this.error = response.statusText
             return
           }
-          this.response = response.data.items
+          this.title = response.data.title
         })
         .catch(error => {
           // Request failed.

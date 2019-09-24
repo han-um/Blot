@@ -38,13 +38,15 @@ export default {
     }
   },
   methods: {},
-  mounted () {}
+  mounted () {
+    console.log('param:' + this.$route.params.id)
+  }
 }
 </script>
 
 <style scoped>
     .box-body > a {
-        fontsize:12px;
+        font-size:12px;
     }
  .box-body > .now {
     padding: 5px;
