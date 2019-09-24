@@ -15,9 +15,9 @@ router.get('/project', function(req, res, next){
 });
 
 // 프로젝트 정보 가져오기
-router.get('/project/:projectid', function(req, res, next){
-    var project_id = req.params.projectid;
-    Project.findOne({'_id':project_id},{"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
+router.get('/project/:p_num', function(req, res, next){
+    var p_num = req.params.p_num;
+    Project.findOne({'_id':p_num},{"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
         if(err) console.log('err');
         else {
             res.send(doc);
@@ -26,9 +26,9 @@ router.get('/project/:projectid', function(req, res, next){
 });
 
 // 프로젝트의 모든 원문 문장 가져오기
-router.get('/project/:projectid/sentence', function(req, res, next){
-    var project_id = req.params.projectid;
-    Project.findOne({'idx':project_id}, {'_id': false, 'sentence.raw_text': true}, function(err, doc){
+router.get('/project/:p_num/sentence', function(req, res, next){
+    var p_num = req.params.p_num;
+    Project.findOne({'_id':p_num}, {'_id': false, 'sentence.raw_text': true}, function(err, doc){
         if(err) console.log('err');
         else {
             res.send(doc);
