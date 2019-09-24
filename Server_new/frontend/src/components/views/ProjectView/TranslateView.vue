@@ -11,7 +11,11 @@
          </ul>
       </div>
       <div class="box-body scrollable vh-75" v-bind:style="{ fontSize: fontsize + 'px' }">
-          <br> <a class="now">
+          <br> 
+          {{sentences[0].raw_text}}
+          <OriginalText text="abcde" index="1"></OriginalText>
+          
+          <a class="now">
                                     The background property in CSS can accept comma separated values. "Multiple" backgrounds, if you will. You can also think of them as layered backgrounds since they have a stacking order. </a><br><br><a>
                                     Unfortunately, that's not valid. I'm not entirely sure why. A while back when I whined on Twitter about it I got a variety of ideas/reasons/excuses. None of them rang quite true for me. It's true you cannot comma-separate background-color, but I don't think that's relevant here as I'm comma separating the background shorthand not specifically background-color (not to mention ordering those values the other way around works fine).</a> <br><br> <a>
                                     I suspect the real reason that was decided is because it would be too easy for authors to screw up. background: green, url(image.jpg); would "fail" in a sense in that it would just flood the background green. Forcing the color to be last makes the color kind of like a "fallback" rather than a layer like any other.
@@ -28,18 +32,38 @@
 </template>
 
 <script>
-// import axios from 'axios'
-
+import axios from 'axios'
+import OriginalText from './OriginalText'
 export default {
   name: 'TranslateView',
+  components: {
+    OriginalText
+  },
   data () {
     return {
-      fontsize: 12
+      fontsize: 12,
+      sentences: []
     }
   },
-  methods: {},
+  methods: {
+    getSentences () {
+      axios.get('/api/project/' + this.$route.params.id + '/sentence')
+        .then(response => {
+          if (response.status !== 200) {
+            this.error = response.statusText
+            return
+          }
+          this.sentences = response.data.sentence
+        })
+        .catch(error => {
+          // Request failed.
+          console.log('error', error.response)
+          this.error = error.response.statusText
+        })
+    }
+  },
   mounted () {
-    console.log('param:' + this.$route.params.id)
+    this.getSentences()
   }
 }
 </script>
