@@ -1,8 +1,16 @@
+require('dotenv').config();
 const router = require('express').Router();
+const mongoose = require('mongoose');
 const Project = require('../models/project');
 
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => console.log('Connected to mongod server'))
+    .catch(e => console.error(e));
+
+
 // 프로젝트 정보 가져오기 by project_id
-router.get('/project', function(req, res, next){
+router.get('/', function(req, res, next){
     Project.find({}, {"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
         if(err) console.log('err');
         else {
@@ -15,7 +23,7 @@ router.get('/project', function(req, res, next){
 });
 
 // 프로젝트 정보 가져오기
-router.get('/project/:p_num', function(req, res, next){
+router.get('/:p_num', function(req, res, next){
     var p_num = req.params.p_num;
     Project.findOne({'_id':p_num},{"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
         if(err) console.log('err');
@@ -26,7 +34,7 @@ router.get('/project/:p_num', function(req, res, next){
 });
 
 // 프로젝트의 모든 원문 문장 가져오기
-router.get('/project/:p_num/sentence', function(req, res, next){
+router.get('/:p_num/sentence', function(req, res, next){
     var p_num = req.params.p_num;
     Project.findOne({'_id':p_num}, {'_id': false, 'sentence.raw_text': true}, function(err, doc){
         if(err) console.log('err');
@@ -37,7 +45,7 @@ router.get('/project/:p_num/sentence', function(req, res, next){
 });
 
 // 프로젝트의 문장의 번역 데이터 가져오기
-router.get('/project/:p_num/sentence/:s_num', function(req, res, next){
+router.get('/:p_num/sentence/:s_num', function(req, res, next){
     var p_num = req.params.p_num;
     var s_num = req.params.s_num;
     Project.findOne({'_id':p_num},{'_id': false, 'sentence.trans.text': true}, function(err, doc){
@@ -49,7 +57,7 @@ router.get('/project/:p_num/sentence/:s_num', function(req, res, next){
 });
 
 // 프로젝트의 문장의 번역의 평가자
-router.get('/project/:p_num/sentence/:s_num/trans/:t_num/user/:userid', function(req, res, next){
+router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userid', function(req, res, next){
     var p_num = req.params.p_num;
     var s_num = req.params.s_num;
     var t_num = req.params.t_num;
