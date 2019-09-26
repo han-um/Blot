@@ -15,7 +15,7 @@
               <div class="p-0 vh-75 box-body scrollable ">
                   <br><br>
                   <span class="small-alert m-20">선택한 원문</span>
-                  <div class="original-sentence">The background property in CSS can accept comma separated values. "Multiple" backgrounds, if you will. You can also think of them as layered backgrounds since they have a stacking order.</div>
+                  <div class="original-sentence">{{this.$store.state.crntStcText}}</div>
                   <br>
                   <TranslateEval></TranslateEval>
               </div>
