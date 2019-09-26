@@ -3,7 +3,6 @@ var createError = require('http-errors');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
 var methodOverride = require('method-override');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -27,8 +26,8 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
-app.use('/api', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/project', indexRouter);
+app.use('/api/user', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -40,18 +39,12 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
 
 var port = process.env.PORT || 27017;
-mongoose.Promise = global.Promise;
-
-mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => console.log('Connected to mongod server'))
-    .catch(e => console.error(e));
 
 var server = app.listen(port, () => console.log(`Express server has started on port ${port}`));
 
