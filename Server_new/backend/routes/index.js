@@ -1,5 +1,12 @@
 require('dotenv').config();
 const router = require('express').Router();
+const bodyParser = require('body-parser');
+const app = require('express')();
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: false}));
+
+const splitter = require('sentence-splitter');
+
 const mongoose = require('mongoose');
 const Project = require('../models/project');
 
@@ -8,14 +15,54 @@ mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopolo
     .then(() => console.log('Connected to mongod server'))
     .catch(e => console.error(e));
 
+// 번역 등록하기 [ProjId, SentenceIdx]
+// 블록체인 트랜잭션 주기
+
+// 프로젝트 정보 등록하기 [테스트 필요]
+router.post('/', function(req, res, next){
+    var title = req.body.title;
+    var description = req.body.description;
+    var language = req.body.language;
+    var tags = req.body.tags;
+    var user = req.body.user;
+    var end = req.body.end;
+    var reward = req.body.reward;
+    var all = req.body.all;
+    
+    var proj = new Project();
+    proj.title = title;
+    proj.description = description;
+    proj.language = language;
+    for(var i = 0; tags.length; i++) proj.tags.push(tags[i]);
+    proj.user = user;
+    proj.end =  end;
+    proj.reward = reward;
+    
+    let sentences = splitter.split(all);
+    
+    for(var i=0; i<sentences.length; i++) {
+        if(i%2 == 1) continue;
+        proj.sentence.raw_text.push(sentences[i].raw);
+    }
+    
+    // 문장 지분 계산
+    
+    proj.save(function(err) {
+        if(err) {
+            console.error(err);
+            res.send({result:0});
+            return;
+        }
+        res.send({result:1});
+    });
+});
+
 
 // 프로젝트 정보 가져오기 by project_id
 router.get('/', function(req, res, next){
     Project.find({}, {"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
         if(err) console.log('err');
         else {
-            //res.json(doc);
-            //console.log(typeof(doc));
             res.send(doc);
             //res.render('index', { title: 'Express' });
         }
@@ -100,21 +147,6 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userid', function(req, re
 
 module.exports = router;
 
-// 프로젝트 입력
-/*
-router.post('/project', function(req, res, next){
-    var title = req.body.title;
-    var description = req.body.description;
-    var language = req.body.language;
-    var tags = req.body.tags;
-    var user = req.body.user;
-    var end = req.body.end;
-    var reward = req.body.reward;
-    var all = req.body.all;
-    
-    // 문장 로직 처리
-})
-*/
 
 /*
 router.post('/insert', function(req, res, next) {

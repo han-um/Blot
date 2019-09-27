@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var splitter = require("sentence-splitter");
+var splitter = require('sentence-splitter');
 var logger = require('morgan');
 
 
@@ -45,27 +45,6 @@ app.use(function(err, req, res, next) {
 });
 
 var port = process.env.PORT || 27017;
-
 var server = app.listen(port, () => console.log(`Express server has started on port ${port}`));
 
 module.exports = app;
-
-// splitter test
-/*
-var server = app.listen(3000, function(){
-    console.log("[Server] Express server has started on port 3000");
-    
-    var simplePost="Her email is Jane.Doe@example.com... I sent her an email. How are you?";
-    console.log(simplePost);
-    let sentences = splitter.split(simplePost);
-    
-    console.log(sentences.length);
-    for(var i=0; i<sentences.length; i++) {
-        if(i%2 == 1) continue;
-        console.log(sentences[i].raw);
-    }
-    
-});
-*/
-
-
