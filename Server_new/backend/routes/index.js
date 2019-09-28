@@ -4,12 +4,14 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const app = require('express')();
 app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb', extended: false}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));
 
 const splitter = require('sentence-splitter');
 
 const mongoose = require('mongoose');
 const Project = require('../models/project');
+const Sentence = mongoose.model('Sentence',require('../models/sentence'));
+const Trans = mongoose.model('Trans', require('../models/trans'));
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -24,27 +26,38 @@ router.post('/', function(req, res, next){
     var title = req.body.title;
     var description = req.body.description;
     var language = req.body.language;
-    var tags = req.body.tags;
+    //var tags = req.body.tags;
+    var tags = req.param('tags[]');
     var user = req.body.user;
     var end = req.body.end;
     var reward = req.body.reward;
     var all = req.body.all;
+        
+    var tag = [];
+    for(var i=0; i<tags.length; i++) {
+        tag.push(tags[i]);
+    }
     
     var proj = new Project();
     proj.title = title;
     proj.description = description;
     proj.language = language;
-    for(var i = 0; tags.length; i++) proj.tags.push(tags[i]);
+    proj.tags = tag;
     proj.user = user;
     proj.end =  end;
     proj.reward = reward;
+    proj.all = all;
     
     let sentences = splitter.split(all);
     
+    var sentenceArray = [];
     for(var i=0; i<sentences.length; i++) {
         if(i%2 == 1) continue;
-        proj.sentence.raw_text.push(sentences[i].raw);
+        var sentence = new Sentence();
+        sentence.raw_text = sentences[i].raw;
+        sentenceArray.push(sentence);
     }
+    proj.sentence = sentenceArray;
     
     // 문장 지분 계산
     
@@ -56,6 +69,7 @@ router.post('/', function(req, res, next){
         }
         res.send({result:1});
     });
+    
 });
 
 
