@@ -1,5 +1,6 @@
 require('dotenv').config();
-const router = require('express').Router();
+const express = require('express')
+const router = express.Router();
 const bodyParser = require('body-parser');
 const app = require('express')();
 app.use(express.json({limit: '50mb'}));
