@@ -4,9 +4,12 @@ import NotFoundView from './components/404.vue'
 // Import Views - BLOT
 
 // LoginView
-import LoginView from './components/views/LoginView/LoginView.vue'
-import Login from './components/views/LoginView/Login.vue'
-import Register from './components/views/LoginView/Register.vue'
+import LoginView from './components/views/Login/LoginView.vue'
+import Login from './components/views/Login/Login.vue'
+import Register from './components/views/Login/Register.vue'
+
+// ProjectAdd
+import ProjectAdd from './components/views/ProjectAdd/ProjectAdd.vue'
 
 // ProjectView
 import ProjectView from './components/views/ProjectView/ProjectView.vue'
@@ -108,6 +111,11 @@ const routes = [
             meta: {description: '사용자 목록 및 게시판'}
           }
         ]
+      }, {
+        path: 'projadd',
+        component: ProjectAdd,
+        name: 'ProjectAdd',
+        meta: {description: '프로젝트 등록'}
       }
     ]
   }, {

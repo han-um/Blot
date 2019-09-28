@@ -1,0 +1,195 @@
+<template>
+  <div>
+    <section class="content">
+        <div class="page-title-box">
+            <h2>새 번역 프로젝트 만들기</h2>
+            <small>다른 번역자가 참여할 수 있는 번역 프로젝트를 만들고, 원문을 업로드합니다.</small>
+        </div>
+      <div class="row">
+          <!--기본 정보-->
+          <div class="col-md-6 col-lg-4 col-xl-4" style="padding-left: 7px; padding-right: 0px;">
+              <div class="blot-box box">
+                  <div class="box-header with-border"><i class="ri-file-info-line"></i> 기본 정보</div>
+                  <div class="box-body">
+                      <center>프로젝트 제목</center>
+                      <input type="text" class="title-input" placeholder="원문의 내용을 직관적으로 나타내 주세요">
+                      <center>프로젝트 요약</center>
+                      <textarea class="overview-input" placeholder="원문의 내용과 번역 목적 등을 입력해주세요"></textarea>
+                      <center>번역 마감일</center>
+                      <v-date-picker
+                         mode='single'
+                        tint-color='#5CD590'
+                        v-model='selectedDate'
+                        is-inline
+                        is-expanded>
+                      </v-date-picker>
+                      <center>보상 금액</center>
+                      <div class="reward-box"><div class="inner">
+                          <span class="number">72</span><br>
+                          {{this.$store.state.tokenName}}<br>
+                          현재 보유중
+                      </div></div>
+                       <div class="reward-box highlight"><div class="inner">
+                          <input type="text" placeholder="입력">
+                          {{this.$store.state.tokenName}}<br>
+                          번역 보상금
+                      </div></div>
+                       <div class="reward-box"><div class="inner">
+                          <span class="number">68</span><br>
+                          {{this.$store.state.tokenName}}<br>
+                          지급후 잔액
+                      </div></div><br><br>
+                      <center><div class="info">번역이 마감되면, 해당 금액을 기여도에 따라<br> 
+<B>번역자</B>와 <B>평가자</B>들에게 공평하게 지불합니다.
+                      </div></center>
+                  </div>
+              </div>
+          </div>
+          <!--디자인-->
+          <div class="col-md-6 col-lg-4 col-xl-4" style="padding-left: 7px; padding-right: 0px;">
+              <div class="blot-box box">
+                  <div class="box-header with-border"><i class="ri-paint-brush-line"></i> 디자인</div>
+                  <div class="vh-75 box-body">
+                      <center>미리보기</center>
+                      <div class="preview-box">
+                          <div class="inner">
+                          </div>
+                      </div>
+                      <center>대표 이미지</center>
+                  </div>
+              </div>
+          </div>
+          <!--원문 입력-->
+          <div class="col-md-12 col-lg-4 col-xl-4" style="padding-left: 7px; padding-right: 0px;">
+              <div class="blot-box box">
+                  <div class="box-header with-border"><i class="ri-file-text-line"></i> 원문 입력</div>
+                  <div class="vh-75 box-body">
+                      ㄴ
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import VCalendar from 'v-calendar'
+import 'v-calendar/lib/v-calendar.min.css'
+
+Vue.use(VCalendar)
+
+// import axios from 'axios'
+export default {
+  name: 'ProjectView',
+  props: ['id'],
+  data () {
+    return {
+      selectedDate: null
+    }
+  },
+  methods: {
+  },
+  mounted () {
+  }
+}
+</script>
+
+<style scoped>
+    .content {
+        padding:40px;
+    }
+    .box-body {
+        padding:10px;
+        font-size:12px;
+    }
+    .box-body center {
+        padding-top:10px;
+        padding-bottom:5px;
+    }
+    .title-input {
+        width:100%;
+        padding:5px;
+        border:0px;
+        background-color:#E8E8E8;
+        text-align: center;
+        font-weight: 100;
+        border-radius: 20px 0px 0px 0px;
+    }
+    .overview-input {
+        width:100%;
+        padding:5px;
+        border:0px;
+        background-color:#E8E8E8;
+        text-align: center;
+        font-weight: 100;
+        border-radius: 20px 0px 0px 0px;
+        height:100px;
+        vertical-align: middle;
+    }
+    .reward-box {
+        float:left;
+        margin:3px;
+         width: calc(33% - 6px);
+        padding-bottom: calc(33% - 6px);
+        background-color:#E8E8E8;
+    }
+    
+    .highlight {
+        background-color:#5CD590;
+    }
+    
+    .highlight .inner {
+        color:white;
+    }
+    
+    .reward-box .inner {
+        padding-left:10px;
+        position: absolute;
+        width: calc(30% - 16px);
+        height: calc(30% - 16px);
+        font-weight:100;
+        font-size:10px;
+    }
+    
+    .reward-box .inner input {
+        width: 100%;
+        font-size:30px;
+        font-weight:600;
+        background:none;
+        border:none;
+        height:42px;
+    }
+    
+        .reward-box .inner input::placeholder {
+        color:white;
+    }
+    
+    .reward-box .inner .number {
+        font-size:30px;
+        font-weight:600;
+    }
+    
+    .info {
+        color:#6B6B6B;
+        padding-top:6px;
+        font-size:11px;
+        font-weight:100;
+        line-height: 13px;
+    }
+    
+    .preview-box {
+        width:100%;
+        height:150px;
+        background-color:black;
+    }
+    
+    .preview-box .inner {
+        position:absolute;
+        width:calc(100% - 20px);
+        height:150px;
+        background-color:rgba(255,255,255,0.5)
+    }
+    
+</style>
