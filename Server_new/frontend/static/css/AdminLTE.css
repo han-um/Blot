@@ -142,6 +142,21 @@
         padding : 20px;
     }
 
+    .page-title-box {
+        color:#525252;
+        padding-bottom:20px;
+    }
+    
+    .page-title-box h2 {
+        font-weight:900;
+        padding:0px;
+        margin:0px;
+    }
+
+    .page-title-box small {
+        font-weight:100;
+    }
+
 /*Scrollbar*/
 
 ::-webkit-scrollbar {width: 7px; height: 0;}
