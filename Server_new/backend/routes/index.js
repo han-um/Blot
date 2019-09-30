@@ -21,21 +21,22 @@ mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopolo
 // 번역 등록하기 [ProjId, SentenceIdx]
 // 블록체인 트랜잭션 주기
 
-// 프로젝트 정보 등록하기 [테스트 필요]
+// 프로젝트 정보 등록하기 [동작 가능] [문작작업량 작업 필요]
 router.post('/', function(req, res, next){
     var title = req.body.title;
     var description = req.body.description;
     var language = req.body.language;
-    //var tags = req.body.tags;
-    var tags = req.param('tags[]');
+    var tags = req.body.tags;
     var user = req.body.user;
     var end = req.body.end;
     var reward = req.body.reward;
     var all = req.body.all;
         
     var tag = [];
+    
     for(var i=0; i<tags.length; i++) {
         tag.push(tags[i]);
+        console.log(tags[i]);
     }
     
     var proj = new Project();
@@ -50,16 +51,31 @@ router.post('/', function(req, res, next){
     
     let sentences = splitter.split(all);
     
+    var totalBytes = 0;
+    for(var i=0; i<sentences.length; i++) {
+        if(i%2 == 1) continue;
+        totalBytes += (function(s,b,j,c) {
+            for(b=j=0; c=s.charCodeAt(j++); b+=c>>11?3:c>>7?2:1);
+            return b;
+        })(sentences[i].raw);
+    }
+    
     var sentenceArray = [];
     for(var i=0; i<sentences.length; i++) {
         if(i%2 == 1) continue;
         var sentence = new Sentence();
+        var sentenceBytes = (function(s,b,j,c) {
+            for(b=j=0; c=s.charCodeAt(j++); b+=c>>11?3:c>>7?2:1);
+            return b;
+        })(sentences[i].raw);
+        
+        var ratio = sentenceBytes / totalBytes;
+        
         sentence.raw_text = sentences[i].raw;
+        sentence.ratio = ratio;
         sentenceArray.push(sentence);
     }
     proj.sentence = sentenceArray;
-    
-    // 문장 지분 계산
     
     proj.save(function(err) {
         if(err) {
@@ -69,7 +85,6 @@ router.post('/', function(req, res, next){
         }
         res.send({result:1});
     });
-    
 });
 
 
