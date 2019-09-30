@@ -49,13 +49,15 @@
           <div class="col-md-6 col-lg-4 col-xl-4" style="padding-left: 7px; padding-right: 0px;">
               <div class="blot-box box">
                   <div class="box-header with-border"><i class="ri-paint-brush-line"></i> 디자인</div>
-                  <div class="vh-75 box-body">
+                  <div class="box-body">
                       <center>미리보기</center>
                       <div class="preview-box">
                           <div class="inner">
                           </div>
                       </div>
-                      <center>대표 이미지</center>
+                      <center>대표 아이콘</center>
+                      <br>
+                      <IconSelector></IconSelector>
                   </div>
               </div>
           </div>
@@ -74,15 +76,14 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import VCalendar from 'v-calendar'
-import 'v-calendar/lib/v-calendar.min.css'
-
-Vue.use(VCalendar)
+import IconSelector from './IconSelector'
 
 // import axios from 'axios'
 export default {
-  name: 'ProjectView',
+  name: 'ProjectAdd',
+  components: {
+    IconSelector
+  },
   props: ['id'],
   data () {
     return {
@@ -94,6 +95,10 @@ export default {
   mounted () {
   }
 }
+import Vue from 'vue'
+import VCalendar from 'v-calendar'
+import 'v-calendar/lib/v-calendar.min.css'
+Vue.use(VCalendar)
 </script>
 
 <style scoped>

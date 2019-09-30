@@ -9,7 +9,7 @@
 import TranslationText from './TranslationText'
 export default {
   name: 'TranslateEval',
-  component: {
+  components: {
     TranslationText
   },
   data () {
