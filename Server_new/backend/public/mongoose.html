@@ -8,6 +8,7 @@
     
     <h1> Mongoose Test Example</h1>
     
+    <!--
     <form method='post' action='/insert' name='mongoform'>
         user
         <input type='text' size='10' name='userid'>
@@ -24,12 +25,37 @@
         <input type='submit' value='update' onclick='this.form.action="/update"'>
         <input type='button' value='list' onclick='location.href="/list"'>
     </form>
-    
+    -->
     
     <form method='post' action='/insert' name='mongoform'>
     
-        title <input type='text' size='100' name='title'>
-        description <input type='text' size='200' name='description'>
+        title
+        <input type='text' size='100' name='title'>
+        <input type='submit' value='post' onclick='this.form.action="/api/project/"'>
+        
+        <br>
+        description
+        <input type='text' size='150' name='description'><br>
+        language
+        <select name='language'>
+            <option>English</option>
+            <option>Japanese</option>
+        </select>
+        <br>
+        tags
+        <br>
+        <input type='checkbox' name='tags' value='IT'>IT<br>
+        <input type='checkbox' name='tags' value='SOCIETY'>SOCIETY<br>
+        <input type='checkbox' name='tags' value='SCIENCE'>SCIENCE<br>
+        userID
+        <input tpye='text' size='100' name='user'><br>
+        endDate
+        <input type='date' name='end'><br>
+        reward
+        <input type='number' name='reward'><br>
+        Original Text
+        <textarea name='all' rows='150' cols='200'></textarea>
+        
         
     
     
