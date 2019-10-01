@@ -6,17 +6,32 @@ const app = require('express')();
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 
-const splitter = require('sentence-splitter');
-
 const mongoose = require('mongoose');
-const Project = require('../models/project');
-const Sentence = mongoose.model('Sentence',require('../models/sentence'));
-const Trans = mongoose.model('Trans', require('../models/trans'));
+const autoIncrement = require('mongoose-auto-increment');
+const splitter = require('sentence-splitter');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('Connected to mongod server'))
     .catch(e => console.error(e));
+
+var connection = mongoose.createConnection(process.env.MONGO_URI);
+
+autoIncrement.initialize(connection);
+const Project = require('../models/project');
+const Sentence = mongoose.model('Sentence',require('../models/sentence'));
+var transSchema = require('../models/trans');
+transSchema.plugin(autoIncrement.plugin, {
+    model: 'Trans',
+    field: 'idx',
+    startAt: 0,
+    increment: 1
+});
+
+var Trans = connection.model('Trans', transSchema);
+//const Trans mongoose.model('Trans', transSchema);
+//const Trans = mongoose.model('Trans', require('../models/trans'));
+
 
 // 번역 등록하기 [ProjId, SentenceIdx]
 // 블록체인 트랜잭션 주기
@@ -36,7 +51,6 @@ router.post('/', function(req, res, next){
     
     for(var i=0; i<tags.length; i++) {
         tag.push(tags[i]);
-        console.log(tags[i]);
     }
     
     var proj = new Project();
@@ -71,8 +85,12 @@ router.post('/', function(req, res, next){
         
         var ratio = sentenceBytes / totalBytes;
         
+        var trans = new Trans();
+        trans.text = 'It is a test text.';
+        
         sentence.raw_text = sentences[i].raw;
         sentence.ratio = ratio;
+        sentence.trans.push(trans);
         sentenceArray.push(sentence);
     }
     proj.sentence = sentenceArray;
