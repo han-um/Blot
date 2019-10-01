@@ -23,7 +23,25 @@
 - 라우트 링크(하이퍼링크)
     > <router-link to="trans">번역 보기</router-link>
     
-
+### AXIOS
+- import
+    > import axios from 'axios'
+    ` callGitHub () {
+      axios.get('/api/project/' + this.$route.params.id)
+        .then(response => {
+          console.log('Response:', response.data.title)
+          if (response.status !== 200) {
+            this.error = response.statusText
+            return
+          }
+          this.title = response.data.title
+        })
+        .catch(error => {
+          // Request failed.
+          console.log('error', error.response)
+          this.error = error.response.statusText
+        })
+        
 ### API
 - API이름
     > 이렇게 사용하면 됨

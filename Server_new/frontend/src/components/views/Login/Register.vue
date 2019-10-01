@@ -73,7 +73,7 @@
           </div>
           <center><span class="error-msg">{{errorMsg}}</span></center>
           <div class="login-buttons">
-            <center><button v-on:click="nowPage='agree'">이전</button><button v-on:click="nowPage='agree'">회원가입</button></center>
+            <center><button v-on:click="nowPage='agree'">이전</button><button v-on:click="RegisterPost()">회원가입</button></center>
           </div>
       </div>
       </transition>
@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   name: 'Register',
@@ -102,6 +103,12 @@ export default {
       this.agreeChecked3 = true
     },
     ValidCheck: function (event) {
+    },
+    RegisterPost: function (event) {
+      axios.post('/api/user/', {userId: '123', password: '123', email: '123', wAddr: '123'})
+      .then(res => {
+        console.log(res)
+      })
     }
   },
   computed: {
