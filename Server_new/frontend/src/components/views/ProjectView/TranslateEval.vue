@@ -1,11 +1,11 @@
 <template>
     <div>
-        <TranslationText></TranslationText>
+        <TranslationText v-for="(trans, index) in transList" :text="trans.text" :index="index"></TranslationText>
     </div>
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import TranslationText from './TranslationText'
 export default {
   name: 'TranslateEval',
@@ -13,10 +13,24 @@ export default {
     TranslationText
   },
   data () {
-    return {}
+    return {
+      transList: []
+    }
   },
-  methods: {},
-  mounted () {}
+  methods: {
+    getTrans: function (event) {
+      axios.get('/api/project/' + this.$route.params.id + '/sentence/' + this.$store.state.crntStcIndex)
+      .then(res => {
+        this.transList = res.data
+        // console.log(this.transList[0].text)
+      })
+    }
+  },
+  mounted () {
+    this.$root.$on('TranslateEval', () => {
+      this.getTrans()
+    })
+  }
 }
 </script>
 
