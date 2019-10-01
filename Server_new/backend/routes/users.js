@@ -27,7 +27,7 @@ db.Library.sync();
 // 회원가입 POST: userId(사용자계정) password(비밀번호) email(이메일계정) wAddr(지갑주소)
 router.post('/', function(req, res, next){
     db.User.create({
-        user_id: req.body.userId,
+        userId: req.body.userId,
         password: req.body.password,
         email: req.body.email,
         wAddr: req.body.wAddr

@@ -16,6 +16,7 @@ export default {
     changeCurrent (num) {
       this.$store.commit('SET_CRURRENT_SENTENCE_INDEX', this.index)
       this.$store.commit('SET_CRURRENT_SENTENCE_TEXT', this.text)
+      this.$root.$emit('TranslateEval')
     }
   },
   mounted () {
