@@ -12,9 +12,9 @@
                   <div class="box-header with-border"><i class="ri-file-info-line"></i> 기본 정보</div>
                   <div class="box-body">
                       <center>프로젝트 제목</center>
-                      <input type="text" class="title-input" placeholder="원문의 내용을 직관적으로 나타내 주세요">
+                      <input type="text" v-model="projectTitle" class="title-input" placeholder="원문의 내용을 직관적으로 나타내 주세요">
                       <center>프로젝트 요약</center>
-                      <textarea class="overview-input" placeholder="원문의 내용과 번역 목적 등을 입력해주세요"></textarea>
+                      <textarea v-model="projectOverview"class="overview-input" placeholder="원문의 내용과 번역 목적 등을 입력해주세요"></textarea>
                       <center>번역 마감일</center>
                       <v-date-picker
                          mode='single'
@@ -30,7 +30,7 @@
                           현재 보유중
                       </div></div>
                        <div class="reward-box highlight"><div class="inner">
-                          <input type="text" placeholder="입력">
+                          <input type="text" v-model="reward" placeholder="입력">
                           {{this.$store.state.tokenName}}<br>
                           번역 보상금
                       </div></div>
@@ -53,6 +53,9 @@
                       <center>미리보기</center>
                       <div class="preview-box">
                           <div class="inner">
+                              <i v-bind:class="$store.state.crntIcon"></i>
+                              <br><span class="preview-title">{{projectTitle}}</span>
+                              <br><span class="preview-overview">{{projectOverview}}</span>
                           </div>
                       </div>
                       <center>대표 아이콘</center>
@@ -65,8 +68,8 @@
           <div class="col-md-12 col-lg-4 col-xl-4" style="padding-left: 7px; padding-right: 0px;">
               <div class="blot-box box">
                   <div class="box-header with-border"><i class="ri-file-text-line"></i> 원문 입력</div>
-                  <div class="vh-75 box-body">
-                      ㄴ
+                  <div class="box-body">
+                      <textarea class="original-input" placeholder="입력한 원문은 문장 단위로 나누어 번역이 이루어집니다."></textarea>
                   </div>
               </div>
           </div>
@@ -87,6 +90,9 @@ export default {
   props: ['id'],
   data () {
     return {
+      projectTitle: '',
+      projectOverview: '',
+      reward: '',
       selectedDate: null
     }
   },
@@ -167,7 +173,7 @@ Vue.use(VCalendar)
         height:42px;
     }
     
-        .reward-box .inner input::placeholder {
+    .reward-box .inner input::placeholder {
         color:white;
     }
     
@@ -186,15 +192,50 @@ Vue.use(VCalendar)
     
     .preview-box {
         width:100%;
-        height:150px;
+        height:160px;
         background-color:black;
     }
     
     .preview-box .inner {
         position:absolute;
         width:calc(100% - 20px);
-        height:150px;
-        background-color:rgba(255,255,255,0.5)
+        height:160px;
+        background-color:rgba(255,255,255,0.5);
+        text-align: center;
+        padding:10px;
     }
+    
+    .preview-box .inner i {
+        color:white;
+        font-size:60px;
+    }
+    
+    .preview-title {
+        color:white;
+        font-size:17px;
+    }
+    
+    .preview-overview {
+        color:white;
+        font-size:12px;
+        font-weight:100;
+        display: inline-block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    
+    .original-input {
+        width:100%;
+        padding:5px;
+        border:0px;
+        background-color:#E8E8E8;
+        font-weight: 100;
+        border-radius: 20px 0px 0px 0px;
+        height:80vh;
+        vertical-align: middle;
+    }
+    
+    .original-input::placeholder {
+        text-align: center;
+    }
+    
     
 </style>
