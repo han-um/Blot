@@ -44,7 +44,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var port = process.env.PORT || 27017;
+var port = process.env.PORT || 3000;
 var server = app.listen(port, () => console.log(`Express server has started on port ${port}`));
 
 module.exports = app;

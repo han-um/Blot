@@ -27,10 +27,10 @@ db.Library.sync();
 // 회원가입 POST: userId(사용자계정) password(비밀번호) email(이메일계정) wAddr(지갑주소)
 router.post('/', function(req, res, next){
     db.User.create({
-        user_id: req.params.userId,
-        password: req.params.password,
-        email: req.params.email,
-        wAddr: req.params.wAddr
+        user_id: req.body.userId,
+        password: req.body.password,
+        email: req.body.email,
+        wAddr: req.body.wAddr
     }).then(result => {
         res.send(result);
     }).catch(err => {
@@ -42,10 +42,10 @@ router.post('/', function(req, res, next){
 router.post('/bookmark', function(req, res, next){
     db.User.findOne({
         attributes: ['id'],
-        where: { userId: req.params.userId }
+        where: { userId: req.body.userId }
     }).then(result => {
         db.Library.create({
-            projId: req.params.projId,
+            projId: req.body.projId,
             userId: result.id
         }).then(result => {
             res.send(result);
