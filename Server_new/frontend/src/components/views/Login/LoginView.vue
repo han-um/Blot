@@ -3,7 +3,7 @@
       <!-- Login Header-->
       <header class="main-header">
         <span class="logo-mini">
-          <div class="logo"><i class="ri-shape-2-fill"></i> <span> blot</span></div>
+          <router-link to="/"><div class="logo"><i class="ri-shape-2-fill"></i> <span> blot</span></div></router-link>
         </span>
         <nav class="navbar navbar-static-top" role="navigation"></nav>
       </header>
