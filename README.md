@@ -15,3 +15,10 @@
     v-bind:class="클래스이름"
     v-bind:class="{클래스이름:조건식}"
     v-bind:class="[클래스이름,{클래스이름:조건식}]"
+
+- 트랜지션
+    <transition enter-active-class="animated fadeIn">
+
+###VUE-ROUTER
+- 라우트 링크(하이퍼링크)
+    <router-link to="trans">번역 보기</router-link>
