@@ -30,7 +30,7 @@
                           현재 보유중
                       </div></div>
                        <div class="reward-box highlight"><div class="inner">
-                          <input type="text" placeholder="입력">
+                          <input type="text" v-model="reward" placeholder="입력">
                           {{this.$store.state.tokenName}}<br>
                           번역 보상금
                       </div></div>
@@ -92,6 +92,7 @@ export default {
     return {
       projectTitle: '',
       projectOverview: '',
+      reward: '',
       selectedDate: null
     }
   },
