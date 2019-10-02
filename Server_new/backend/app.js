@@ -1,12 +1,12 @@
 require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
+var session = require('express-session'); // 세션설정
 var app = express();
+var path = require('path');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var path = require('path');
 var cookieParser = require('cookie-parser');
-var splitter = require('sentence-splitter');
 var logger = require('morgan');
 
 

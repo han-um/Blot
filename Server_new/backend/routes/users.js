@@ -2,6 +2,7 @@ require('dotenv').config()
 const bodyParser = require('body-parser');
 const path = require('path');
 const router = require('express').Router();
+const bcrypt = require('bcrypt-nodejs');
 const Sequelize = require('sequelize');
 const db = {};
 
@@ -26,15 +27,20 @@ db.Library.sync();
 
 // 회원가입 POST: userId(사용자계정) password(비밀번호) email(이메일계정) wAddr(지갑주소)
 router.post('/', function(req, res, next){
-    db.User.create({
-        user_id: req.body.userId,
-        password: req.body.password,
-        email: req.body.email,
-        wAddr: req.body.wAddr
-    }).then(result => {
-        res.send(result);
-    }).catch(err => {
-        console.error(err);
+    bcrypt.hash(req.body.password, null, null, function(err, hash) {
+        if(err) console.error(err);
+        else {
+            db.User.create({
+                userId: req.body.userId,
+                password: hash,
+                email: req.body.email,
+                wAddr: req.body.wAddr
+            }).then(result => {
+                res.send(result);
+            }).catch(err => {
+                console.error(err);
+            });
+        }
     });
 });
 
@@ -58,16 +64,34 @@ router.post('/bookmark', function(req, res, next){
 });
 
 // 즐겨찾기 프로젝트아이디 가져오기 GET: userId(사용자계정)
-router.get('/project/:userId', function(req, res, next){
-    db.Library.findAll({
-        attributes: ['projId'],
+router.get('/:userId/project', function(req, res, next){
+    db.User.findOne({
+        attributes: ['id'],
         where: { userId: req.params.userId }
     }).then(result => {
-        res.send(result);
+        db.Library.findAll({
+            attributes: ['projId'],
+            where: { userId: result.id }
+        }).then(result => {
+            res.send(result);
+        }).catch(err => {
+            console.error(err);
+        });
+    });
+});
+
+// 로그인
+router.get('/:userId/password/:password', function(req, res, next){
+    db.User.findOne({
+        attributes: ['password'],
+        where:{ userId: req.params.userId }
+    }).then(result => {
+        bcrypt.compare(req.params.password, result.password, function(err, ans) {
+            res.send(ans);
+        });
     }).catch(err => {
         console.error(err);
     });
 });
-
 
 module.exports = router;

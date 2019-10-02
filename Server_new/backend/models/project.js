@@ -26,15 +26,15 @@ const sentenceSchema = new mongoose.Schema({
 */
 
 const projectSchema = new mongoose.Schema({
-    //idx: { type: Number },
     title: { type: String },
     description: { type: String },
     language: { type: String },
     tags: [{ type: String }],
     user: { type: String },
     start: { type: Date, default: Date.now },
-    end: {type: Date },
+    end: { type: Date },
     reward: { type: Number},
+    icon: { type: String },
     all: { type: String },
     //sentence: [sentenceSchema],
     sentence: [ Sentence ],
