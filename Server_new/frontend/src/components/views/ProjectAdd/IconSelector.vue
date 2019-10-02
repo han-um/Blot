@@ -15,7 +15,8 @@ export default {
     return {
       iconArray: [
         'ri-questionnaire-line', 'ri-building-2-line', 'ri-cloud-line', 'ri-bar-chart-grouped-line', 'ri-global-line',
-        'ri-stack-line', 'ri-chat-3-line', 'ri-brush-4-line', 'ri-palette-line', 'ri-git-repository-private-line'
+        'ri-stack-line', 'ri-chat-3-line', 'ri-brush-4-line', 'ri-palette-line', 'ri-git-repository-private-line',
+        'ri-calculator-line', 'ri-slideshow-2-line', 'ri-code-s-slash-line', 'ri-phone-line', 'ri-shopping-cart-line'
       ]
     }
   },

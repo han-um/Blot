@@ -42,7 +42,10 @@
       .then(res => {
         console.log(res)
       })
-        
+### CSS
+- 배경 꽉차게
+    > background: url(/static/img/blurwp.PNG) no-repeat center center/cover; 
+
 ### API
 - API이름
     > 이렇게 사용하면 됨
