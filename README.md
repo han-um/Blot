@@ -2,6 +2,9 @@
 
 
 ## 개발 노트
+### 공용 정보
+- 테스트 프로젝트ID
+    > 5d84a8e73c9f67a60a0d42f1
 ### VUEX
 - State(전역변수)의 SETTER
     > this.$store.commit('SET_CRURRENT_SENTENCE_INDEX', this.index)
@@ -18,7 +21,6 @@
       this.getTrans()
     })
   }
-
 
 ### VUE
 - 스타일 바인딩
@@ -40,7 +42,10 @@
       .then(res => {
         console.log(res)
       })
-        
+### CSS
+- 배경 꽉차게
+    > background: url(/static/img/blurwp.PNG) no-repeat center center/cover; 
+
 ### API
 - 회원가입 [POST] - /api/user/ 
     > userId : 계정명[string]   

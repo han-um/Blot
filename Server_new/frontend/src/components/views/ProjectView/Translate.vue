@@ -8,8 +8,8 @@
               <div class="box-header with-border"><i class="ri-global-line"></i> 번역</div>
               <div class="box-header-menu">
                   <ul>
-                      <li class="active">평가</li>
-                      <li>번역</li>
+                      <li v-on:click="changeTransMenu('eval')" v-bind:class="{active: this.transMenuState==='eval'}">평가</li>
+                      <li v-on:click="changeTransMenu('add')"  v-bind:class="{active: this.transMenuState==='add'}">번역</li>
                   </ul>
               </div>
               <div class="p-0 vh-75 box-body scrollable ">
@@ -17,7 +17,9 @@
                   <span class="small-alert m-20">선택한 원문</span>
                   <div class="original-sentence">{{this.$store.state.crntStcText}}</div>
                   <br>
-                  <TranslateEval></TranslateEval>
+                  <!--번역 메뉴 표시 부분-->
+                    <TranslateEval v-show="this.transMenuState==='eval'"></TranslateEval>
+                    <TranslateAdd v-show="this.transMenuState==='add'"></TranslateAdd>
               </div>
           </div>
       </div>
@@ -38,9 +40,15 @@ export default {
     TranslateView
   },
   data () {
-    return {}
+    return {
+      transMenuState: 'eval'
+    }
   },
-  methods: {},
+  methods: {
+    changeTransMenu: function(menuState) {
+      this.transMenuState = menuState
+    }
+  },
   mounted () {}
 }
 </script>

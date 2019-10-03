@@ -23,6 +23,11 @@
                         is-inline
                         is-expanded>
                       </v-date-picker>
+                      <center>해시태그</center>
+                      <v-tag-input v-model="projectTags" :separator="' '"></v-tag-input>
+                          <div class="tag-wrapper"><div v-for="tag in projectTags" class="tag-box">{{tag}}
+                          </div><div class="tag-info" v-show="projectTags.length==[]">공백(space)로 구분합니다</div>
+                          </div>
                       <center>보상 금액</center>
                       <div class="reward-box"><div class="inner">
                           <span class="number">72</span><br>
@@ -79,17 +84,19 @@
 </template>
 
 <script>
+import VTagInput from 'v-tag-input'
 import IconSelector from './IconSelector'
-
 // import axios from 'axios'
 export default {
   name: 'ProjectAdd',
   components: {
+    VTagInput,
     IconSelector
   },
   props: ['id'],
   data () {
     return {
+      projectTags: [],
       projectTitle: '',
       projectOverview: '',
       reward: '',
@@ -128,6 +135,41 @@ Vue.use(VCalendar)
         font-weight: 100;
         border-radius: 20px 0px 0px 0px;
     }
+    
+    .v-tag-input {
+        width:100%;
+        padding:5px;
+        border:0px;
+        background-color:#E8E8E8;
+        text-align: center;
+        font-weight: 100;
+        border-radius: 20px 0px 0px 0px;
+    }
+    
+    .tag-box {
+        float:left;
+        padding:5px;
+        padding-left:10px;
+        padding-right:10px;
+        color:white;
+        background-color:#6A6767;
+        margin:5px;
+        margin-left:0px;
+        border-radius: 5px;
+    }
+    
+    .tag-wrapper {
+        width:100%;
+        height:35px;
+        overflow-y:hidden;
+    }
+    
+    .tag-wrapper .tag-info {
+        padding:5px;
+        color:#6B6B6B;
+        text-align: center;
+    }
+    
     .overview-input {
         width:100%;
         padding:5px;
@@ -236,6 +278,7 @@ Vue.use(VCalendar)
     .original-input::placeholder {
         text-align: center;
     }
+    
     
     
 </style>
