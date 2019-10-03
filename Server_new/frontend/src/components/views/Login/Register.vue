@@ -51,10 +51,10 @@
                   <h4>계정 정보 (필수)</h4>
                   <div class="inner-box">
                       <form>
-                          <input type="text" placeholder="이름" name="username" id="username">
-                          <input type="password" placeholder="비밀번호" name="password" id="password">
-                          <input type="password" placeholder="비밀번호 재입력" name="password-re" id="password-re">
-                          <input type="text" placeholder="이메일" name="email" id="email">
+                          <input type="text" v-model="inpUserId" placeholder="이름" name="username" id="username">
+                          <input type="password" v-model="inpPassword" placeholder="비밀번호" name="password" id="password">
+                          <input type="password" v-model="inpPasswordRe" placeholder="비밀번호 재입력" name="password-re" id="password-re">
+                          <input type="text" v-model="inpEmail" placeholder="이메일" name="email" id="email">
                           <button class="email-button"><i class="ri-send-plane-fill"></i></button>
                       </form>
                   </div>
@@ -93,7 +93,12 @@ export default {
       agreeChecked2: false,
       agreeChecked3: false,
       nowPage: 'agree',
-      errorMsg: ''
+      errorMsg: '',
+      inpUserId: '',
+      inpPassword: '',
+      inpPasswordRe: '',
+      inpEmail: '',
+      inpWAddr: ''
     }
   },
   methods: {
@@ -105,7 +110,7 @@ export default {
     ValidCheck: function (event) {
     },
     RegisterPost: function (event) {
-      axios.post('/api/user/', {userId: '123', password: '123', email: '123', wAddr: '123'})
+      axios.post('/api/user/', {userId: this.inpUserId, password: this.inpPassword, email: this.inpEmail, wAddr: this.inpWAddr})
       .then(res => {
         console.log(res)
       })

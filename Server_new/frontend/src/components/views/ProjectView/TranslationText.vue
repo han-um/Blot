@@ -1,9 +1,9 @@
 <template>
         
-    <div class="trans-list"><span class="small-alert">번역 번호</span>
+    <div class="trans-list"><span class="small-alert">번역 문장 {{index}}</span>
             <img src="/static/img/user2-160x160.jpg" alt="User Image" class="user-image circle"><b>익명</b><br> 
             <div class="contents">
-            텍스트
+            {{text}}
             </div>
         </div>
         
@@ -19,11 +19,6 @@ export default {
     return {}
   },
   methods: {
-    // 현재 선택한 문장 전역변수화 Vuex
-    changeCurrent (num) {
-      this.$store.commit('SET_CRURRENT_SENTENCE_INDEX', this.index)
-      this.$store.commit('SET_CRURRENT_SENTENCE_TEXT', this.text)
-    }
   },
   mounted () {
   }

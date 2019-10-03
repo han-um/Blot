@@ -9,6 +9,16 @@
     > this.$store.state.crntIcon
 - Vue Methods 에서의 State 읽기
     > $stroe.state.crntIcon
+- 어쩔수없이 $emit을 써야 할 경우
+    * 호출하는 메소드에서
+    > this.$root.$emit('TranslateEval')
+    * 호출받는 메소드에서
+    > mounted () {
+    this.$root.$on('TranslateEval', () => {
+      this.getTrans()
+    })
+  }
+
 
 ### VUE
 - 스타일 바인딩
@@ -26,21 +36,10 @@
 ### AXIOS
 - import
     > import axios from 'axios'
-    ` callGitHub () {
-      axios.get('/api/project/' + this.$route.params.id)
-        .then(response => {
-          console.log('Response:', response.data.title)
-          if (response.status !== 200) {
-            this.error = response.statusText
-            return
-          }
-          this.title = response.data.title
-        })
-        .catch(error => {
-          // Request failed.
-          console.log('error', error.response)
-          this.error = error.response.statusText
-        })
+    ` axios.post('/api/user/', {userId: this.inpUserId, password: this.inpPassword, email: this.inpEmail, wAddr: this.inpWAddr})
+      .then(res => {
+        console.log(res)
+      })
         
 ### API
 - 회원가입 [POST] - /api/user/ 
