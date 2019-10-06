@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src='main.js'></script>
+    
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
+    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+
+  </head>
+  
+  <body>
+      <h1 class='text-center'>Klatn에 배포된 Smart Contract 호출 기능 구현</h1>
+
+      <br><br>
+
+      <!-- 사용자 계정 인증 (지갑 정보를 획득하기 위함) -->
+      <div class='container' >
+          <h3 class='text-center'>사용자 계정 인증 (지갑 정보를 획득하기 위함)</h3>
+          <br>
+
+          <!-- 로그인 했을 때 사용자 지갑 주소랑 로그아웃 버튼 보여줄 부분 -->
+          <div id='user-info' style='display: none;'>
+            
+            <span id='user-wallet'></span>
+            <button
+              type='button'
+              class='btn btn-info pull-right'
+              id='logout'
+              onclick='App.handleLogout()'>
+            로그아웃
+            </button>
+          </div>
+
+          <br>
+
+          <!-- 로그인 -->
+          <div class="row" id='login-section'>
+              <div class="afterLogin">
+                <div id="tabs">
+                  <ul>
+                    <li><a href="#myKeystore">키스토어로 계정 인증</a></li>
+                    <li><a href="#myPrivateKey">비밀키로 계정 인증</a></li>           
+                  </ul>
+
+                  <!-- 키스토어로 로그인 -->
+                  <div id="myKeystore">  
+                    <!-- 키스토어 -->
+                    <div class="form-group">
+                      <label for="keystore">Keystore</label>
+                      <input type="file" id="keystore" onchange="App.handleImport()">
+                    </div>
+                    <!-- 비밀번호 -->
+                    <div class="form-group">
+                      <label for="input-password">비밀번호</label>
+                      <input type="password" class="form-control" id="input-password" onchange="App.handlePassword()">
+                      <p class="help-block" id="message"></p>
+                    </div>
+                    <div class="info-footer">
+                      <button type="button" class="btn btn-primary" id="submit" onclick="App.handleLoginByKeyStore()">제출</button>
+                    </div>
+                  </div>
+                  
+                  <!-- 비밀키로 로그인 -->
+                  <div id="myPrivateKey">
+                      <!-- 비밀키 -->
+                      <div class="form-group">
+                        <label for="input-private-key">비밀키</label>
+                        <input type="password" class="form-control" id="input-private-key">
+                      </div>
+                      <div class="info-footer">
+                        <button type="button" class="btn btn-primary" id="submit" onclick="App.handleLoginByPrivateKey()">제출</button>
+                      </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+      </div>
+
+
+      
+  </body>
+
+</html>
