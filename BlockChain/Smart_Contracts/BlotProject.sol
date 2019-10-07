@@ -16,7 +16,7 @@ contract BlotProject {
         // 해당 프로젝트 아이디가 사용중이 아니어야 함
         require(!projectExist(projectId), "ERROR : That projectId already exists. Can't create project info.");
         projectInfo[projectId] = Project(writerId, deadline, reward, true);
-        emit NewProject(projectId, deadline, reward);
+        emit NewProject(reward, deadline, projectId);
         return true;
     }
 
@@ -40,5 +40,5 @@ contract BlotProject {
     }
     
     // 새로운 프로젝트가 등록되었음을 이벤트로 기록
-    event NewProject(string indexed projectId, string indexed deadline, uint256 indexed reward);
+    event NewProject(uint256 indexed reward, string deadline, string projectId);
 }

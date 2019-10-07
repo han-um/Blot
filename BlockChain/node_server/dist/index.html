@@ -21,28 +21,13 @@
       <br><br>
 
       <!-- 사용자 계정 인증 (지갑 정보를 획득하기 위함) -->
-      <div class='container' >
+      <div class='container' id='login-section'>
           <h3 class='text-center'>사용자 계정 인증 (지갑 정보를 획득하기 위함)</h3>
           <br>
 
-          <!-- 로그인 했을 때 사용자 지갑 주소랑 로그아웃 버튼 보여줄 부분 -->
-          <div id='user-info' style='display: none;'>
-            
-            <span id='user-wallet'></span>
-            <button
-              type='button'
-              class='btn btn-info pull-right'
-              id='logout'
-              onclick='App.handleLogout()'>
-            로그아웃
-            </button>
-          </div>
-
-          <br>
-
           <!-- 로그인 -->
-          <div class="row" id='login-section'>
-              <div class="afterLogin">
+          <div class="row">
+              <div class="beforLogin">
                 <div id="tabs">
                   <ul>
                     <li><a href="#myKeystore">키스토어로 계정 인증</a></li>
@@ -84,6 +69,330 @@
           </div>
       </div>
 
+
+      <!-- 사용자 로그인 후 할 수 있는 기능들 -->
+      <div class='container' id='function-section' style='display: none;'>
+          <h2 class='text-center'>사용자 로그인 후 할 수 있는 기능들</h2>
+          <br><br>
+
+          
+          <!-- 사용자 지갑 주소와 로그아웃 버튼 -->
+          <div id='user-info'>    
+              <span id='user-wallet'></span>
+              <button
+                type='button'
+                class='btn btn-info pull-right'
+                id='logout'
+                onclick='App.handleLogout()'>
+              로그아웃
+              </button>
+          </div>
+
+          <br><br><br>
+
+          <!-- 사용자 잔고 확인 By UserId -->
+          <div>
+              <h3 class='text-center'> 사용자 잔고 확인 By UserId </h3>
+              <span id='user-balance-by-userId'></span>
+              <button
+                type='button'
+                class='btn btn-info pull-right'
+                id='balanceQueryByuserId'
+                onclick='App.handleBalanceQueryByUserId()'>
+              잔고조회
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 사용자 잔고 확인 By UserWallet -->
+          <div>
+              <h3 class='text-center'> 사용자 잔고 확인 By UserWalletAddress </h3>
+              <span id='user-balance-by-user-wallet'></span>
+              <button
+                type='button'
+                class='btn btn-info pull-right'
+                id='balanceQueryByuserWallet'
+                onclick='App.handleBalanceQueryByUserWallet()'>
+              잔고조회
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 사용자 지갑 주소 확인 By UserId -->
+          <div>
+              <h3 class='text-center'> 사용자 지갑 주소 확인 By UserId </h3>
+              <span id='user-wallet-address-by-userId'></span>
+              <button
+                type='button'
+                class='btn btn-info pull-right'
+                onclick='App.handleWalletAddressQueryByUserId()'>
+              지갑주소 조회
+              </button>
+          </div>
+          
+          <br><br><br><br>
+
+          <!-- 사용자 신뢰도 조회 By UserId -->
+          <div>
+              <h3 class='text-center'> 사용자 신뢰점수 확인 By UserId </h3>
+              <span id='user-reliability-by-userId'></span>
+              <button
+                type='button'
+                class='btn btn-info pull-right'
+                onclick='App.handleReliabilityQueryByUserId()'>
+              신뢰점수 조회
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 사용자 지갑주소 변경 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 사용자 지갑주소 변경(아직 오류를 못 고침) </h3>
+              <span id='current-user-wallet-address'></span>
+              <div class='input-group'>
+                <input type='text' class='form-control' id='newAddress' />
+                <span class='input-group-btn'>
+                  <button type='button' class='btn btn-default' onclick='App.handleChangeAddress()'>확인</button>
+                </span>
+              </div>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 회원가입 시 , 회원 정보 등록 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 회원가입 시 , 회원 정보 등록 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleSignUp()'>
+                트랜잭션 실행
+              </button>
+          </div>
+        
+          <br><br><br><br>
+
+          <!-- 사용자의 신뢰도 증가 함수, 현재 1씩 증가해주도록 함 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 사용자의 신뢰도 증가 함수, 현재 1씩 증가해주도록 함 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleAddReliability()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 프로젝트 등록 시, 프로젝트 정보 등록 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 프로젝트 등록 시, 프로젝트 정보 등록 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleRegisterProject()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 프로젝트Id로 프로젝트 보상금 조회 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 프로젝트Id로 프로젝트 보상금 조회 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleQueryProjectReward()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 프로젝트Id로 프로젝트 정보 조회 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 프로젝트Id로 프로젝트 정보(글쓴이, 보상금, 마감일) 조회 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleQueryProjectInfo()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 프로젝트 마감 후, 보상금 지급 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 프로젝트 마감 후, 보상금 지급 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleDistributeReward()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 프로젝트 마감 후, 보상금 분배 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 프로젝트 마감 후, 보상금 분배 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleDistributeReward()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 프로젝트 마감 후, 번역 활동 기록 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 프로젝트 마감 후, 번역 활동 기록 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleStoreTranslationReport()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 프로젝트 마감 후, 평가 활동 기록 -->
+          <div class='text-center'>
+              <h3 class='text-center'> 프로젝트 마감 후, 평가 활동 기록 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleStoreEvaluationReport()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 토큰 구매 1 Klay == 10000 BLOT 으로 교환  -->
+          <div class='text-center'>
+              <h3 class='text-center'> 토큰 구매 1 Klay == 10000 BLOT 으로 교환 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleBuyTokens()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 토큰 환불 1 Klay == 10000 BLOT 으로 교환  -->
+          <div class='text-center'>
+              <h3 class='text-center'> 토큰 환불 1 Klay == 10000 BLOT 으로 교환 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleRefundTokens()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+
+          <br><br><br><br>
+          <!-- -------------------------------------------------------------------- -->
+          <h3 class='text-center' style='color:red'> [여기서 부터는 이벤트 로그 기록 조회하는 기능] </h3>
+          <!-- -------------------------------------------------------------------- -->
+
+          <br><br>
+
+          <!-- 번역 기록 불러오기  -->
+          <div class='text-center'>
+              <h3 class='text-center'> 번역 기록 불러오기 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleTranslationLog()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 평가 기록 불러오기  -->
+          <div class='text-center'>
+              <h3 class='text-center'> 평가 기록 불러오기 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleEvaluationLog()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 컨트랙트에서 Klay 수신 내역 불러오기(토큰 구매 및 투자 기록)  -->
+          <div class='text-center'>
+              <h3 class='text-center'> 컨트랙트에서 Klay 수신 내역 불러오기(토큰 구매 및 투자 기록) </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleTokenPurchaseLog()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 사용자별 신뢰도 조정 기록  -->
+          <div class='text-center'>
+              <h3 class='text-center'> 사용자별 신뢰도 조정 기록 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleReliabilityLog()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 프로젝트 등록 기록  -->
+          <div class='text-center'>
+              <h3 class='text-center'> 프로젝트 등록 기록 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleProjectRegisterLog()'>
+                트랜잭션 실행
+              </button>
+          </div>
+
+          <br><br><br><br>
+
+          <!-- 토큰 송금 기록  -->
+          <div class='text-center'>
+              <h3 class='text-center'> 토큰 송금 기록 </h3>
+              <button
+                type='button'
+                class='btn btn-info pull-center'
+                onclick='App.handleTokenTransactionLog()'>
+                트랜잭션 실행
+              </button>
+          </div>
+          
+          
+
+
+        <br>
+        
+      </div>
 
       
   </body>
