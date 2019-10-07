@@ -34,7 +34,7 @@ contract BlotMain is Ownable {
     // BLOT 서비스 이용자가 아닌 외부 사용자도 토큰을 구입할 수 있도록 함
     function purchaseToken(address userAddress, uint256 klayNum) public payable returns (bool) {
         // 토큰 구입은 컨트랙트 계정이 아닌 사용자 계정으로만 가능하도록 제한
-        require(isUserAddress(userAddress), "ERROR : It's not external owned account. Please buy tokens with your EOA.");
+        require(_isUserAddress(userAddress), "ERROR : It's not external owned account. Please buy tokens with your EOA.");
         
         // klayNum 만큼의 klay를 송금했다면
         require(KlaytnMonetaryUnit.pebToKlay(msg.value) >= klayNum);
@@ -93,17 +93,17 @@ contract BlotMain is Ownable {
         return blotUserAddress.getUserReliability(userId);
     }
  
-    function replaceOldToNewUserAddress(string memory userId, address payable newUserAddress) public returns (bool) {
+    function replaceOldToNewUserAddress(string memory userId, address payable newUserAddress) public returns (bool, bytes memory) {
         
         // 지갑 계정 수정 
-        blotUserAddress.modifyUserAddress(userId, newUserAddress);
-            
+        //(bool result, bytes memory data) = address(blotUserAddress).delegatecall(abi.encodeWithSignature("modifyUserAddress(string memory, address payable)", userId, newUserAddress));
+        blotUserAddress.modifyUserAddress(userId, _msgSender(), newUserAddress);
+        
         uint256 userBalance = getUserBalanceByUserAddress(_msgSender());
         
         if(userBalance > 0) // 토큰 잔고를 옮겨줌
-            return blotTokenAddress.transfer(newUserAddress, userBalance);
-            
-        return true;
+            return address(blotTokenAddress).delegatecall(abi.encodeWithSignature("transfer(address, uint256)", newUserAddress, userBalance));
+            //return blotTokenAddress.transfer(newUserAddress, userBalance);
     }
     
     // 사용자 신뢰 점수 증가 함수
@@ -138,29 +138,31 @@ contract BlotMain is Ownable {
     /* 프로젝트 마감 이후 로직 */
     
     // 프로젝트 마감 후, 사용자들에게 토큰으로 보상금 지급. reward는 BLOT 단위
-    function sendRewardToUser(address payable userAddress, uint256 reward) public returns (bool) {
+    function sendRewardToUser(address payable userAddress, uint256 reward) public onlyOwner returns (bool) {
         return blotTokenAddress.mintBlot(userAddress, reward);
     }
     
     // 번역 활동 기록을 이벤트로 저장
-    function generateTranslationEvent(string memory projectId, string memory translatorId, uint[] memory sentenceId, uint[] memory translationId, uint listSize, uint userShare) public {
-      emit NewTranslation(projectId, translatorId, sentenceId, translationId, listSize, userShare);
+    function generateTranslationEvent(string memory projectId, string memory translatorId, uint[] memory sentenceList, uint[] memory translationList, uint listSize, uint userShare) public onlyOwner {
+        require(blotProjectAddress.projectExist(projectId));    
+        emit NewTranslation(keccak256(bytes(projectId)), keccak256(bytes(translatorId)), projectId, translatorId, sentenceList, translationList, listSize, userShare);
     }
     
     // 평가 활동 기록을 이벤트로 저장
-    function generateEvaluationEvent(string memory projectId, string memory evaluatorId, uint[] memory sentenceId, uint[] memory translationId, uint listSize, uint userShare) public {
-      emit NewEvaluation(projectId, evaluatorId, sentenceId, translationId, listSize, userShare);
+    function generateEvaluationEvent(string memory projectId, string memory evaluatorId, uint[] memory sentenceList, uint[] memory translationList, uint listSize, uint userShare) public onlyOwner {
+        require(blotProjectAddress.projectExist(projectId));
+        emit NewEvaluation(keccak256(bytes(projectId)), keccak256(bytes(evaluatorId)), projectId, evaluatorId, sentenceList, translationList, listSize, userShare);
     }
     
     // 주어진 address가 EOA인지 판단하는 함수
-    function isUserAddress(address _addr) private view returns (bool) {
+    function _isUserAddress(address _addr) private view returns (bool) {
         uint256 size;
         assembly { size := extcodesize(_addr)}
         return (size == 0);  // 0 이면 EOA, 1 이상이면 CA
     }
     
     
-    function getContractBalance() public view returns (uint256) {
+    function getContractBalance() public view onlyOwner returns (uint256) {
         return address(this).balance;
     }
     
@@ -168,7 +170,7 @@ contract BlotMain is Ownable {
     event LogDepositReceived(address indexed userAddress, uint256 klayNum);
     
     // 번역 및 평가 활동 기록
-    event NewTranslation(string indexed projectId, string indexed translatorId, uint[] sentenceId, uint[] translationId, uint listSize, uint userShare);
-    event NewEvaluation(string indexed projectId, string indexed evaluatorId, uint[] sentenceId, uint[] translationId, uint listSize, uint userShare);
+    event NewTranslation(bytes32 indexed projectIdHash, bytes32 indexed translatorIdHash, string projectId, string translatorId, uint[] sentenceIdList, uint[] translationIdList, uint listSize, uint userShare);
+    event NewEvaluation(bytes32 indexed projectIdHash, bytes32 indexed evaluatorIdHash, string projectId, string evaluatorId, uint[] sentenceIdList, uint[] translationIdList, uint listSize, uint userShare);
 
 }

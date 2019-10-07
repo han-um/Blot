@@ -75,9 +75,9 @@ contract ERC20 is Context, IERC20 {
      *
      * spender가 owner 계정에서 사용할 수 있는 토큰의 양 반환
      */
-    function allowance(address owner, address spender) public view returns (uint256) {
-        return _allowances[owner][spender];
-    }
+    // function allowance(address owner, address spender) public view returns (uint256) {
+    //     return _allowances[owner][spender];
+    // }
 
     /**
      * @dev See {IERC20-approve}.
@@ -88,10 +88,10 @@ contract ERC20 is Context, IERC20 {
      *
      * spender에게 msg.sender 계정에서 amount만큼의 토큰을 인출할 권리 부여
      */
-    function approve(address spender, uint256 amount) public returns (bool) {
-        _approve(_msgSender(), spender, amount);
-        return true;
-    }
+    // function approve(address spender, uint256 amount) public returns (bool) {
+    //     _approve(_msgSender(), spender, amount);
+    //     return true;
+    // }
 
     /**
      * @dev See {IERC20-transferFrom}.
@@ -107,11 +107,11 @@ contract ERC20 is Context, IERC20 {
      *
      * 제 3자가 대신 송금해주는 기능
      */
-    function transferFrom(address sender, address recipient, uint256 amount) public returns (bool) {
-        _transfer(sender, recipient, amount);
-        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "ERC20: transfer amount exceeds allowance"));
-        return true;
-    }
+    // function transferFrom(address sender, address recipient, uint256 amount) public returns (bool) {
+    //     _transfer(sender, recipient, amount);
+    //     _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "ERC20: transfer amount exceeds allowance"));
+    //     return true;
+    // }
 
     /**
      * @dev Atomically increases the allowance granted to `spender` by the caller.
@@ -127,10 +127,10 @@ contract ERC20 is Context, IERC20 {
      *
      * spender에게 msg.sender의 토큰 사용 권한을 addedValue만큼 증가
      */
-    function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));
-        return true;
-    }
+    // function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {
+    //     _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));
+    //     return true;
+    // }
 
     /**
      * @dev Atomically decreases the allowance granted to `spender` by the caller.
@@ -146,10 +146,10 @@ contract ERC20 is Context, IERC20 {
      * - `spender` must have allowance for the caller of at least
      * `subtractedValue`.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "ERC20: decreased allowance below zero"));
-        return true;
-    }
+    // function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {
+    //     _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "ERC20: decreased allowance below zero"));
+    //     return true;
+    // }
 
     /**
      * @dev Moves tokens `amount` from `sender` to `recipient`.
@@ -227,13 +227,13 @@ contract ERC20 is Context, IERC20 {
      * - `spender` cannot be the zero address.
      * spender에게 owner 계정에서 amount만큼 토큰 사용을 허락
      */
-    function _approve(address owner, address spender, uint256 amount) internal {
-        require(owner != address(0), "ERC20: approve from the zero address");
-        require(spender != address(0), "ERC20: approve to the zero address");
+    // function _approve(address owner, address spender, uint256 amount) internal {
+    //     require(owner != address(0), "ERC20: approve from the zero address");
+    //     require(spender != address(0), "ERC20: approve to the zero address");
 
-        _allowances[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
-    }
+    //     _allowances[owner][spender] = amount;
+    //     emit Approval(owner, spender, amount);
+    // }
 
     /**
      * @dev Destroys `amount` tokens from `account`.`amount` is then deducted
@@ -241,8 +241,8 @@ contract ERC20 is Context, IERC20 {
      *
      * See {_burn} and {_approve}.
      */
-    function _burnFrom(address account, uint256 amount) internal {
-        _burn(account, amount);
-        _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "ERC20: burn amount exceeds allowance"));
-    }
+    // function _burnFrom(address account, uint256 amount) internal {
+    //     _burn(account, amount);
+    //     _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "ERC20: burn amount exceeds allowance"));
+    // }
 }

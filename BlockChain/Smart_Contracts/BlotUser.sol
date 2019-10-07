@@ -47,7 +47,7 @@ contract BlotUser is Context {
     }
     
     // 사용자 지갑 주소 변경 함수
-    function modifyUserAddress(string memory userId, address payable newUserAddress) public {
+    function modifyUserAddress(string memory userId, address oldUserAddress, address payable newUserAddress) public {
         // 해당 User 아이디 존재해야함
         require(userExist(userId), "ERROR : There is not the user. Can't modify user wallet address.");
         
@@ -55,7 +55,7 @@ contract BlotUser is Context {
         require(userInfo[userId].walletAddress != newUserAddress, "ERROR : It's the same as former address.");
         
         // 트랜잭션 호출자가 사용자의 기존 지갑계정인지 확인
-        require(_msgSender() == userInfo[userId].walletAddress, "ERROR : Please send a request with your former walletAddress.");
+        require(oldUserAddress == userInfo[userId].walletAddress, "ERROR : Please send a request with your former walletAddress.");
         
         userInfo[userId].walletAddress = newUserAddress;
     }
@@ -64,10 +64,10 @@ contract BlotUser is Context {
     function addUserReliability(string memory userId, uint128 value) public returns (bool) {
         require(userExist(userId), "ERROR : There is not the user. Can't add user reliability.");
         userInfo[userId].reliability = (userInfo[userId].reliability).add(value);
-        emit Reliability(userId, int128(value), userInfo[userId].reliability);
+        emit Reliability(keccak256(bytes(userId)), userId, int128(value), userInfo[userId].reliability);
         return true;
     }
     
     // 사용자가 얼마큼 신뢰 점수를 얻었는지 이벤트로 남김
-    event Reliability(string indexed userId, int128 value, uint256 totalUserReliability);
+    event Reliability(bytes32 indexed userIdHash, string userId, int128 value, uint256 totalUserReliability);
 }
