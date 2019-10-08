@@ -9,10 +9,23 @@
 <br>
 
 ## How to use
+> express를 사용하나 webpack-dev-server 사용하나 로직은 동일하나 
+<br>가스비 수수료 대납 처리를 위해 express에서는 ```localhost:3000/ajax``` 라우팅 로직이 추가 구현하였음.
+
+### express routing server 사용할 경우
 1. Download ```node_server``` folder
 2. Run your favorite ```terminal``` program like powershell, cmd and so on.
 3. Go inside node_server dir
-4. Type ```npm install``` command
+4. Type ```npm install``` command to install necessary modules.
+5. Type ```node app.js``` command. Then, you can use local server. ```localhost:3000```
+6. Visit that Link and Please login klaytn account with our key.
+(Private Key is Secret!)
+
+### webpack-dev-server 사용할 경우
+1. Download ```node_server``` folder
+2. Run your favorite ```terminal``` program like powershell, cmd and so on.
+3. Go inside node_server dir
+4. Type ```npm install``` command to install necessary modules.
 5. Type ```run dev build``` command. Then, you can use local server. ```localhost:8080```
 6. Visit that Link and Please login klaytn account with our key.
 (Private Key is Secret!)
@@ -28,8 +41,14 @@
 - main.js
     - ../src/index.js를 entry로 지정하여 webpack으로 bundling한 결과물
     - index.html에서 button을 눌렀을 때, contract 내 어떤 함수들을 호출할지 구현되어 있음
-- index.html
+- index.html (webpack-dev-server 사용 시, 이 .html 파일 사용)
     - main page
+    - 여기서 위의 main.js 파일을 import해서 사용
+
+### node_server/views/
+- homepage.ejs (express routing server 사용 시, 이 .html 파일 사용)
+    - main page
+    - node_server/dist/index.html 과 내용 동일
     - 여기서 위의 main.js 파일을 import해서 사용
     
 <br>
