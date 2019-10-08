@@ -45,6 +45,59 @@ const App = {
       }
     },
 
+
+    aaa: async function() {  
+      const sender = this.getWallet();
+
+      const userId = 'ggg';
+
+      try {
+        // transacetion sernder first signature
+        const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+          from: sender.address,
+          to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+          data: blotMainContract.methods.userSignUp(userId, sender.address).encodeABI(),
+          gas: '500000'
+        }, sender.privateKey);
+  
+        // send first signature to fee payer in server
+        $.ajax({
+          url:'http://localhost:3000/ajax',
+          dataType: 'json',
+          type:'POST',
+          data: {'rawTransaction': senderRawTransaction },
+          success: function(msg) {
+            alert('In Ajax');
+            console.log(msg);
+          }
+        });
+      } catch(err){
+        console.error(err);
+      }
+      
+
+
+      // // 로그인한 사용자의 아이디를 kss, 지갑 주소를 아래 정보라 가정
+      // const userId = 'kss';
+      // const walletAddress = this.getWallet().address;
+
+      // // 가스 수수료 대납자
+      // const payerAddress = this.getWallet().address;
+
+      // await blotMainContract.methods.userSignUp(userId, walletAddress).send({
+      //   from : payerAddress,
+      //   gas : 250000
+      // })
+      // .on('transactionHash', function(txHash) {
+      //   console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
+      // })
+      // .on('receipt', function(receipt) {
+      //   console.log(JSON.stringify(receipt));
+      // })
+      // .on('error', console.error);
+    },
+
     // 사용자 로그인 후 화면 갱신
     changeUI: async function (walletInstance) {
       $('#login-section').hide();
@@ -179,8 +232,8 @@ const App = {
       // 사용자 Id로 지갑 주소 조회
       handleWalletAddressQueryByUserId: async function() {
         
-        // 로그인한 사용자의 아이디를 kss라 가정
-        const userId = 'kss'; 
+        // 로그인한 사용자의 아이디를 xcx라 가정
+        const userId = 'xcx'; 
 
         // 스마트 컨트랙트에서 userId로 지갑 주소 조회
         var userWalletAddress = await this.getUserWalletAddressByUserId(userId);
@@ -203,8 +256,8 @@ const App = {
       // 사용자 ID로 잔고 조회
       handleBalanceQueryByUserId: async function() {
 
-        // 로그인한 사용자의 아이디를 kss라 가정
-        const userId = 'kss';
+        // 로그인한 사용자의 아이디를 xcx라 가정
+        const userId = 'xcx';
         
         // 스마트 컨트랙트에서 userId로 잔고 조회
         var userBalance = await this.getUserBalanceByUserId(userId);
@@ -254,8 +307,8 @@ const App = {
       // 사용자 Id로 신뢰 점수 조회
       handleReliabilityQueryByUserId: async function() {
       
-        // 로그인한 사용자의 아이디를 kss라 가정
-        const userId = 'kss';
+        // 로그인한 사용자의 아이디를 xcx라 가정
+        const userId = 'xcx';
       
         // 스마트 컨트랙트에서 userId로 신뢰 점수 조회
         var userReliability = await this.getUserReliabilityByUserId(userId);
@@ -276,19 +329,50 @@ const App = {
       },
 
 
-
+      // 서버에 있는 Fee Payer에게 가스비 대납을 부탁
+      sendSignedTransactionToFeePayer : async function(senderRawTransaction) {
+        $.ajax({
+          url:'http://localhost:3000/ajax',
+          dataType: 'json',
+          type:'POST',
+          data: {'rawTransaction': senderRawTransaction },
+          success: function(msg) {
+            alert('In Ajax');
+            console.log(msg);
+          }
+        });
+      },
 
       /* 회원 가입 시, 블록체인 내 사용자 정보 생성 */
 
       handleSignUp: async function() {
 
-        // 로그인한 사용자의 아이디를 kss, 지갑 주소를 아래 정보라 가정
-        const userId = 'kss';
-        const walletAddress = this.getWallet().address;
+        const sender = this.getWallet();
 
-        // 가스 수수료 대납자
-        const payerAddress = this.getWallet().address;
+        // 로그인한 사용자의 아이디를 xcx, 지갑 주소를 아래 정보라 가정
+        const userId = 'xcx';
+        const walletAddress = sender.address;
 
+        try {
+          // transacetion sernder first signature
+          const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: sender.address,
+            to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+            data: blotMainContract.methods.userSignUp(userId, walletAddress).encodeABI(),
+            gas: '500000'
+          }, sender.privateKey);
+
+          // send first signature to fee payer in server
+          this.sendSignedTransactionToFeePayer(senderRawTransaction);
+
+        } catch(err){
+          console.error(err);
+        }
+
+        // *** TODO : server로부터 txHash 값 받아오면 "https://baobab.scope.klaytn.com/tx/'+txHash"를 사용자에게 보여주면 좋겠음 ***
+
+        /*
         await blotMainContract.methods.userSignUp(userId, walletAddress).send({
           from : payerAddress,
           gas : 250000
@@ -300,6 +384,7 @@ const App = {
           console.log(JSON.stringify(receipt));
         })
         .on('error', console.error);
+        */
       },
 
 
@@ -309,23 +394,28 @@ const App = {
 
       handleAddReliability: async function() {
 
-        // 신뢰도를 증가시킬 사용자 아이디를 kss, 향상시킬 신뢰 점수를 1 이라 가정
-        const userId = 'kss';
+        const sender = this.getWallet();
+
+        // 신뢰도를 증가시킬 사용자 아이디를 xcx, 향상시킬 신뢰 점수를 1 이라 가정
+        const userId = 'xcx';
         const value = 1;
 
-        const payerAddress = this.getWallet().address;
+        try {
+          // transacetion sernder first signature
+          const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: sender.address,
+            to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+            data: blotMainContract.methods.updateUserReliability(userId, value).encodeABI(),
+            gas: '500000'
+          }, sender.privateKey);
+    
+          // send first signature to fee payer in server
+          this.sendSignedTransactionToFeePayer(senderRawTransaction);
+        } catch(err){
+          console.error(err);
+        }
 
-        await blotMainContract.methods.updateUserReliability(userId, value).send({
-          from : payerAddress,
-          gas : 250000
-        })
-        .on('transactionHash', function(txHash) {
-          console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-        })
-        .on('receipt', function(receipt) {
-          console.log(JSON.stringify(receipt));
-        })
-        .on('error', console.error);
       },
       
       
@@ -335,26 +425,31 @@ const App = {
 
       handleRegisterProject: async function() {
 
+        const sender = this.getWallet();
+
         // 프로젝트 정보를 아래와 같이 가정
-        const projectId = 'projectId';
-        const writerId = 'kss';
+        const projectId = 'projectId3';
+        const writerId = 'xcx';
         const deadline = '2019.11.20';
         const reward = 10000;
 
-        // 가스비 대납자
-        const payerAddress = this.getWallet().address;
+        try {
+          // transacetion sernder first signature
+          const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: sender.address,
+            to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+            data: blotMainContract.methods.registerNewProject(projectId, writerId, deadline, reward).encodeABI(),
+            gas: '500000'
+          }, sender.privateKey);
+    
+          // send first signature to fee payer in server
+          this.sendSignedTransactionToFeePayer(senderRawTransaction);
 
-        await blotMainContract.methods.registerNewProject(projectId, writerId, deadline, reward).send({
-          from : payerAddress,
-          gas : 250000
-        })
-        .on('transactionHash', function(txHash) {
-          console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-        })
-        .on('receipt', function(receipt) {
-          console.log(JSON.stringify(receipt));
-        })
-        .on('error', console.error);
+        } catch(err){
+          console.error(err);
+        }
+
       },
 
 
@@ -366,7 +461,7 @@ const App = {
       handleQueryProjectReward: async function() {
 
         // 프로젝트 아이디를 가정
-        const projectId = 'projectId';
+        const projectId = 'projectId3';
 
         await blotMainContract.methods.getProjectRewardByprojectId(projectId).call({
           from : this.getWallet().address,
@@ -384,7 +479,7 @@ const App = {
       handleQueryProjectInfo: async function() {
 
         // 프로젝트 아이디를 가정
-        const projectId = 'projectId';
+        const projectId = 'projectId3';
 
         await blotMainContract.methods.getProjectInfoByprojectId(projectId).call({
           from : this.getWallet().address,
@@ -402,24 +497,29 @@ const App = {
 
       handleDistributeReward : async function() {
 
+        const sender = this.getWallet();
+
         // 누구에게 얼마를 줄지 가정
         const recipient = '0x4aff875cb544368fd51b8f7fda6d247582b5b87c';
         const reward = 100;
 
-        // 가스비 대납자
-        const payerAddress = this.getWallet().address;
+        try {
+          // transacetion sernder first signature
+          const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: sender.address,
+            to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+            data: blotMainContract.methods.sendRewardToUser(recipient, reward).encodeABI(),
+            gas: '500000'
+          }, sender.privateKey);
+    
+          // send first signature to fee payer in server
+          this.sendSignedTransactionToFeePayer(senderRawTransaction);
+          
+        } catch(err){
+          console.error(err);
+        }
 
-        await blotMainContract.methods.sendRewardToUser(recipient, reward).send({
-          from : payerAddress,
-          gas : 250000
-        })
-        .on('transactionHash', function(txHash) {
-          console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-        })
-        .on('receipt', function(receipt) {
-          console.log(JSON.stringify(receipt));
-        })
-        .on('error', console.error);
       },
 
 
@@ -429,28 +529,32 @@ const App = {
 
       handleStoreTranslationReport : async function() {
 
-        const projectId = 'projectId1';
+        const sender = this.getWallet();
+
+        const projectId = 'projectId3';
         const translatorId = 'translatorId';
         const setenceList = [1, 2, 3];  // 몇번째 문장
         const translationList = [1, 2, 3];  // 몇번째 번역
         const listSize = 3; // 위 리스트 사이즈
         const share = 20; // 지분(%)
 
-        // 가스비 대납자
-        const payerAddress = this.getWallet().address;
+        try {
+          // transacetion sernder first signature
+          const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: sender.address,
+            to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+            data: blotMainContract.methods.generateTranslationEvent(projectId, translatorId, setenceList, translationList, listSize, share).encodeABI(),
+            gas: '500000'
+          }, sender.privateKey);
+    
+          // send first signature to fee payer in server
+          this.sendSignedTransactionToFeePayer(senderRawTransaction);
+          
+        } catch(err){
+          console.error(err);
+        }
 
-        await blotMainContract.methods.generateTranslationEvent(projectId, translatorId, 
-          setenceList, translationList, listSize, share).send({
-            from : payerAddress,
-            gas : 250000
-          })
-          .on('transactionHash', function(txHash) {
-            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-          })
-          .on('receipt', function(receipt) {
-            console.log(JSON.stringify(receipt));
-          })
-          .on('error', console.error);
       },
 
 
@@ -459,28 +563,32 @@ const App = {
 
       handleStoreEvaluationReport : async function() {
 
-        const projectId = 'projectId1';
+        const sender = this.getWallet();
+
+        const projectId = 'projectId3';
         const evaluatorId = 'evaluatorId';
         const setenceList = [1, 2, 3];  // 몇번째 문장
         const translationList = [1, 2, 3];  // 몇번째 번역을 평가했다
         const listSize = 3; // 위 리스트 사이즈
         const share = 20; // 지분(%)
 
-        // 가스비 대납자
-        const payerAddress = this.getWallet().address;
+        try {
+          // transacetion sernder first signature
+          const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: sender.address,
+            to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+            data: blotMainContract.methods.generateEvaluationEvent(projectId, evaluatorId, setenceList, translationList, listSize, share).encodeABI(),
+            gas: '500000'
+          }, sender.privateKey);
+    
+          // send first signature to fee payer in server
+          this.sendSignedTransactionToFeePayer(senderRawTransaction);
+          
+        } catch(err){
+          console.error(err);
+        }
 
-        await blotMainContract.methods.generateTranslationEvent(projectId, evaluatorId, 
-          setenceList, translationList, listSize, share).send({
-            from : payerAddress,
-            gas : 250000
-          })
-          .on('transactionHash', function(txHash) {
-            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-          })
-          .on('receipt', function(receipt) {
-            console.log(JSON.stringify(receipt));
-          })
-          .on('error', console.error);
       },
 
 
@@ -490,27 +598,33 @@ const App = {
 
       handleBuyTokens : async function() {
 
+        const sender = this.getWallet();
+
         // 토큰을 지급할 구매자 지갑주소와 지불할 금액(단위 클레이)을 입력받아야 함
         const buyerAddress = this.getWallet().address;
         const klayNum = 1;  // 1 클레이 만큼 바꾼다 가정
 
-        // 가스비 대납자
-        const payerAddress = this.getWallet().address;
-
         const pebNum = cav.utils.toPeb(klayNum, 'KLAY');
 
-        await blotMainContract.methods.purchaseToken(buyerAddress, klayNum).send({
-            from : payerAddress,
+        try {
+          // transacetion sernder first signature
+          const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: sender.address,
+            to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+            data: blotMainContract.methods.purchaseToken(buyerAddress, klayNum).encodeABI(),
             value : pebNum,
-            gas : 250000
-          })
-          .on('transactionHash', function(txHash) {
-            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-          })
-          .on('receipt', function(receipt) {
-            console.log(JSON.stringify(receipt));
-          })
-          .on('error', console.error);
+            gas: '500000'
+          }, sender.privateKey);
+    
+          // send first signature to fee payer in server
+          this.sendSignedTransactionToFeePayer(senderRawTransaction);
+          
+        } catch(err){
+          console.error(err);
+        }
+
+
       },
 
 
@@ -519,24 +633,29 @@ const App = {
 
       handleRefundTokens : async function() {
 
+        const sender = this.getWallet();
+
         // 토큰을 환불할 구매자 지갑주소와 BLOT 수를 입력받아야 함
         const buyerAddress = this.getWallet().address;
         const BlotNum = 10000;  // 10000 BLOT 단위로 바꿔줌
 
-        // 가스비 대납자
-        const payerAddress = this.getWallet().address;
+        try {
+          // transacetion sernder first signature
+          const { rawTransaction: senderRawTransaction } = await cav.klay.accounts.signTransaction({
+            type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+            from: sender.address,
+            to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+            data: blotMainContract.methods.sellToken(buyerAddress, BlotNum).encodeABI(),
+            gas: '500000'
+          }, sender.privateKey);
+    
+          // send first signature to fee payer in server
+          this.sendSignedTransactionToFeePayer(senderRawTransaction);
+          
+        } catch(err){
+          console.error(err);
+        }
 
-        await blotMainContract.methods.sellToken(buyerAddress, BlotNum).send({
-            from : payerAddress,
-            gas : 250000
-          })
-          .on('transactionHash', function(txHash) {
-            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-          })
-          .on('receipt', function(receipt) {
-            console.log(JSON.stringify(receipt));
-          })
-          .on('error', console.error);
       },
 
 
