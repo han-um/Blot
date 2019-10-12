@@ -24,30 +24,72 @@
               <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역을 기다리는 프로젝트</a>
             </li>
-              <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>태그별 프로젝트</a>
-            </li>
           </ul>
         </li>
             
          <li class="treeview active">
           <a href="#">
               <span class="blank-line"></span>
-            <i class="ri-stack-line"></i>
+            <i class="ri-newspaper-line"></i>
               <span class="blank"></span>
-            <span class="treeview-title">메인화면</span>
+            <span class="treeview-title">번역 프로젝트</span>
             <span class="pull-right-container pull-right">
               <i class="fa fa-angle-left fa-fw"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li>
-              <a href="#">
-              </a>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>새로 만들기</a>
+            </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>검색하기</a>
+            </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>태그별 보기</a>
             </li>
           </ul>
         </li>
-       
+            
+  <li class="treeview active">
+          <a href="#">
+              <span class="blank-line"></span>
+            <i class="ri-chat-smile-2-line"></i>
+              <span class="blank"></span>
+            <span class="treeview-title">내 정보</span>
+            <span class="pull-right-container pull-right">
+              <i class="fa fa-angle-left fa-fw"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</a>
+            </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>정보 수정</a>
+            </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>코인 충전</a>
+            </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a>
+            </li>
+          </ul>
+        </li>
+            
+  <li class="treeview active">
+          <a href="#">
+              <span class="blank-line"></span>
+            <i class="ri-star-line"></i>
+              <span class="blank"></span>
+            <span class="treeview-title">즐겨찾기</span>
+            <span class="pull-right-container pull-right">
+              <i class="fa fa-angle-left fa-fw"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <!--li here-->
+          </ul>
+        </li>
         <!--TODO : 삭제할것--> 
             <!--
         <li class="header">DEBUG MENU</li>
@@ -195,7 +237,11 @@ export default {
         height:50px;
         font-weight:600;
     }
-    
+
+    .sidebar-menu > li > a > i {
+        font-weight: 100;
+        font-size:15px;
+    }
     
     .sidebar .blank {
         padding: 15px;

@@ -4,6 +4,7 @@ import 'es6-promise/auto'
 // Import System requirements
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueSession from 'vue-session'
 
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
@@ -21,7 +22,16 @@ Vue.filter('domain', domain)
 Vue.filter('prettyDate', prettyDate)
 Vue.filter('pluralize', pluralize)
 
+// SweetAlert2
+import VueSweetalert2 from 'vue-sweetalert2'
+const options = {
+  confirmButtonColor: '#41b882',
+  cancelButtonColor: '#ff7674'
+}
+Vue.use(VueSweetalert2, options)
+
 Vue.use(VueRouter)
+Vue.use(VueSession)
 
 // Routing logic
 var router = new VueRouter({

@@ -1,32 +1,47 @@
 <template>
 <transition enter-active-class="animated bounceIn">
   <div class="login-form">
-      <form>
           <router-link to="/"><i class="ri-shape-2-fill"></i>
           <div class="logo-title">blot</div></router-link>
-          <input type="text" placeholder="계정 이름"><br>
+          <input type="text" v-model="inpUsername" placeholder="계정 이름"><br>
           <div class="password-box">
-              <input type="password" id="password" placeholder="암호">
-              <button class="login-button"><i class="ri-send-plane-fill"></i></button>
+              <input type="password" v-model="inpPassword" id="password" placeholder="암호">
+              <button class="login-button" v-on:click="loginActive()"><i class="ri-send-plane-fill"></i></button>
           </div>
           <div class="login-menu">
               <router-link to="register">> 회원가입</router-link>
           </div>
-      </form>
   </div>
 </transition>
 </template>
 
 <script>
-
+import axios from 'axios'
 export default {
   name: 'Login',
   components: {
   },
   data: function () {
-    return {}
+    return {
+      inpUsername: '',
+      inpPassword: ''
+    }
   },
   computed: {
+  },
+  methods: {
+    loginActive() {
+      axios.get('/api/user/' + this.inpUsername + '/password/' + this.inpPassword)
+      .then(res => {
+        if (res.data === true) {
+          this.$session.set('username', this.inpUsername)
+          console.log(this.$session.get('username'))
+          this.$router.replace(this.$route.query.redirect || '/')
+        } else {
+          this.$swal('로그인 실패', '아이디 혹은 비밀번호가 잘못되었습니다.', 'error')
+        }
+      })
+    }
   }
 }
 </script>

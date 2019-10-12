@@ -1,5 +1,6 @@
 <template>
-  <div :class="['wrapper', classes]">
+  <transition enter-active-class="animated fadeIn">
+    <div :class="['wrapper', classes]">
 
     <!-- Horizontal bar at top. Contains messages, notifications, tasks and user menu -->
     <dash-header :user="user"></dash-header>
@@ -34,6 +35,7 @@
     <!-- Horizontal bar at bottom. Contains copy right -->
     <!--<dash-footer></dash-footer>-->
   </div>
+    </transition>
 </template>
 
 <script>
@@ -68,6 +70,11 @@ export default {
         roles: [faker.name.jobTitle(), faker.name.jobTitle()]
       }
     }
+  },
+  mounted () {
+    /* if (!this.$session.has('username')) {
+      this.$router.replace(this.$route.query.redirect || '/login/')
+    } */
   }
 }
 </script>

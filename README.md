@@ -22,6 +22,18 @@
     })
   }
 
+### VUE-SESSION
+- 세션 불러오기
+    > import VueSession from 'vue-session' Vue.use(VueSession)
+- 세션 추가하기
+    > this.$session.set(key,value)
+- 세션 가져오기
+    > this.$session.get(key)
+- 세션 체크하기
+    > this.$session.has(key)
+- 세션 제거하기
+    > this.$session.clear()
+
 ### VUE
 - 스타일 바인딩
     > v-bind:class="클래스이름"
@@ -34,6 +46,8 @@
 ### VUE-ROUTER
 - 라우트 링크(하이퍼링크)
     > <router-link to="trans">번역 보기</router-link>
+- 라우트 리디렉션(메소드 내에서)
+    > this.$router.replace(this.$route.query.redirect || '/')
     
 ### AXIOS
 - import
