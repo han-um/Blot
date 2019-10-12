@@ -63,6 +63,7 @@ router.post('/bookmark', function(req, res, next){
     });
 });
 
+
 // 즐겨찾기 프로젝트아이디 가져오기 GET: userId(사용자계정)
 router.get('/:userId/project', function(req, res, next){
     db.User.findOne({

@@ -35,6 +35,7 @@ const projectSchema = new mongoose.Schema({
     end: { type: Date },
     reward: { type: Number},
     icon: { type: String },
+    valid: { type: Number, default: 1},
     all: { type: String },
     //sentence: [sentenceSchema],
     sentence: [ Sentence ],

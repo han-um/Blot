@@ -7,35 +7,103 @@ app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 
 const mongoose = require('mongoose');
-//const autoIncrement = require('mongoose-auto-increment');
 const splitter = require('sentence-splitter');
+const cron = require('node-cron');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('Connected to mongod server'))
     .catch(e => console.error(e));
 
-// 오토인크리먼트
-//var connection = mongoose.createConnection(process.env.MONGO_URI);
-//autoIncrement.initialize(connection);
-
 const Project = require('../models/project');
 const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
-// 오토인크리먼트 테스트 코드
-/*
-var transSchema = require('../models/trans');
-transSchema.plugin(autoIncrement.plugin, {
-    model: 'Trans',
-    field: 'idx',
-    startAt: 0,
-    increment: 1
-});
 
-var Trans = connection.model('Trans', transSchema);
-const Trans mongoose.model('Trans', transSchema);
-*/
+// 익일 마다 검사 [테스트 코드]
+cron.schedule('*/5 * * * * *', () => {
+    Project.find({}, {'_id':true, 'end':true}, function(err, doc) {
+    if(err) console.log('err');
+        else {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth()+1;
+            var day = now.getDate();
+            //console.log(now);
+            var cnt = doc.length;
+            for(var i=0; i<cnt; i++) {
+                var dd = doc[i].end;
+                var y = dd.getFullYear();
+                var m = dd.getMonth()+1;
+                var d = dd.getDate();
+                if(year == y && month == m && day == d) {
+                    var _id = doc[i]._id;
+                    //console.log(y+'-'+m+'-'+d);
+                    Project.findOne({'_id': _id}, function(err, doc) {
+                        //console.log(doc);
+                        
+                        // 문장마다
+                        for(var j=0; j<doc.sentence.length; j++) {
+                            
+                            var content = new Array();
+                            
+                            // 평가점수 계산
+                            for(var k=0; k<doc.sentence[j].like.length; k++) {
+                                
+                                var tmp = doc.sentence[j].like[k].trans_id;
+                                var user = doc.sentence[j].like[k].user;
+                                var flag = false;
+                                
+                                for(var l=0; l<content.length; l++) {
+                                    if(content[l].trans == tmp) {
+                                        content[l].score += 1;
+                                        content[l].eval.push(user);
+                                        flag = true;
+                                        break;
+                                    }
+                                }
+                                if(flag == false) {
+                                    var src = new Object;
+                                    src['trans'] = tmp;
+                                    src['score'] = 1;
+                                    src['eval'] = new Array;
+                                    src['eval'].push(user);
+                                    content.push(src);
+                                }
+                            }
+  
+                            console.log(content);
+                            // 최종문장 찾기
+                            var final;
+                            var max = 0;
+                            for(var k=0; k<content.length; k++) {
+                                if(max < content[k].score) {
+                                    max = content[k].score;
+                                    final = content[k].trans;
+                                }
+                            }
+                            
+                            console.log(j+'번문장 최종번역 선택 : '+final);
+                            //console.log(doc.sentence[j]);
+                            // 최종문장 번역자 찾기
+                            for(var k=0; k<doc.sentence[j].trans.length; k++) {
+                                if(doc.sentence[j].trans[k].idx == final) {
+                                    var user = doc.sentence[j].trans[k].user;
+                                    console.log(j+'번문장 번역자 : '+user);
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                    
+                }
+            }
+            //console.log(cnt);
+            //console.log(doc);
+        }
+    });
+    //console.log('running a task every two seconds');
+})
 
 
 // 프로젝트 정보 등록하기
