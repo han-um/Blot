@@ -9,6 +9,9 @@ var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+setTimeout(function(){
+    console.log('Works!');
+}, 30000);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
