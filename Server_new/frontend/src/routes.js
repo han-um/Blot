@@ -26,6 +26,9 @@ import AccessView from './components/views/Access.vue'
 import ServerView from './components/views/Server.vue'
 import ReposView from './components/views/Repos.vue'
 
+// LoginView
+import BlockChainLogin from './components/views/BlockChain/BlockChainLogin.vue'
+
 // Routes
 const routes = [
   {
@@ -116,6 +119,11 @@ const routes = [
         component: ProjectAdd,
         name: 'ProjectAdd',
         meta: {description: '프로젝트 등록'}
+      }, {
+        path: 'blcokchainlogin',
+        component: BlockChainLogin,
+        name: 'BlockChainLogin',
+        meta: {description: '블록체인 로그인'}
       }
     ]
   }, {
