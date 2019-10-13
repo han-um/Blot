@@ -83,13 +83,17 @@ router.get('/:userId/project', function(req, res, next){
 
 // 로그인
 router.get('/:userId/password/:password', function(req, res, next){
+    
     db.User.findOne({
         attributes: ['password'],
         where:{ userId: req.params.userId }
     }).then(result => {
-        bcrypt.compare(req.params.password, result.password, function(err, ans) {
+        if(result == null) res.send('userid invalid');
+        else {
+            bcrypt.compare(req.params.password, result.password, function(err, ans) {
             res.send(ans);
-        });
+            });
+        }
     }).catch(err => {
         console.error(err);
     });

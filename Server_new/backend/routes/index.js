@@ -20,27 +20,28 @@ const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
 
-// 익일 마다 검사 [테스트 코드]
-cron.schedule('*/5 * * * * *', () => {
-    Project.find({}, {'_id':true, 'end':true}, function(err, doc) {
+// 익일 마다 검사 [테스트 코드 10초마다]
+
+cron.schedule('* * * * 11 *', () => {
+    Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
     if(err) console.log('err');
         else {
             var now = new Date();
             var year = now.getFullYear();
             var month = now.getMonth()+1;
             var day = now.getDate();
-            //console.log(now);
-            var cnt = doc.length;
+
+            var cnt = doc2.length;
             for(var i=0; i<cnt; i++) {
-                var dd = doc[i].end;
+                var dd = doc2[i].end;
                 var y = dd.getFullYear();
                 var m = dd.getMonth()+1;
                 var d = dd.getDate();
                 if(year == y && month == m && day == d) {
-                    var _id = doc[i]._id;
-                    //console.log(y+'-'+m+'-'+d);
+                    var _id = doc2[i]._id;
+
                     Project.findOne({'_id': _id}, function(err, doc) {
-                        //console.log(doc);
+
                         
                         // 문장마다
                         for(var j=0; j<doc.sentence.length; j++) {
@@ -56,7 +57,7 @@ cron.schedule('*/5 * * * * *', () => {
                                 
                                 for(var l=0; l<content.length; l++) {
                                     if(content[l].trans == tmp) {
-                                        content[l].score += 1;
+                                        content[l].score += 1;  // 1*신뢰도
                                         content[l].eval.push(user);
                                         flag = true;
                                         break;
@@ -65,7 +66,7 @@ cron.schedule('*/5 * * * * *', () => {
                                 if(flag == false) {
                                     var src = new Object;
                                     src['trans'] = tmp;
-                                    src['score'] = 1;
+                                    src['score'] = 1; // 1*신뢰도
                                     src['eval'] = new Array;
                                     src['eval'].push(user);
                                     content.push(src);
@@ -83,19 +84,31 @@ cron.schedule('*/5 * * * * *', () => {
                                 }
                             }
                             
-                            console.log(j+'번문장 최종번역 선택 : '+final);
-                            //console.log(doc.sentence[j]);
-                            // 최종문장 번역자 찾기
+                            //console.log(j+'번문장 최종번역 선택 : '+final);
+                            // 최종문장 번역자 찾기 && 최종문장 등록
+                            var trans_user;
                             for(var k=0; k<doc.sentence[j].trans.length; k++) {
                                 if(doc.sentence[j].trans[k].idx == final) {
-                                    var user = doc.sentence[j].trans[k].user;
-                                    console.log(j+'번문장 번역자 : '+user);
+                                    trans_user = doc.sentence[j].trans[k].user;
+                                    
+                                    doc.sentence[j].trans_text = doc.sentence[j].trans[k].text;
+                                    //console.log(j+'번문장 번역자 : '+trans_user);
                                     break;
                                 }
                             }
+                            
+                            // 최종문장 평가자 신뢰도 올리기 Content Object
+                            // 최종문장 번역자 신뢰도 올리기 trans_user
+                            
+                            // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
+                            // 최종문장 평가자 보상금 지급 [보상금 * 0.1 / 평가자수]
                         }
+                        doc.save(function(err){
+                            if(err) { console.log(err); }
+                            else { console.log('updated.') }
+                        });
+                        
                     });
-                    
                 }
             }
             //console.log(cnt);
