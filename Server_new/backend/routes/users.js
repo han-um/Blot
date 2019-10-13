@@ -88,7 +88,7 @@ router.get('/:userId/password/:password', function(req, res, next){
         attributes: ['password'],
         where:{ userId: req.params.userId }
     }).then(result => {
-        if(result == null) res.send('userid invalid');
+        if(result == null) res.send(false);
         else {
             bcrypt.compare(req.params.password, result.password, function(err, ans) {
             res.send(ans);
