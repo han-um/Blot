@@ -15,6 +15,12 @@ export default {
   SET_CRURRENT_SENTENCE_INDEX (state, index) {
     state.crntStcIndex = index
   },
+  /* -----------------------------------------------------------
+    ProjAdd
+  ----------------------------------------------------------- */
+  SET_KEYSTORE (state, keystore) {
+    state.keystore = keystore
+  },
     /* -----------------------------------------------------------
     Co-Pilot Variables (삭제할것)
   ----------------------------------------------------------- */

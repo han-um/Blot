@@ -1,4 +1,5 @@
 <template>
+  <transition enter-active-class="animated slideInDown">
   <div class="login-wrapper" style="height:100%;">
       <!-- Login Header-->
       <header class="main-header">
@@ -16,6 +17,7 @@
       <div class="col-md-2"></div>
     </div>
   </div>
+</transition>
 </template>
 
 <script>

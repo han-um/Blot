@@ -64,7 +64,7 @@
                   <div class="inner-box">
                       <button class="klaytn-button">Klaytn 계정 만들기</button>
                       <center><small><u> 공개 키를 어떻게 얻을 수 있나요? </u></small></center>
-                      <input type="text" placeholder="공개 키" name="blockchain" id="blockchain">
+                      <input type="text"  v-model="inpWAddr" placeholder="공개 키" name="blockchain" id="blockchain">
                       <div class="caution">
                       > 입력하지 않을 경우, 열람 이외의 활동을 할 수 없습니다. <u>왜 필요한가요?</u> <br> > 블록체인 정보는 회원가입 이후에도 입력할 수 있습니다.
                       </div>
