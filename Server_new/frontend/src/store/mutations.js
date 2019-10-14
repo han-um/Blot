@@ -15,6 +15,9 @@ export default {
   SET_CRURRENT_SENTENCE_INDEX (state, index) {
     state.crntStcIndex = index
   },
+  SET_CURRENT_TRANS_INDEX (state, index) {
+    state.crntTransIndex = index
+  },
   /* -----------------------------------------------------------
     BlockChainLogin
   ----------------------------------------------------------- */

@@ -1,13 +1,14 @@
 <template>
   <div class="overview-wrapper">
     <div class="image-box">
+        <div class="inner-box">
+            <center><img src="/static/img/group36.png" class="img-box hidden-xs" alt="Responsive image"></center>
+        </div>
+        <!--img src="/static/img/group36.png"-->
     </div>
-<div class="inner">
-            이 프로젝트는 현재 번역 진행중입니다
-        </div>
-      <div class="contents">
-          asdasdas
-        </div>
+    <div class="contents">
+          프로젝트 상세요약 내용
+    </div>
   </div>
 </template>
 
@@ -28,14 +29,26 @@ export default {
         overflow: hidden;
     }
     .image-box {
-        position:relative;
-        background: url(/static/img/photo4.jpg) no-repeat center center/cover; 
-        filter: blur(8px);
-        -webkit-filter: blur(8px);
-        transform: scale(1.1);
+      /* The image used */
+      background-image: url("/static/img/photo4.jpg");
+      /* Set a specific height */
+      height: 300px;
+      /* Create the parallax scrolling effect */
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .inner-box {
         width:100%;
         height:300px;
-        z-index:1
+        background-color:rgba(120,120,120,0.7);
+        padding-top:85px;
+    }
+    .img-box {
+        width: 100%;
+        max-width:600px;
+        height: auto;
     }
     .inner {
         position:relative;

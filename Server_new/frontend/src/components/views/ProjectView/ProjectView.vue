@@ -11,7 +11,7 @@
                         <small>2019년 5월 20일 ~ 2019년 7월 27일</small>
                     </div>
                     <div class="proj-submenu">
-                        <router-link to="overview">요약</router-link>
+                        <router-link to="./">요약</router-link>
                         <router-link to="trans">번역 보기</router-link>
                         <router-link to="users">참여자</router-link>
                     </div>
@@ -42,25 +42,29 @@ export default {
     }
   },
   methods: {
-    callGitHub () {
+    getProjectInfo() {
       axios.get('/api/project/' + this.$route.params.id)
-        .then(response => {
-          console.log('Response:', response.data.title)
-          if (response.status !== 200) {
-            this.error = response.statusText
-            return
-          }
-          this.title = response.data.title
-        })
-        .catch(error => {
-          // Request failed.
-          console.log('error', error.response)
-          this.error = error.response.statusText
-        })
+      .then(response => {
+        console.log('Response:', response.data.title)
+        if (response.status !== 200) {
+          this.error = response.statusText
+          return
+        }
+        this.title = response.data.title
+      })
+      .catch(error => {
+      // Request failed.
+        console.log('error', error.response)
+        this.error = error.response.statusText
+      })
     }
   },
   mounted () {
-    this.callGitHub()
+    // 이 페이지는 로그인되어있어야만 사용할 수 있음
+    this.getProjectInfo()
+    if (!this.$session.has('username')) {
+      this.$router.replace(this.$route.query.redirect || '/login/')
+    }
   }
 }
 </script>

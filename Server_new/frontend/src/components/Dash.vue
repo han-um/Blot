@@ -29,7 +29,9 @@
       </section>
         -->
         <BlockChainLogin></BlockChainLogin>
+        <transition enter-active-class="animated fadeInLeft">
       <router-view></router-view>
+    </transition>
     </div>
     <!-- /.content-wrapper -->
   

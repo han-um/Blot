@@ -106,6 +106,10 @@ export default {
   methods: {
   },
   mounted () {
+    // 이 페이지는 로그인되어있어야만 사용할 수 있음
+    if (!this.$session.has('username')) {
+      this.$router.replace(this.$route.query.redirect || '/login/')
+    }
   }
 }
 import Vue from 'vue'

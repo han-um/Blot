@@ -1,7 +1,7 @@
 <template>
   <div>
     <textarea v-model="inputText" class="trans-input"></textarea>
-    <button class="trans-input-button">번역 등록하기</button>
+    <button v-on:click="addTrans" class="trans-input-button">번역 등록하기</button>
     <div class="info">
       공정성을 위해 한번 입력한 번역은 수정하거나 삭제할 수 없습니다.<br>
     </div>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: 'TranslateAdd',
@@ -18,7 +18,14 @@ export default {
       inputText: ''
     }
   },
-  methods: {},
+  methods: {
+    addTrans() {
+      axios.post('/api/project/trans', {p_num: this.$route.params.id, s_num: this.$store.state.crntStcIndex, trans_text: this.inputText})
+      .then(res => {
+        console.log(res)
+      })
+    }
+  },
   mounted () {}
 }
 </script>

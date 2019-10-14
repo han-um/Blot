@@ -17,7 +17,7 @@ import ProjectViewOverview from './components/views/ProjectView/Overview.vue'
 import ProjectViewTranslate from './components/views/ProjectView/Translate.vue'
 import ProjectViewUsers from './components/views/ProjectView/Users.vue'
 
-// Import Views - Dash
+//  Dash
 import DashboardView from './components/views/Dashboard.vue'
 import TablesView from './components/views/Tables.vue'
 import TasksView from './components/views/Tasks.vue'
@@ -26,8 +26,11 @@ import AccessView from './components/views/Access.vue'
 import ServerView from './components/views/Server.vue'
 import ReposView from './components/views/Repos.vue'
 
-// LoginView
+// BlockChainLogin
 import BlockChainLogin from './components/views/BlockChain/BlockChainLogin.vue'
+
+// MyLibrary
+import MyLibrary from './components/views/MyLibrary/MyLibrary.vue'
 
 // Routes
 const routes = [
@@ -98,7 +101,7 @@ const routes = [
         meta: {description: '프로젝트 상세보기 페이지(최상위헤더)'},
         children: [
           {
-            path: 'overview',
+            path: '/',
             component: ProjectViewOverview,
             name: 'Overview',
             meta: {description: '프로젝트 개요'}
@@ -124,6 +127,11 @@ const routes = [
         component: BlockChainLogin,
         name: 'BlockChainLogin',
         meta: {description: '블록체인 로그인'}
+      }, {
+        path: 'mylibrary',
+        component: MyLibrary,
+        name: 'MyLibrary',
+        meta: {description: '내 서재'}
       }
     ]
   }, {
