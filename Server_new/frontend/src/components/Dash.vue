@@ -28,6 +28,7 @@
     
       </section>
         -->
+        <BlockChainLogin></BlockChainLogin>
       <router-view></router-view>
     </div>
     <!-- /.content-wrapper -->
@@ -44,6 +45,7 @@ import config from '../config'
 import DashFooter from './layout/DashFooter'
 import DashHeader from './layout/DashHeader'
 import Sidebar from './layout/Sidebar'
+import BlockChainLogin from './views/BlockChain/BlockChainLogin'
 import 'hideseek'
 
 export default {
@@ -51,7 +53,8 @@ export default {
   components: {
     DashFooter,
     DashHeader,
-    Sidebar
+    Sidebar,
+    BlockChainLogin
   },
   data: function () {
     return {

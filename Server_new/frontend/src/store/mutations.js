@@ -16,12 +16,30 @@ export default {
     state.crntStcIndex = index
   },
   /* -----------------------------------------------------------
-    ProjAdd
+    BlockChainLogin
   ----------------------------------------------------------- */
   SET_KEYSTORE (state, keystore) {
     state.keystore = keystore
   },
-    /* -----------------------------------------------------------
+  SHOW_BLOCKCHAIN_LOGIN (state) {
+    state.showBlockChainLogin = true
+  },
+  HIDE_BLOCKCHAIN_LOGIN (state) {
+    state.showBlockChainLogin = false
+  },
+  TOGGLE_BLOCKCHAIN_LOGIN (state) {
+    state.showBlockChainLogin = !state.showBlockChainLogin
+  },
+  /* -----------------------------------------------------------
+    BlockChain
+  ----------------------------------------------------------- */
+  SET_CURRENT_WALLET_ID (state, walletId) {
+    state.crntWalletId = walletId
+  },
+  SET_CURRENT_BLOTS (state, blots) {
+    state.crntBlots = blots
+  },
+  /* -----------------------------------------------------------
     Co-Pilot Variables (삭제할것)
   ----------------------------------------------------------- */
   TOGGLE_LOADING (state) {

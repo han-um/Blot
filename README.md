@@ -56,6 +56,10 @@
       .then(res => {
         console.log(res)
       })
+### Promise
+- 비동기 처리 방법
+    > 동작함수.then(function (resolvedData) {
+
 ### CSS
 - 배경 꽉차게
     > background: url(/static/img/blurwp.PNG) no-repeat center center/cover; 

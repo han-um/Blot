@@ -13,11 +13,18 @@ export default {
   crntStcIndex: 0,
   crntStcText: '_',
   /* -----------------------------------------------------------
-    BlockChain
+    BlockChain Metadata / Login
   ----------------------------------------------------------- */
   accessType: 'keystore',
   keystore: '',
   password: '',
+  showBlockChainLogin: false,
+  rpcURL: 'https://api.baobab.klaytn.net:8651/',
+  /* -----------------------------------------------------------
+    BlockChain information
+  ----------------------------------------------------------- */
+  crntWalletId: '-',
+  crntBlots: '',
   /* -----------------------------------------------------------
     Co-Pilot Variables (삭제할것)
   ----------------------------------------------------------- */
