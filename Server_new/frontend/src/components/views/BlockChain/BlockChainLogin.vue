@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="this.$store.state.showBlockChainLogin" >
           <div class='container' id='login-section'>
           <!-- 로그인 -->
           <div class="row">
@@ -9,7 +9,7 @@
               <div class="beforLogin white-box">
                 <div id="tabs">
                     <h2>블록체인 로그인</h2>
-                    <small>이 기능을 이용하려면 블록체인 로그인을 진행해야 합니다.</small><br><br>
+                    <small>이 기능을 이용하려면 블록체인 로그인을 진행해야 합니다. 신뢰성을 유지하기 위하여 블록체인 정보는 서버에 저장되지 않습니다.</small><br><br>
                 <div class="msg-box">
                   {{errorMsg}}
                 </div><br>
@@ -32,6 +32,7 @@
                       <p class="help-block" id="message"></p>
                     </div>
                     <div class="info-footer">
+                    <button type="button" class="btn btn-primary" id="submit" v-on:click="$store.commit('TOGGLE_BLOCKCHAIN_LOGIN')" >돌아가기</button>
                       <button type="button" class="btn btn-primary" id="submit" v-on:click="handleLoginByKeyStore()">제출</button>
                     </div>
                   </div>
@@ -60,10 +61,7 @@
 // import axios from 'axios'
 import Caver from 'caver-js'
 // import contractInfo from './contractInfo'
-const config = {
-  rpcURL: 'https://api.baobab.klaytn.net:8651/'
-}
-const cav = new Caver(config.rpcURL)
+const cav = new Caver('https://api.baobab.klaytn.net:8651/')
 
 export default {
   name: 'BlockChainLogin',
@@ -75,7 +73,6 @@ export default {
   },
   methods: {
     handleImport() {
-      this.$swal('_')
       const fileReader = new FileReader()
       fileReader.readAsText(event.target.files[0])
       fileReader.onload = (event) => {
@@ -121,7 +118,14 @@ export default {
         // walletInstance를 세션 스토리지에 저장  >> 계정이 로그인 된 상태를 유지하기 위함(페이지 이동, 새로고침해도 유지됨)
         // 세션 스토리지는 탭이 닫히거나 브라우저가 닫힐 때까지 브라우저 내의 저장공간에 walletInstance 인스턴스를 저장
       sessionStorage.setItem('walletInstance', JSON.stringify(walletInstance))
-      console.log(walletInstance)
+      // console.log(walletInstance)
+      // 최종 화면 처리
+      this.endState()
+    },
+    endState() {
+      this.$root.$emit('UserMenu') // 유저메뉴 다시 불러오기
+      this.$store.commit('HIDE_BLOCKCHAIN_LOGIN') // 로그인창 가리기
+      this.$swal('로그인 성공', '이제 블록체인 관련 기능을 모두 이용할 수 있습니다.', 'success')
     }
   },
   mounted () {}
@@ -200,4 +204,5 @@ export default {
         padding:5px;
         padding-left:30px;
     }
+    .animated{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:none!important;animation-fill-mode:none!important;z-index:4000;}
 </style>

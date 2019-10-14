@@ -12,9 +12,7 @@
 
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
           <user-menu :user="user"></user-menu>
-        </ul>
       </div>
     </nav>
   </header>

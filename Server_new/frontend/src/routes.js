@@ -120,7 +120,7 @@ const routes = [
         name: 'ProjectAdd',
         meta: {description: '프로젝트 등록'}
       }, {
-        path: 'blcokchainlogin',
+        path: 'blockchainlogin',
         component: BlockChainLogin,
         name: 'BlockChainLogin',
         meta: {description: '블록체인 로그인'}
