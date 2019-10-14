@@ -15,6 +15,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
+              <li><router-link to="/"><i class="fa fa-blank"></i><span class="blank"></span>메인화면</router-link></li>
             <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>인기 프로젝트</a>
             </li>
@@ -39,7 +40,7 @@
           </a>
           <ul class="treeview-menu">
             <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>새로 만들기</a>
+             <router-link to="/projadd"><i class="fa fa-blank"></i><span class="blank"></span>새로 만들기</router-link>
             </li>
               <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>검색하기</a>
@@ -62,7 +63,7 @@
           </a>
           <ul class="treeview-menu">
             <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</a>
+             <router-link to="/mylibrary"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</router-link>
             </li>
               <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>정보 수정</a>
@@ -191,10 +192,6 @@ export default {
   name: 'Sidebar',
   props: ['user'],
   mounted: function() {
-    window
-      .jQuery('[data-toggle="hideseek"]')
-      .off()
-      .hideseek()
   }
 }
 </script>
@@ -256,6 +253,11 @@ export default {
         font-size:12px;
         font-weight:100;
         padding: 3px 3px 3px 15px;
+    }
+    
+    .treeview-menu > li > .active {
+        // border-bottom:2px solid white;
+        font-weight: 600;
     }
     
     .treeview > ul.treeview-menu {

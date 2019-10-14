@@ -307,7 +307,7 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userId', function(req, re
             var flag = false;
             var num = -1;
             for(var i=0; i<length; i++) {
-                if(userid === data[i].user) {
+                if(userId === data[i].user) {
                     // trans_id 변경
                     doc.sentence[s_num].like[i].trans_id = t_num;
                     doc.save(function(err){

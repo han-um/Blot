@@ -24,7 +24,7 @@
     </ul>
   </li>
   <li>
-      <a>
+      <a v-if="isLoggedIn">
           <span class="hidden-xs">{{this.$store.state.crntBlots}}</span>
       </a>
   </li>
@@ -81,8 +81,10 @@ export default {
     refreshUserMenu() {
       this.checkLoggedIn()
       this.checkBlockChain()
-      this.$store.dispatch('REFRESH_CURRENT_WALLET_ID', 'xcx')
-      this.$store.dispatch('REFRESH_CURRENT_BLOTS', 'xcx')
+      if (this.$session.has('username')) {
+        this.$store.dispatch('REFRESH_CURRENT_WALLET_ID', 'xcx')
+        this.$store.dispatch('REFRESH_CURRENT_BLOTS', 'xcx')
+      }
     }
   },
   mounted () {
