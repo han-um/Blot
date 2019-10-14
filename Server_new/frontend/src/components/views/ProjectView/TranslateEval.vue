@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TranslationText v-for="(trans, index) in transList" :text="trans.text" :index="index"></TranslationText>
+        <TranslationText v-for="(trans, index) in transList" :text="trans.text" :idx="trans.idx" :index="index"></TranslationText>
     </div>
 </template>
 
@@ -20,16 +20,9 @@ export default {
   },
   methods: {
     getTrans: function (event) {
-      axios.get('/api/project/' + this.$route.params.id + '/sentence/' + this.$store.state.crntStcIndex)
+      axios.get('/api/project/' + this.$route.params.id + '/sentence/' + this.$store.state.crntStcIndex + '/trans')
       .then(res => {
         this.transList = res.data
-        // 랜덤 출력을 위한 인덱싱 배열 초기화
-        this.randIndex = new Array(this.transList.length)
-        for (var i = 0; i < this.transList.length; i++) {
-          this.randIndex[i] = i
-        }
-        this.randIndex = this.randIndex.sort(function() { return 0.5 - Math.random() })
-        console.log(this.randIndex)
       })
     }
   },
