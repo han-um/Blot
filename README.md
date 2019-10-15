@@ -96,6 +96,7 @@
 	> p_num : 프로젝트 ObjectId[string]  
 	> s_num : 문장 번호[number]  
 	> trans_text : 번역문[string]
+    > userId : 계정명[string]
 
 - 전체프로젝트 제목,시작일,마감일 조회 [GET] - /api/project/
 - 특정프로젝트 제목,시작일,마감일 조회 [GET] - /api/project/:p_num
