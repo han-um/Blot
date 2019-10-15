@@ -1,3 +1,4 @@
+import axios from 'axios'
 import Caver from 'caver-js'
 import contractInfo from '../contractInfo'
 const cav = new Caver('https://api.baobab.klaytn.net:8651/')
@@ -32,5 +33,23 @@ export default {
     state.dispatch('getUserBalanceByUserId', userId).then(function (resolvedData) {
       state.commit('SET_CURRENT_BLOTS', resolvedData)
     })
+  },
+  REFRESH_CURRENT_SENTENCE (state, payload) {
+    console.log('Print:' + payload.index + payload.text)
+    // 받은 문장의 INDEX 반영
+    state.commit('SET_CRURRENT_SENTENCE_INDEX', payload.index)
+    // 받은 문장의 내용 반영
+    state.commit('SET_CRURRENT_SENTENCE_TEXT', payload.text)
+  },
+  SKIP_CURRENT_SENTENCE (state, payload) {
+    console.log('Print:' + payload.p_num + payload.index)
+    axios.get('/api/project/' + payload.p_num + '/sentence')
+      .then(res => {
+        // 전체 문장길이를 넘지 않도록 예외처리
+        if (payload.index < res.data.sentence.length) {
+          state.commit('SET_CRURRENT_SENTENCE_INDEX', payload.index)
+          state.commit('SET_CRURRENT_SENTENCE_TEXT', res.data.sentence[payload.index].raw_text)
+        }
+      })
   }
 }
