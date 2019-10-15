@@ -102,7 +102,11 @@ cron.schedule('* * * * 11 *', () => {
                             
                             // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
                             // 최종문장 평가자 보상금 지급 [보상금 * 0.1 / 평가자수]
+                            
+                            // 블록체인에 내용기록하기
                         }
+                        
+                        doc.valid = 1;
                         doc.save(function(err){
                             if(err) { console.log(err); }
                             else { console.log('updated.') }
