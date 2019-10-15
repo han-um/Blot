@@ -186,12 +186,13 @@ router.post('/', function(req, res, next){
     });
 });
 
-// 프로젝트 문장 번역 등록하기 [프로젝트 아이디, 문장 번호]
+// 프로젝트 문장 번역 등록하기 [프로젝트 아이디, 문장 번호, 유저계정]
 router.post('/trans', function(req, res, next){
     
     var p_num = req.body.p_num;
     var s_num = req.body.s_num;
     var trans_text = req.body.trans_text;
+    var userId = req.body.userId;
     
     Project.findOne({'_id':p_num}, function(err, doc) {
         if(err) { console.log('err'); return; }
@@ -199,6 +200,7 @@ router.post('/trans', function(req, res, next){
             var trans = new Trans();
             trans.idx = doc.sentence[s_num].trans.length;
             trans.text = trans_text;
+            trans.user = userId;
             doc.sentence[s_num].trans.push(trans);
             doc.save(function(err){
                 if(err) { console.log(err); res.status(500).send('update error'); }
