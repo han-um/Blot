@@ -3,14 +3,14 @@
           <div class='container' id='login-section'>
           <!-- 로그인 -->
           <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 col-centered div-middle">      
+            <div class="col-md-3"></div>
+            <div class="col-md-6 col-centered div-middle">      
               <!--여기부터 실제 내용-->
               <div class="beforLogin white-box">
                 <div id="tabs">
                     <h2>블록체인 로그인</h2>
                     <small>이 기능을 이용하려면 블록체인 로그인을 진행해야 합니다. 신뢰성을 유지하기 위하여 블록체인 정보는 서버에 저장되지 않습니다.</small><br><br>
-                <div class="msg-box">
+                <div class="msg-box" v-if="errorMsg != ''">
                   {{errorMsg}}
                 </div><br>
                 <div class="inner-box">
@@ -22,7 +22,8 @@
                   <div id="myKeystore">  
                     <!-- 키스토어 -->
                     <div class="form-group">
-                      <label for="keystore">Keystore</label>
+                        <b>Keystore</b><br>
+                      <label for="keystore" id="keystore-button">파일 첨부</label><br>
                       <input type="file" id="keystore" v-on:change="handleImport()">
                     </div>
                     <!-- 비밀번호 -->
@@ -31,12 +32,12 @@
                       <input type="password" class="form-control" id="input-password"  v-model="password" onchange="App.handlePassword()">
                       <p class="help-block" id="message"></p>
                     </div>
-                    <div class="info-footer">
-                    <button type="button" class="btn btn-primary" id="submit" v-on:click="$store.commit('TOGGLE_BLOCKCHAIN_LOGIN')" >돌아가기</button>
-                      <button type="button" class="btn btn-primary" id="submit" v-on:click="handleLoginByKeyStore()">제출</button>
-                    </div>
                   </div>
-                  
+                  <div class="info-footer">
+                    <button type="button" class="btn btn-primary"  v-on:click="$store.commit('TOGGLE_BLOCKCHAIN_LOGIN')" >돌아가기</button>
+                      <button type="button" class="btn btn-primary" id="submit" v-on:click="handleLoginByKeyStore()" style="
+        border-left:1px solid white;">제출</button>
+                    </div>
                   <!-- 비밀키로 로그인
                   <div id="myPrivateKey">
                       <div class="form-group">
@@ -200,9 +201,47 @@ export default {
     }
     .msg-box{
         width:100%;
-        background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+        background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
         padding:5px;
         padding-left:30px;
     }
     .animated{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:none!important;animation-fill-mode:none!important;z-index:4000;}
+    
+    .info-footer button {
+        width:calc(50% - 2px);
+        border:0px;
+        margin:0px;
+        border-radius: 0px;
+        display:inline;
+        border-top:1px solid gray;
+        background-color: #4E4E4E;
+    }
+    
+    .info-footer button:hover {
+        background-color: #242424;
+    }
+    #submit {
+      // background-color:#E3CA23;    
+    }
+    
+    #input-password {
+      background:none;
+      border:2px solid white;
+        color:white;
+    }
+    #keystore {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip:rect(0,0,0,0); border: 0;
+    }
+    #keystore-button {
+        background-color:#5CD590;
+        padding:5px;
+        width:100%;
+        margin-top:10px;
+        font-weight: 400;
+        text-align: center;
+    }
+    #keystore-button:hover {
+        background-color:#3F8D60;
+    }
+
 </style>

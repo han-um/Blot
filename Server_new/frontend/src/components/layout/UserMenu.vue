@@ -8,7 +8,7 @@
       <span class="hidden-xs">{{this.$session.get('username')}}</span>
     </a>
     <a v-else v-on:click="gotoLogin">
-        <span class="hidden-xs">로그인/회원가입</span>
+        <span class="hidden-xs"><i class="ri-login-box-line"></i></span>
     </a>
     <!-- Account Info and Menu -->
     <ul class="dropdown-menu">
@@ -23,17 +23,25 @@
       </li>
     </ul>
   </li>
+    <li class="line"> </li>
   <li>
       <a v-if="isLoggedIn">
-          <span class="hidden-xs">{{this.$store.state.crntBlots}}</span>
+          <div class="hidden-xs token-logo"><i class="tokenIcon ri-money-dollar-circle-line"></i></div>
+          <div class="token-value hidden-xs"> {{this.$store.state.crntBlots}}</div>
+      </a>
+  </li>
+    <li class="line"> </li>
+  <li>
+      <a v-if="isLoggedIn"  v-on:click="logoutActive">
+          <span class="hidden-xs"><i class="ri-logout-box-line"></i></span>
       </a>
   </li>
   <li>
       <a v-if="isLoggedIn && isBlockChain">
-          <span class="hidden-xs">로그인됨 표시</span>
+          <span class="hidden-xs"><div class="fixed-box"><img class="klaytnlogo" src="/static/img/klaytn.png"></div></span>
       </a>
-      <a v-if="isLoggedIn && !isBlockChain">
-          <span v-on:click="$store.commit('TOGGLE_BLOCKCHAIN_LOGIN')" class="hidden-xs">블록체인 로그인</span>
+      <a v-if="isLoggedIn && !isBlockChain" v-on:click="$store.commit('TOGGLE_BLOCKCHAIN_LOGIN')">
+          <span class="hidden-xs"><i class="yellow ri-login-circle-line"></i></span>
       </a>
   </li>
 </ul>
@@ -117,5 +125,53 @@ export default {
 }
     .user-header p span, small{
         color:black;
+    }
+    
+    .navbar-nav > li > a > span > i {
+        font-size:20px;
+    }
+    
+    .token-value {
+        display:inline;
+        line-height: 0px;
+    }
+    
+    .yellow {
+        color:#E3CA23;
+        font-weight:900;
+    }
+    
+    .klaytnlogo {
+        width:15px;
+          position: relative;
+  -webkit-animation: mymove 1s infinite; /* Safari 4.0 - 8.0 */
+  animation: mymove 1s infinite;
+  animation-direction: alternate;
+    }
+    
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes mymove {
+  from {width: 18px; height:18px;}
+  to {width: 20px; height:20px}
+}
+
+@keyframes mymove {
+  from {width: 18px; height:18px;}
+  to {width: 20px; height:20px}
+}
+    .fixed-box {
+        width:30px;
+    }
+    .token-logo {
+        font-size:20px;
+        vertical-align: middle;
+        display:inline;
+    }
+    .line {
+      width:1px;
+      border-left:1px solid #C5C5C5;  
+      vertical-align: middle;
+        height:20px;
+        margin-top:15px;
     }
 </style>
