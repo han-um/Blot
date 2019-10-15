@@ -91,6 +91,9 @@
 	> reward : 보상금[number]  
 	> icon : 아이콘명[string]  
 	> all : 원문[string]
+    
+- 프로젝트 등록시 대납서명 요청 [POST] - /api/project/sign
+    > rawTransaction : 승인정보[string]
 
 - 번역문장 등록 [POST] - /api/project/trans
 	> p_num : 프로젝트 ObjectId[string]  
