@@ -10,6 +10,8 @@ const mongoose = require('mongoose');
 const splitter = require('sentence-splitter');
 const cron = require('node-cron');
 
+const Klaytn = require('../blockchain/contract');
+
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('Connected to mongod server'))
@@ -19,129 +21,8 @@ const Project = require('../models/project');
 const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
-// BLOCKCHAIN
-
-const Caver = require('caver-js');
-const contractInfo = require('./contractInfo');
-
-const config = {
-  rpcURL: 'https://api.baobab.klaytn.net:8651/'
-}
-
-const cav = new Caver(config.rpcURL);
-
-const blotMainContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTMAIN_ABI, contractInfo.DEPLOYED_BLOTMAIN_ADDRESS);
-const blotUserContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTUSER_ABI, contractInfo.DEPLOYED_BLOTUSER_ADDRESS);
-const blotProjectContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTPROJECT_ABI, contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS);
-const blotTokenContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTTOKEN_ABI, contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS);
-
-
-const privatekey = '0xa86989e8db32b234489fd06e6f622e8913777372f7553363c0bed137e32315f5';
-const walletInstance = cav.klay.accounts.privateKeyToAccount(privatekey);
-cav.klay.accounts.wallet.add(walletInstance);
-//console.log(walletInstance);
-
-const projectId = 'projectId3';
-
-var getReward = async function() {
-    await blotMainContract.methods.getProjectRewardByprojectId(projectId).call()
-    .then(function(result){
-        console.log(projectId+'의 보상금은 ' + result + ' BLOT');  
-    });
-}
-
-var getTrust = async function() {
- 
-        var userId = 'kss';
-        await blotMainContract.methods.getUserReliabilityByUserId(userId).call()
-        .then(function(result) {
-            console.log(result);
-        });
-}
-
-var getWalletAddress = async function() {
-        var userId = 'kss';
-        await blotMainContract.methods.getUserAddressByUserId(userId).call()
-        .then(function(result) {
-            console.log(result);
-        });
-}
-
-var setTrust = async function() {
-    var userId = 'kss';
-    var value = 10;
-    await blotMainContract.methods.updateUserReliability(userId, value).send({
-          //from : payerAddress,
-        from : cav.klay.accounts.wallet[0].address,
-          gas : 250000
-        })
-        .on('transactionHash', function(txHash) {
-          console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-        })
-        .on('receipt', function(receipt) {
-          console.log(JSON.stringify(receipt));
-        })
-        .on('error', console.error);
-}
-
-var setTranslation = async function() {
-    const projectId = 'projectId3';
-    const translatorId = 'translatorId';
-    const setenceList = [1, 2, 3];  // 몇번째 문장
-    const translationList = [1, 2, 3];  // 몇번째 번역
-    const listSize = 3; // 위 리스트 사이즈
-    const share = 20; // 지분(%)
-
-    await blotMainContract.methods.generateTranslationEvent(projectId, translatorId, setenceList, translationList, listSize, share).send({
-              from : cav.klay.accounts.wallet[0].address,
-              gas : 250000
-            })
-            .on('transactionHash', function(txHash) {
-              console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-            })
-            .on('receipt', function(receipt) {
-              console.log(JSON.stringify(receipt));
-            })
-            .on('error', console.error);
-}
-
-var setEvaluation = async function() {
-    const projectId = 'projectId3';
-    const evaluatorId = 'translatorId';
-    const setenceList = [1, 2, 3];  // 몇번째 문장
-    const translationList = [1, 2, 3];  // 몇번째 번역
-    const listSize = 3; // 위 리스트 사이즈
-    const share = 20; // 지분(%)
-
-    await blotMainContract.methods.blotMainContract.methods.generateEvaluationEvent(projectId, evaluatorId, setenceList, translationList, listSize, share).send({
-              from : cav.klay.accounts.wallet[0].address,
-              gas : 250000
-            })
-            .on('transactionHash', function(txHash) {
-              console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-            })
-            .on('receipt', function(receipt) {
-              console.log(JSON.stringify(receipt));
-            })
-            .on('error', console.error);
-}
-
-var transfer = async function() {
-    const recipient = '0x4aff875cb544368fd51b8f7fda6d247582b5b87c';
-    const reward = 100;
-    
-    await blotMainContract.methods.blotMainContract.methods.sendRewardToUser(recipient, reward).send({
-              from : cav.klay.accounts.wallet[0].address,
-              gas : 250000
-            })
-            .on('transactionHash', function(txHash) {
-              console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/'+txHash);
-            })
-            .on('receipt', function(receipt) {
-              console.log(JSON.stringify(receipt));
-            })
-            .on('error', console.error);
-}
+const myKlaytn = Klaytn();
+myKlaytn.getTrust();
 
 // 익일 마다 검사 [테스트 코드 10초마다]
 
@@ -314,27 +195,19 @@ router.post('/', function(req, res, next){
 });
 
 // 프로젝트 등록시 대납서명 요청
-router.body('/sign', function(req, res) {
-    //const senderRawTransaction = req.params.rawTransaction;
+
+
+router.body('/sign', function(req, res, next) {
     /*
     const senderRawTransaction = '0x31f9010b138505d21dba008307a120944f8a7325059220a32a8679efb16e87a9e971b82080946f560ac6ede19461b28382816232c4dd50bd4843b884484e139100000000000000000000000000000000000000000000000000000000000000400000000000000000000000006f560ac6ede19461b28382816232c4dd50bd4843000000000000000000000000000000000000000000000000000000000000000a7573657249645465737400000000000000000000000000000000000000000000f847f8458207f5a0740fe1bfea4ef2cc33456dda1e7504965836b9a1d4165ac033d657a349dda2daa07cc489a1f3c7614d01fee27eab82c2de39eb18c6d8d94b5e1edf345421cca4ea80c4c3018080';
     */
-    const senderRawTransaction = req.body.rawTransaction;
     
-    cav.klay.sendTransaction({
-        senderRawTransaction: senderRawTransaction,
-        feePayer: cav.klay.accounts.wallet[0].address,
-    })
-    .on('transactionHash', function(hash){
-        console.log('transactionHash', hash);
-        // *** TODO : txHash 값을 front에 넘겨주어서 front 쪽에서 트랜잭션을 확인 할 수 있게 해야함 ***
-    })
-    .on('receipt', function(receipt){
-        console.log('receipt', receipt);
-    })
-    .on('error', console.error); 
-    // If an out-of-gas error, the second parameter is the receipt.
+    const senderRawTransaction = req.params.rawTransaction;
+    
+    var ret = myKlaytn.payProxy(senderRawTransaction);
+    res.send(ret);
 });
+
 
 // 프로젝트 문장 번역 등록하기 [프로젝트 아이디, 문장 번호, 유저계정]
 router.post('/trans', function(req, res, next){
