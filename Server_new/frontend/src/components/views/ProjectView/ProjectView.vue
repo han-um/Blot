@@ -6,6 +6,7 @@
             <div class="box project-contents">
                 <div class="p-0 box-header with-border">
                     <div class="icon-box"><i class="ri-building-line"></i></div>
+                    <div class="icon-box" style="background-color:#E3CA23"><i class="ri-heart-2-line"></i></div>
                     <div class="proj-title">
                         <h4>{{title}}</h4>
                         <small>2019년 5월 20일 ~ 2019년 7월 27일</small>

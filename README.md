@@ -122,3 +122,8 @@
 	> t_num : 번역문장 번호[number]  
 	> userId : 계정명[string]  
     
+### TODO
+- 즐겨찾기 API에 이미 중복값이 있을경우 예외처리 기능
+- 프로젝트ID와 유저ID를 주면 현재 즐겨찾기에 등록되어있는지 확인하는 API
+- 프로젝트 이름으로 검색 API (param: 검색어 / return : 제목에 검색어가 포함된 프로젝트 object list)
+- 

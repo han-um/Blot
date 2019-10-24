@@ -51,5 +51,10 @@ export default {
           state.commit('SET_CRURRENT_SENTENCE_TEXT', res.data.sentence[payload.index].raw_text)
         }
       })
+  },
+  ADD_FAVORITE_PROJECT (state, payload) {
+    axios.get('/api/user/bookmark', {userId: payload.userId, projId: payload.projId})
+    .then(res => {
+    })
   }
 }
