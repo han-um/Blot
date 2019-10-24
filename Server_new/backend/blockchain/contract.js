@@ -113,7 +113,7 @@ module.exports = function() {
         payProxy: async function(rawTransaction) {
             const senderRawTransaction = rawTransaction;
             cav.klay.sendTransaction({
-                senderRawTransaction: senderRawTransaction;
+                senderRawTransaction: senderRawTransaction,
                 feePayer: cav.flay.accounts.wallet[0].address
             })
             .on('transactionHash', function(txhash){
