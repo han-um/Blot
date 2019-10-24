@@ -1,7 +1,7 @@
 # BlockChain Side
 
 ## Development Environment
-- truffle v0.5.39
+- truffle v5.0.39
 - solc v0.5.8
 - node v10.16.3
 - npm 6.9.0
@@ -71,11 +71,13 @@ They are not private keys but pulbic keys. Because Private Key is scret, I didn'
 <br>
 
 > TO Do List
-1. 수수료 대납 기능 구현
+1. ~~수수료 대납 기능 구현~~
 2. BlotMain.sol의 사용자 지갑 주소 변경 함수 수정
     - delegatecall을 이용해서 컨트랙트 사이에 호출에도 context 유지가 필요
 3. 서버랑 클라이언트에 기능 붙이기
 4. 취약점 파악 및 개선(contract Access controller 수정)
+5. Project 등록 오류 찾기
+6. Truffle Framework 설치 후 테스트 코드 작성
 
 <br>
 
