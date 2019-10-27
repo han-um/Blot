@@ -30,6 +30,11 @@ const options = {
 }
 Vue.use(VueSweetalert2, options)
 
+// Vue-moment
+import moment from 'moment'
+import VueMomentJS from 'vue-momentjs'
+Vue.use(VueMomentJS, moment)
+
 // Vue Router + Session
 Vue.use(VueRouter)
 Vue.use(VueSession)

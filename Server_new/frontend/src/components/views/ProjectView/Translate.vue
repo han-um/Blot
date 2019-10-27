@@ -49,7 +49,8 @@ export default {
       this.transMenuState = menuState
     }
   },
-  mounted () {}
+  mounted () {
+  }
 }
 </script>
 

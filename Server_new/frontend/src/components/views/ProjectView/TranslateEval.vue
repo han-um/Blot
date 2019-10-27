@@ -27,6 +27,7 @@ export default {
     }
   },
   mounted () {
+    this.getTrans()
     this.$root.$on('TranslateEval', () => {
       this.getTrans()
     })

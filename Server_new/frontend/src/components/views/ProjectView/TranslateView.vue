@@ -32,6 +32,7 @@ export default {
     }
   },
   methods: {
+    // OriginalText에 쓸 문장 목록 초기화
     getSentences () {
       axios.get('/api/project/' + this.$route.params.id + '/sentence')
         .then(response => {
@@ -40,6 +41,9 @@ export default {
             return
           }
           this.sentences = response.data.sentence
+          // 제일 처음엔 0번 문장으로 전역변수 변경
+          var payload = {'index': 0, 'text': this.sentences[0].raw_text}
+          this.$store.dispatch('REFRESH_CURRENT_SENTENCE', payload)
         })
         .catch(error => {
           // Request failed.
