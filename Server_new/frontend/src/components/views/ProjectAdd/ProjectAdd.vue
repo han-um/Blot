@@ -74,7 +74,8 @@
               <div class="blot-box box">
                   <div class="box-header with-border"><i class="ri-file-text-line"></i> 원문 입력</div>
                   <div class="box-body">
-                      <textarea class="original-input" placeholder="입력한 원문은 문장 단위로 나누어 번역이 이루어집니다."></textarea>
+                      <textarea v-model="projectAll" class="original-input" placeholder="입력한 원문은 문장 단위로 나누어 번역이 이루어집니다."></textarea>
+                      <button v-on:click="addProject()">등록하기</button>
                   </div>
               </div>
           </div>
@@ -86,7 +87,7 @@
 <script>
 import VTagInput from 'v-tag-input'
 import IconSelector from './IconSelector'
-// import axios from 'axios'
+import axios from 'axios'
 export default {
   name: 'ProjectAdd',
   components: {
@@ -100,10 +101,27 @@ export default {
       projectTitle: '',
       projectOverview: '',
       reward: '',
-      selectedDate: null
+      selectedDate: null,
+      projectAll: ''
     }
   },
   methods: {
+    addProject () {
+      axios.post('/api/project/', {
+        title: this.projectTitle,
+        description: this.Overview,
+        language: 'English',
+        tags: this.projectTags,
+        end: this.selectedDate,
+        reward: this.reward,
+        icon: this.$store.state.crntIcon,
+        all: this.projectAll,
+        user: this.$session.get('username')
+      })
+      .then(res => {
+        this.transList = res.data
+      })
+    }
   },
   mounted () {
     // 이 페이지는 로그인되어있어야만 사용할 수 있음
