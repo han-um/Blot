@@ -81,6 +81,24 @@ router.get('/:userId/project', function(req, res, next){
     });
 });
 
+// 프로젝트 즐겨찾기 등록여부 확인 GET: projId(프로젝트아이디) userId(사용자계정)
+router.get('/:userId/project/:projId', function(req, res, next){
+    db.User.findOne({
+        attributes: ['id'],
+        where: { userId: req.params.userId }
+    }).then(result => {
+        db.Library.findOne({
+            where: { projId: req.params.projId, userId: result.id }
+        }).then(result => {
+            if(result == null) res.send(false);
+            else res.send(true);
+            
+        }).catch(err => {
+            console.error(err);
+        });
+    });
+});
+
 // 로그인
 router.get('/:userId/password/:password', function(req, res, next){
     

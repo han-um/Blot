@@ -357,6 +357,29 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userId', function(req, re
     });
 });
 
+// 검색어 조회
+router.get('/keyword/:key', function(req, res, next) {
+    
+    Project.find({}, {title: true}, function(err, doc) {
+        if(err) { console.log('err'); return; }
+        else {
+            var array = [];
+            
+            for(var i = 0; i < doc.length; i++) {
+                var title = doc[i].title;
+                
+                if(title.match(req.params.key) !== null) {
+                    array.push(doc[i]._id);      
+                }
+            }
+            if(array.length === 0) res.send(false);
+            else res.send(array);
+            
+        }
+    });
+    
+});
+
 function shuffle(d) {
     for(var c = d.length-1; c>0; c--) {
         var b = Math.floor(Math.random()*(c+1));

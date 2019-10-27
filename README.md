@@ -77,10 +77,17 @@
 
 - 즐겨찾기 프로젝트ObjectId 조회 [GET] - /api/user/:userId/project
 	> userId : 계정명[string]
+    > Return : 프로젝트 ObjectId List
+
+- 즐겨찾기 등록여부 확인 [GET] - /api/user/:userId/project/:projId
+    > userId : 계정명[string]
+    > projId : 프로젝트 ObjectId[string]
+    > Return : TRUE or FALSE
 
 - 로그인 [GET] - /api/user/:userId/password/:password
 	> userId : 계정명[string]  
 	> password : 비밀번호[string]
+    > Return : TRUE or FALSE
 
 - 프로젝트 등록 [POST] - /api/project/
 	> title : 제목[string]  
@@ -102,28 +109,37 @@
     > userId : 계정명[string]
 
 - 전체프로젝트 제목,시작일,마감일 조회 [GET] - /api/project/
+    > Return : 전체 프로젝트 정보
+    
 - 특정프로젝트 제목,시작일,마감일 조회 [GET] - /api/project/:p_num
 	> p_num : 프로젝트 ObjectId[string]
-
+    > Return : 특정 프로젝트 정보
+    
 - 특정프로젝트 전체원본문장 조회 [GET] - /api/project/:p_num/sentence
 	> p_num : 프로젝트 ObjectId[string]
-
+    > Return : 프로젝트 원본 문장
+    
 - 특정프로젝트 특정문장 전체번역문장 조회 [GET] - /api/project/:p_num/sentence/:s_num/trans
 	> p_num : 프로젝트 ObjectId[string]  
 	> s_num: 문장 번호[number]  
-	return - [번역문 인덱스 / 번역문장] 셔플
+	> Return - 번역문 인덱스와 번역문장 [ 인덱스는 랜덤 순서 ]
 
 - 특정프로젝트 특정문장 번역문장 등록여부 확인 [GET] - /api/project/:p_num/sentence/:s_num/user/:userId
 	> p_num : 프로젝트 ObjectId[string]  
 	> s_num : 문장 번호[number]  
 	> userId : 계정명[string]  
-	return - [번역문 인덱스 or -1]
+	> Return - 번역문 인덱스 OR -1
 
 - 특정프로젝트 특정문장 특정번역문장 평가 [GET] - /api/project/:p_num/sentence/:s_num/trans/:t_num/user/:userId
 	> p_num : 프로젝트 ObjectId[string]  
 	> s_num : 문장 번호[number]  
 	> t_num : 번역문장 번호[number]  
-	> userId : 계정명[string]  
+	> userId : 계정명[string]
+    > 설명 : 번역문장의 평가가 존재하면 평가내용변경 존재하지 않으면 평가내용추가
+    
+- 검색어 조회 [GET] - /api/project/keyword/:key
+    > key : 검색어 내용
+    > Return : 프로젝트 ObjectId 배열 존재하지 않을시 false
     
 ### TODO
 - 즐겨찾기 API에 이미 중복값이 있을경우 예외처리 기능
