@@ -32,10 +32,15 @@ export default {
 
 <style scoped>
  .now {
+  margin-left:10px;
+  margin-right:10px;
   padding: 5px;
   line-height: 2.5;
   border-radius: 30px;
   color: white;
   background-image: linear-gradient(to right, #434343 0%, black 100%);
 }
+    a {
+        line-height: 2.4em;
+    }
 </style>

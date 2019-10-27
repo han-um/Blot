@@ -9,7 +9,7 @@
                     <div class="icon-box" style="background-color:#E3CA23"><i class="ri-heart-2-line"></i></div>
                     <div class="proj-title">
                         <h4>{{title}}</h4>
-                        <small>2019년 5월 20일 ~ 2019년 7월 27일</small>
+                        <small>{{start}} ~ {{end}}</small>
                     </div>
                     <div class="proj-submenu">
                         <router-link to="./">요약</router-link>
@@ -39,7 +39,10 @@ export default {
     return {
       response: null,
       error: null,
-      title: ''
+      title: '',
+      icon: '',
+      start: '',
+      end: ''
     }
   },
   methods: {
@@ -51,7 +54,11 @@ export default {
           this.error = response.statusText
           return
         }
+        console.log(response)
         this.title = response.data.title
+        this.icon = response.data.icon
+        this.start = this.$moment(response.data.start).format('YYYY년 MM월 DD일')
+        this.end = this.$moment(response.data.end).format('YYYY년 MM월 DD일')
       })
       .catch(error => {
       // Request failed.

@@ -21,10 +21,12 @@
                     </router-link>
                 </div>
                 <div class="col-md-6 p-2">
+                    <router-link to="/projview/5db5da4240fe2518983319ca/">
                     <div class="each-box">
                         <div class="img-box"></div>
-                        <div class="title-box">프로젝트 이름 1</div>
+                        <div class="title-box">Fire and Ice</div>
                     </div>
+                    </router-link>
                 </div>
                 <div class="col-md-6 p-2">
                     <div class="each-box">
