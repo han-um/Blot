@@ -9,7 +9,16 @@
       <a href="javascript:;" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
-
+      <div class="navbar-custom-menu" style="float:left">
+          <ul class="nav navbar-nav">
+              <li>
+                <a v-on:click="showSearch()">
+                    <div class="hidden-xs search-logo"><i class="ri-search-2-line"></i></div>
+                    <div class="search-value hidden-xs"> &nbsp;&nbsp; <b>번역 프로젝트</b>를 검색하세요</div>
+                </a>
+            </li>
+            </ul>
+        </div>
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
           <user-menu :user="user"></user-menu>
@@ -26,6 +35,12 @@ export default {
   name: 'DashHeader',
   components: {
     UserMenu
+  },
+  methods: {
+    showSearch() {
+      this.$store.commit('TOGGLE_PROJECT_SEARCH')
+      document.getElementById('searchinput').focus()
+    }
   },
   props: ['user'],
   computed: {
@@ -69,5 +84,15 @@ export default {
     
     .main-header>.navbar{
         margin-left:278px;
+    }
+    
+    .search-logo {
+        font-size:20px;
+        vertical-align: middle;
+        display:inline;
+    }
+    .search-value {
+        display:inline;
+        line-height: 0px;
     }
 </style>
