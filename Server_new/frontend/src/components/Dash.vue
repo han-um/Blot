@@ -28,7 +28,7 @@
     
       </section>
         -->
-        <BlockChainLogin></BlockChainLogin>
+        <ProjectSearch></ProjectSearch>
         <transition enter-active-class="animated fadeInLeft">
       <router-view></router-view>
     </transition>
@@ -48,6 +48,7 @@ import DashFooter from './layout/DashFooter'
 import DashHeader from './layout/DashHeader'
 import Sidebar from './layout/Sidebar'
 import BlockChainLogin from './views/BlockChain/BlockChainLogin'
+import ProjectSearch from './layout/ProjectSearch'
 import 'hideseek'
 
 export default {
@@ -56,7 +57,8 @@ export default {
     DashFooter,
     DashHeader,
     Sidebar,
-    BlockChainLogin
+    BlockChainLogin,
+    ProjectSearch
   },
   data: function () {
     return {
