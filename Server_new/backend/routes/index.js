@@ -137,6 +137,7 @@ router.post('/', function(req, res, next){
     var end = req.body.end;
     var reward = req.body.reward;
     var icon = req.body.icon;
+    var color = req.body.color;
     var all = req.body.all;
         
     var tag = [];
@@ -154,6 +155,7 @@ router.post('/', function(req, res, next){
     proj.end =  end;
     proj.reward = reward;
     proj.icon = icon;
+    proj.color = color;
     proj.all = all;
     
     let sentences = splitter.split(all);
@@ -184,13 +186,15 @@ router.post('/', function(req, res, next){
     }
     proj.sentence = sentenceArray;
     
-    proj.save(function(err) {
+    proj.save(function(err, project) {
         if(err) {
             console.error(err);
             res.send({result:0});
             return;
         }
-        res.send({result:1});
+        var _id = project._id;
+        res.send(_id);
+        //res.send({result:1});
     });
 });
 
@@ -248,7 +252,7 @@ router.get('/', function(req, res, next){
 // 특정 프로젝트 정보 가져오기
 router.get('/:p_num', function(req, res, next){
     var p_num = req.params.p_num;
-    Project.findOne({'_id':p_num},{"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
+    Project.findOne({'_id':p_num},{'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
         if(err) console.log('err');
         else {
             res.send(doc);
@@ -360,21 +364,20 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userId', function(req, re
 // 검색어 조회
 router.get('/keyword/:key', function(req, res, next) {
     
-    Project.find({}, {title: true}, function(err, doc) {
+    Project.find({}, {'title': true, 'description': true, 'icon': true}, function(err, doc) {
         if(err) { console.log('err'); return; }
         else {
             var array = [];
-            
             for(var i = 0; i < doc.length; i++) {
                 var title = doc[i].title;
                 
                 if(title.match(req.params.key) !== null) {
-                    array.push(doc[i]._id);      
+                    var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon}
+                    array.push(data);      
                 }
             }
             if(array.length === 0) res.send(false);
             else res.send(array);
-            
         }
     });
     

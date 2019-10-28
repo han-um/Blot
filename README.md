@@ -96,7 +96,8 @@
 	> tags : 태그목록[array]  
 	> end : 마감날짜[date]  
 	> reward : 보상금[number]  
-	> icon : 아이콘명[string]  
+	> icon : 아이콘명[string]
+    > color : 색상[string]
 	> all : 원문[string]
     
 - 프로젝트 등록시 대납서명 요청 [POST] - /api/project/sign
@@ -108,12 +109,12 @@
 	> trans_text : 번역문[string]
     > userId : 계정명[string]
 
-- 전체프로젝트 제목,시작일,마감일 조회 [GET] - /api/project/
-    > Return : 전체 프로젝트 정보
+- 전체프로젝트 제목,시작일,마감일,아이콘,색상  조회 [GET] - /api/project/
+    > Return : [제목, 시작일, 마감일, 아이콘, 색상] 배열 반환
     
-- 특정프로젝트 제목,시작일,마감일 조회 [GET] - /api/project/:p_num
+- 특정프로젝트 제목,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/:p_num
 	> p_num : 프로젝트 ObjectId[string]
-    > Return : 특정 프로젝트 정보
+    > Return : [제목, 시작일, 마감일 ,아이콘, 색상] 반환
     
 - 특정프로젝트 전체원본문장 조회 [GET] - /api/project/:p_num/sentence
 	> p_num : 프로젝트 ObjectId[string]
@@ -139,7 +140,7 @@
     
 - 검색어 조회 [GET] - /api/project/keyword/:key
     > key : 검색어 내용
-    > Return : 프로젝트 ObjectId 배열 존재하지 않을시 false
+    > Return : [프로젝트 ObjectId, 제목, 요약, 아이콘, 색상] 배열 존재하지 않을시 false
     
 ### TODO
 - 프로젝트 등록 ( POST /api/project ) 등록 성공시 등록한 프로젝트ID 반환하도록 변경
