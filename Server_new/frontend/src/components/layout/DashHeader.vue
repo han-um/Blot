@@ -12,7 +12,7 @@
       <div class="navbar-custom-menu" style="float:left">
           <ul class="nav navbar-nav">
               <li>
-                <a>
+                <a v-on:click="showSearch()">
                     <div class="hidden-xs search-logo"><i class="ri-search-2-line"></i></div>
                     <div class="search-value hidden-xs"> &nbsp;&nbsp; <b>번역 프로젝트</b>를 검색하세요</div>
                 </a>
@@ -35,6 +35,12 @@ export default {
   name: 'DashHeader',
   components: {
     UserMenu
+  },
+  methods: {
+    showSearch() {
+      this.$store.commit('TOGGLE_PROJECT_SEARCH')
+      document.getElementById('searchinput').focus()
+    }
   },
   props: ['user'],
   computed: {

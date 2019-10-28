@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-show="this.$store.state.showProjectSearch">
       <div class="container">
           <div class="row">
                <div class="col-md-3"></div>
             <div class="col-md-6 col-centered div-middle m-0 p-0">
-              <input id="search-input" class="search-input" type=text placeholder="검색하기...">
+              <input v-model="searchInputText" v-on:input="projectSearch()" id="searchinput" class="search-input" type=text placeholder="검색하기...">
             </div>
           </div>
           <div class="row">
@@ -58,22 +58,32 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: 'ProjectSearch',
   data () {
-    return {}
+    return {
+      searchInputText: ''
+    }
   },
-  methods: {},
-  mounted () {}
+  methods: {
+    projectSearch() {
+      axios.get('/api/project/keyword/' + this.searchInputText)
+      .then(res => {
+        console.log(res.data)
+      })
+    }
+  },
+  mounted () {
+  }
 }
 </script>
 
 <style scoped>
     .container {
         overflow:scroll;
-      background-color:rgba(255,255,255,0.95);
+      background-color:rgba(255,255,255,1);
       position:fixed;
       top:50px;
       left:0px;
