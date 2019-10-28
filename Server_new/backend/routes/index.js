@@ -240,7 +240,7 @@ router.post('/trans', function(req, res, next){
 
 // 전체 프로젝트 정보 가져오기
 router.get('/', function(req, res, next){
-    Project.find({}, {"_id": false, "title": true, "start": true, "end": true}, function(err, doc){
+    Project.find({}, {'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
         if(err) console.log('err');
         else {
             res.send(doc);
@@ -364,7 +364,7 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userId', function(req, re
 // 검색어 조회
 router.get('/keyword/:key', function(req, res, next) {
     
-    Project.find({}, {'title': true, 'description': true, 'icon': true}, function(err, doc) {
+    Project.find({}, {'title': true, 'description': true, 'icon': true, 'color': true}, function(err, doc) {
         if(err) { console.log('err'); return; }
         else {
             var array = [];
@@ -372,7 +372,7 @@ router.get('/keyword/:key', function(req, res, next) {
                 var title = doc[i].title;
                 
                 if(title.match(req.params.key) !== null) {
-                    var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon}
+                    var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color }
                     array.push(data);      
                 }
             }
@@ -380,8 +380,27 @@ router.get('/keyword/:key', function(req, res, next) {
             else res.send(array);
         }
     });
-    
 });
+
+// 특정유저가 등록한 프로젝트ObjectId 조회
+router.get('/user/:userId', function(req, res, next) {
+    Project.find({'user': req.params.userId}, {'title': true, 'description': true, 'icon': true, 'color': true}, function(err, doc) {
+        if(err) { console.log('err'); return; }
+        else {
+            var array = [];
+            for(var i = 0; i < doc.length; i++) {
+                var title = doc[i].title;
+                
+                if(title.match(req.params.key) !== null) {
+                    var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color }
+                    array.push(data);      
+                }
+            }
+            if(array.length === 0) res.send(false);
+            else res.send(array);
+        }
+    });
+})
 
 function shuffle(d) {
     for(var c = d.length-1; c>0; c--) {

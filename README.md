@@ -99,6 +99,7 @@
 	> icon : 아이콘명[string]
     > color : 색상[string]
 	> all : 원문[string]
+    > Return : 생성된 프로젝트 ObjectId
     
 - 프로젝트 등록시 대납서명 요청 [POST] - /api/project/sign
     > rawTransaction : 승인정보[string]
@@ -140,6 +141,10 @@
     
 - 검색어 조회 [GET] - /api/project/keyword/:key
     > key : 검색어 내용
+    > Return : [프로젝트 ObjectId, 제목, 요약, 아이콘, 색상] 배열 존재하지 않을시 false
+    
+- 특정유저가 등록한 프로젝트 ObjectId [GET] - /api/project/user/:userId
+    > userId : 계정명[string]
     > Return : [프로젝트 ObjectId, 제목, 요약, 아이콘, 색상] 배열 존재하지 않을시 false
     
 ### TODO
