@@ -124,7 +124,7 @@ export default {
     addProject () {
       axios.post('/api/project/', {
         title: this.projectTitle,
-        description: this.Overview,
+        description: this.projectOverview,
         language: 'English',
         tags: this.projectTags,
         end: this.selectedDate,

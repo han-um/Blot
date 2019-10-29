@@ -66,10 +66,10 @@
              <router-link to="/mylibrary"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</router-link>
             </li>
               <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>정보 수정</a>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>내 정보</a>
             </li>
               <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>코인 충전</a>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>토큰 충전</a>
             </li>
               <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a>

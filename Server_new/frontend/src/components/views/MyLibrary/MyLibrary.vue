@@ -6,9 +6,10 @@
                 <small>참여중인 프로젝트와 즐겨찾기한 프로젝트를 한눈에 확인할 수 있습니다.</small>
         </div>
         <div class="row">
-            <div class="col-md-2 col-xs-4 white-box">
+            <div class="col-md-2 col-xs-4 white-box cat-box">
                 <div class="box-header"></div>
-            
+                <div class="cat now">내가 등록한</div>
+                <div class="cat">즐겨찾기</div>
             </div>
             <div class="col-md-5 col-xs-8 white-box">
                 <div class="box-header"></div>
@@ -107,5 +108,21 @@ box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
         color:white;
         font-size:12px;
         font-weight:300;
+    }
+    .cat-box .cat {
+        color:#C5C5C5;
+        text-align: center;
+        padding-left:10px;
+        padding-right:10px;
+        padding-bottom:7px;
+        padding-top:12px;
+        margin-left:15px;
+        margin-right:15px;
+        width:calc(100%-30px);
+        font-size:12px;
+    }
+    .now {
+        color:white!important;
+        border-bottom:2px solid white;
     }
 </style>
