@@ -185,6 +185,10 @@ body {
     padding: 0px!important;
 }
 
+.m-0 {
+    margin:0px;
+}
+
 .layout-boxed html,
 .layout-boxed body {
   height: 100%;

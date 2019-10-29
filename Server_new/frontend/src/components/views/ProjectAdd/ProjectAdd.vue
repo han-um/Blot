@@ -2,8 +2,18 @@
   <div>
     <section class="content">
         <div class="page-title-box">
-            <h2>새 번역 프로젝트 만들기</h2>
-            <small>다른 번역자가 참여할 수 있는 번역 프로젝트를 만들고, 원문을 업로드합니다.</small>
+            <div class="row">
+                 <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="padding-left: 7px; padding-right: 0px;">
+                     <h2>새 번역 프로젝트 만들기</h2>
+                     <small>다른 번역자가 참여할 수 있는 번역 프로젝트를 만들고, 원문을 업로드합니다.</small>
+                 </div>
+                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="padding-left: 7px; padding-right: 0px;">
+                     <div class="submit-btn hidden-xs hidden-md hidden-sm" v-on:click="addProject()">
+                         <div class="icon"><i class="ri-upload-2-line"></i></div>
+                         <div class="inner-text">등록하기</div>
+                     </div>
+                 </div>
+            </div>
         </div>
       <div class="row">
           <!--기본 정보-->
@@ -74,11 +84,17 @@
               <div class="blot-box box">
                   <div class="box-header with-border"><i class="ri-file-text-line"></i> 원문 입력</div>
                   <div class="box-body">
-                      <textarea class="original-input" placeholder="입력한 원문은 문장 단위로 나누어 번역이 이루어집니다."></textarea>
+                      <textarea v-model="projectAll" class="original-input" placeholder="입력한 원문은 문장 단위로 나누어 번역이 이루어집니다."></textarea>
                   </div>
               </div>
           </div>
-      </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0px; margin-bottom:40px;">
+                     <div class="submit-btn hidden-lg" v-on:click="addProject()">
+                         <div class="icon"><i class="ri-upload-2-line"></i></div>
+                         <div class="inner-text">등록하기</div>
+                     </div>
+                 </div>
+          </div>
     </section>
   </div>
 </template>
@@ -86,7 +102,7 @@
 <script>
 import VTagInput from 'v-tag-input'
 import IconSelector from './IconSelector'
-// import axios from 'axios'
+import axios from 'axios'
 export default {
   name: 'ProjectAdd',
   components: {
@@ -100,10 +116,27 @@ export default {
       projectTitle: '',
       projectOverview: '',
       reward: '',
-      selectedDate: null
+      selectedDate: null,
+      projectAll: ''
     }
   },
   methods: {
+    addProject () {
+      axios.post('/api/project/', {
+        title: this.projectTitle,
+        description: this.projectOverview,
+        language: 'English',
+        tags: this.projectTags,
+        end: this.selectedDate,
+        reward: this.reward,
+        icon: this.$store.state.crntIcon,
+        all: this.projectAll,
+        user: this.$session.get('username')
+      })
+      .then(res => {
+        this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
+      })
+    }
   },
   mounted () {
     // 이 페이지는 로그인되어있어야만 사용할 수 있음
@@ -281,6 +314,24 @@ Vue.use(VCalendar)
     
     .original-input::placeholder {
         text-align: center;
+    }
+    
+    .submit-btn {
+        background-color:#5CD590;
+        height:55px;
+        border-radius:5px;
+        text-align: center;
+        vertical-align: middle;
+        color:white;
+    }
+    
+    .submit-btn .inner-text {
+        font-size:15px;
+        line-height: 10px;
+    }
+    
+    .submit-btn .icon {
+        font-size:23px;
     }
     
     

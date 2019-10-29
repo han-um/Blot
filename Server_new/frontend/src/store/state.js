@@ -22,6 +22,10 @@ export default {
   showBlockChainLogin: false,
   rpcURL: 'https://api.baobab.klaytn.net:8651/',
   /* -----------------------------------------------------------
+    Search
+  ----------------------------------------------------------- */
+  showProjectSearch: false,
+  /* -----------------------------------------------------------
     BlockChain information
   ----------------------------------------------------------- */
   crntWalletId: '-',

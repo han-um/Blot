@@ -148,7 +148,12 @@
     > Return : [프로젝트 ObjectId, 제목, 요약, 아이콘, 색상] 배열 존재하지 않을시 false
     
 ### TODO
+- 프로젝트 검색어 조회 ( GET /api/project/keyword/:key ) 에서 description이 일부 프로젝트만 출력되는 문제 해결
+
+### SOLVED
+- 프로젝트 등록 ( POST /api/project ) 등록 성공시 등록한 프로젝트ID 반환하도록 변경
+- 자신이 만든 프로젝트 확인 API (param : 유저ID / return : 프로젝트 정보 오브젝트 리스트)
+- 프로젝트 정보 가져오기 ( GET /api/project ) 시 ICON 정보도 같이 반환하도록 변경
 - 즐겨찾기 API에 이미 중복값이 있을경우 예외처리 기능
 - 프로젝트ID와 유저ID를 주면 현재 즐겨찾기에 등록되어있는지 확인하는 API
 - 프로젝트 이름으로 검색 API (param: 검색어 / return : 제목에 검색어가 포함된 프로젝트 object list)
-- 

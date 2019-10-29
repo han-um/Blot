@@ -19,6 +19,12 @@ export default {
     state.crntTransIndex = index
   },
   /* -----------------------------------------------------------
+    ProjectSearch
+  ----------------------------------------------------------- */
+  TOGGLE_PROJECT_SEARCH (state) {
+    state.showProjectSearch = !state.showProjectSearch
+  },
+  /* -----------------------------------------------------------
     BlockChainLogin
   ----------------------------------------------------------- */
   SET_KEYSTORE (state, keystore) {
