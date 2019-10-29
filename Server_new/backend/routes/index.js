@@ -28,7 +28,9 @@ const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
 const myKlaytn = Klaytn();
-myKlaytn.getTrust();
+myKlaytn.getTrust('kss').then( result => {console.log(result)});
+
+
 
 var date = new Date();
 console.log(date);
@@ -56,15 +58,17 @@ cron.schedule('* * * * 11 *', () => {
                 var d = dd.getDate();
                 if(year == y && month == m && day == d) {
                     var _id = doc2[i]._id;
-
+                    
+                    var trans = new Array();
+                    var eval = new Array();
+                    
                     Project.findOne({'_id': _id}, function(err, doc) {
-
                         // 문장마다
                         for(var j=0; j<doc.sentence.length; j++) {
                             
                             var content = new Array();
                             
-                            // 평가점수 계산
+                            // 특정문장 평가점수 계산
                             for(var k=0; k<doc.sentence[j].like.length; k++) {
                                 
                                 var tmp = doc.sentence[j].like[k].trans_id;
@@ -73,7 +77,8 @@ cron.schedule('* * * * 11 *', () => {
                                 
                                 for(var l=0; l<content.length; l++) {
                                     if(content[l].trans == tmp) {
-                                        content[l].score += 1;  // 1*신뢰도
+                                        //content[l].score += 1;  // 1*신뢰도
+                                        content[l].score += 1 * myKlaytn.getTrust(user);
                                         content[l].eval.push(user);
                                         flag = true;
                                         break;
@@ -82,51 +87,111 @@ cron.schedule('* * * * 11 *', () => {
                                 if(flag == false) {
                                     var src = new Object;
                                     src['trans'] = tmp;
-                                    src['score'] = 1; // 1*신뢰도
+                                    src['score'] = 1 * getTrust(user); // 1*신뢰도
                                     src['eval'] = new Array;
                                     src['eval'].push(user);
                                     content.push(src);
-                                }
+                                }       
                             }
   
                             console.log(content);
+                            
                             // 최종문장 찾기
-                            var final;
+                            var final; // 뽑힌사람의 번역 문장
+                            var finalIdx = -1;
                             var max = 0;
                             for(var k=0; k<content.length; k++) {
                                 if(max < content[k].score) {
                                     max = content[k].score;
                                     final = content[k].trans;
+                                    finalIdx = k;
                                 }
                             }
                             
-                            //console.log(j+'번문장 최종번역 선택 : '+final);
                             // 최종문장 번역자 찾기 && 최종문장 등록
                             var trans_user;
                             for(var k=0; k<doc.sentence[j].trans.length; k++) {
                                 if(doc.sentence[j].trans[k].idx == final) {
                                     trans_user = doc.sentence[j].trans[k].user;
-                                    
                                     doc.sentence[j].trans_text = doc.sentence[j].trans[k].text;
                                     //console.log(j+'번문장 번역자 : '+trans_user);
                                     break;
                                 }
                             }
                             
-                            // 최종문장 평가자 신뢰도 올리기 Content Object
-                            // 최종문장 번역자 신뢰도 올리기 trans_user
+                            // 번역활동기록
+                            var sflag = false;
+                            for(var k=0; k<trans.length; ++k) {
+                                if(trans[k].obj.name === trans_user) {
+                                    trans[k].obj.sIdx.push(j);
+                                    trans[k].obj.tIdx.push(final);
+                                    sflag = true;
+                                    break;
+                                }
+                            }
+                            if(sflag === false) {
+                                var obj = new Object();
+                                trans.push(obj);
+                                trans.obj.name = trans_user;
+                                trans.obj.sIdx = new Array();
+                                trans.obj.sIdx.push(j);
+                                trans.obj.tIdx = new Array();
+                                trans.obj.tIdx.push(final);
+                            }
                             
-                            // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
-                            // 최종문장 평가자 보상금 지급 [보상금 * 0.1 / 평가자수]
+                            // 평가활동기록
+                            var eflag = false;
+                            if(finalIdx !== -1) {
+                                for(var k=0; k<content[finalIdx].eval.length; ++k) {
+                                    var eflag = false;
+                                    for(var l=0; l<eval.length; ++l) {
+                                        if(eval[l].obj.name === content[finalIdx].eval[k]) {
+                                            eval[l].obj.sIdx.push(j);
+                                            eval[l].obj.tIdx.push(fianl);
+                                            eflag = true;
+                                            break;
+                                        }
+                                    }
+                                    if(eflag === false) {
+                                        var obj = new Object();
+                                        eval.push(obj);
+                                        eval.obj.name = content[finalIdx].eval[k];
+                                        eval.obj.sIdx = new Array();
+                                        eval.obj.sIdx.push(j);
+                                        eval.obj.tIdx = new Array();
+                                        eval.obj.tIdx.push(final);
+                                    }         
+                                }
+                                
+                            } 
+                            //for(var k=0; k<content[finalIdx])
                             
-                            // 블록체인에 내용기록하기
+                            for(var k=0; k<eval.length; ++k) {
+                                //if(eval[k].obj.name === )
+                            }
+                            if(eflag === false) {
+                                
+                            }
+                            
+                            
                         }
+                            
+                        // 최종문장 평가자 신뢰도 올리기 Content Object
+                        // 최종문장 번역자 신뢰도 올리기 trans_user
+                            
+                        // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
+                        // 최종문장 평가자 보상금 지급 [보상금 * 0.1 / 평가자수]
                         
+                        // 블록체인에 내용기록하기
+                        
+                        // 번역 마감 표시
                         doc.valid = 1;
                         doc.save(function(err){
                             if(err) { console.log(err); }
                             else { console.log('updated.') }
                         });
+
+                        
                         
                     });
                 }
@@ -296,7 +361,7 @@ router.get('/:p_num/sentence/:s_num/trans', function(req, res, next){
             var trans_array = [];
             var len = doc.sentence[s_num].trans.length;
             for(var i=0; i<len; i++) {
-                var data = { idx: i, text: doc.sentence[s_num].trans[i].text };
+                var data = { idx: i, text: doc.sentence[s_num].trans[i].text};
                 array.push(data);
             }
             shuffle(array);

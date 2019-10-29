@@ -4,7 +4,7 @@ const config = { rpcURL: 'https://api.baobab.klaytn.net:8651/'}
 
 const cav = new Caver(config.rpcURL);
 
-//const blotTokenContract = new cav.klay.Contract(JSON.parse(contractInfo.DEPLOYED_BLOTTOKEN_ABI), contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS);
+const blotTokenContract = new cav.klay.Contract(JSON.parse(contractInfo.DEPLOYED_BLOTTOKEN_ABI), contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS);
 const blotProjectContract = new cav.klay.Contract(JSON.parse(contractInfo.DEPLOYED_BLOTPROJECT_ABI), contractInfo.DEPLOYED_BDEPLOYED_BLOTPROJECT_ADDRESSLOTMAIN_ADDRESS);
 const blotUserContract = new cav.klay.Contract(JSON.parse(contractInfo.DEPLOYED_BLOTUSER_ABI), contractInfo.DEPLOYED_BLOTUSER_ADDRESS);
 const blotMainContract = new cav.klay.Contract(JSON.parse(contractInfo.DEPLOYED_BLOTMAIN_ABI), contractInfo.DEPLOYED_BLOTMAIN_ADDRESS);
@@ -19,42 +19,49 @@ module.exports = function() {
     
     return {
         // ProjectId로 프로젝트에 걸린 보상금 조회
-        getReward : async function() {
-            var projectId = 'projectId3';
+        getReward : async function(project) {
+            var projectId = project;
             await blotProjectContract.methods.getProjectRewardByprojectId(projectId).call()
             .then( function( result ) {
                 // result에 보상금이 반환됨
-                console.log(projectId + '의 보상금은 ' + result + ' BLOT');
+                //console.log(projectId + '의 보상금은 ' + result + ' BLOT');
+                return result;
             });
         },
 
         // ProjectId로 프로젝트에 정보(글쓴이, 마감일, 보상금) 조회
-        getProjectInfo : async function() {
-            var projectId = 'projectId3';
+        getProjectInfo : async function(project) {
+            var projectId = project;
             await blotProjectContract.methods.getProjectInfoByprojectId(projectId).call()
             .then( function( result ) {
                 // result에 글쓴이 아이디, 마감일, 보상금이 반환됨
-                console.log(result);
+                // console.log(result);
+                return result;
             });
         },
         
         // userId로 사용자 신뢰 점수 조회
-        getTrust : async function() {
-            var userId = 'kss';
+        getTrust : async function(user) {
+            var userId = user;
+            var ret;
             await blotUserContract.methods.getUserReliabilityByUserId(userId).call()
             .then( function( result ) {
                 // result에 사용자 신뢰 점수가 반환됨
-                console.log(userId의+' 사용자 신뢰 점수 : '+result);
+                console.log(userId+' 사용자 신뢰 점수 : '+result);
+                ret = result;
+                
             });
+            return ret;
         },
         
         // userId로 사용자 지갑 주소 조회
-        getWalletAddress : async function() {
-            var userId = 'kss';
+        getWalletAddress : async function(user) {
+            var userId = user;
             await blotUserContract.methods.getUserAddressByUserId(userId).call()
             .then( function( result ) {
                 // result에 사용자 지갑 주소가 반환됨
-                console.log(userId+'의 지갑 주소 :'+result);
+                // console.log(userId+'의 지갑 주소 :'+result);
+                return result;
             });
         },
         
@@ -80,10 +87,9 @@ module.exports = function() {
             const translatorId = 'translatorId';
             const sentenceList = [1, 2, 3];
             const translationList = [1, 2, 3];
-            const listSize = 3;
             const share = 20;
             
-            await blotMainContract.methods.generateTranslationEvent(projectId, translatorId, sentenceList, translationList, listSize, share).send({
+            await blotMainContract.methods.generateTranslationEvent(projectId, translatorId, sentenceList, translationList, share).send({
                 from : this._getFeePayerWalletAddress(),
                 gas : 250000
             })
@@ -99,7 +105,6 @@ module.exports = function() {
             const evaluatorId = 'translatorId';
             const sentenceList = [1, 2, 3];
             const translationList = [1, 2, 3];
-            const listSize = 3;
             const share = 20;
             
             await blotMainContract.methods.blotMainContract.methods.generateEvaluationEvent(
@@ -107,7 +112,6 @@ module.exports = function() {
                 evaluatorId, 
                 sentenceList, 
                 translationList, 
-                listSize, 
                 share
             ).send({
                 from : this._getFeePayerWalletAddress(),
