@@ -9,6 +9,12 @@ app.use(express.urlencoded({limit: '50mb', extended: true}));
 const mongoose = require('mongoose');
 const splitter = require('sentence-splitter');
 const cron = require('node-cron');
+const moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault('Asia/Seoul');
+
+//console.log(moment().format('YYYY'));
+//console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
 
 const Klaytn = require('../blockchain/contract');
 
@@ -24,19 +30,26 @@ const Trans = mongoose.model('Trans', require('../models/trans'));
 const myKlaytn = Klaytn();
 myKlaytn.getTrust();
 
-// 익일 마다 검사 [테스트 코드 10초마다]
+var date = new Date();
+console.log(date);
 
+// 익일 마다 검사 [테스트 코드 10초마다]
 cron.schedule('* * * * 11 *', () => {
     Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
     if(err) console.log('err');
         else {
+            /*
             var now = new Date();
             var year = now.getFullYear();
             var month = now.getMonth()+1;
             var day = now.getDate();
-
-            var cnt = doc2.length;
-            for(var i=0; i<cnt; i++) {
+            */
+            var year = moment().format('YYYY');
+            var month = moment().format('MM');
+            var day = moment().format('DD');
+            
+            //var cnt = doc2.length;
+            for(var i=0; i<doc2.length; i++) {
                 var dd = doc2[i].end;
                 var y = dd.getFullYear();
                 var m = dd.getMonth()+1;
@@ -46,7 +59,6 @@ cron.schedule('* * * * 11 *', () => {
 
                     Project.findOne({'_id': _id}, function(err, doc) {
 
-                        
                         // 문장마다
                         for(var j=0; j<doc.sentence.length; j++) {
                             
@@ -124,7 +136,7 @@ cron.schedule('* * * * 11 *', () => {
         }
     });
     //console.log('running a task every two seconds');
-})
+});
 
 
 // 프로젝트 정보 등록하기
@@ -411,51 +423,6 @@ function shuffle(d) {
 };
 
 module.exports = router;
-
-
-/*
-router.post('/insert', function(req, res, next) {
-    var userid = req.body.userid;
-    var sex = req.body.sex;
-    var city = req.body.city;
-    
-    var user = new User({'userid':userid, 'sex':sex, 'city.name':city});
-    user.save(function(err,silence){
-        if(err){
-            console.log(err);
-            res.status(500).send('update error');
-            return;
-        }
-        res.status(200).send("Inserted");
-    });
-});
-
-router.get('/list', function(req, res, next) {
-    User.find({}, function(err, docs){
-        if(err) console.log('err');
-        res.send(docs);
-    }); 
-});
-
-router.get('/get', function(req, res, next){
-    var userid = req.query.userid;
-    User.findOne({'_id':userid}, function(err, doc){
-        if(err) console.log('err');
-        res.send(doc);
-    });
-});
-*/
-/*
-router.get('/list', function(req, res, next) {
-    Project.find({}, function(err, docs){
-        if(err) console.log('err');
-        else {
-            console.log(Project.title);
-        }
-    });
-    res.render('index', { title: 'Express' });
-});
-*/
 
 
 
