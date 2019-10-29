@@ -13,37 +13,17 @@
                 <div class="result-box">
                     <div class="row">
                         <!--결과 각각의 상자-->
-                        <div class="col-md-6 each-container">
+                        <transition-group enter-active-class="animated zoomIn" tag="div">
+                        <div v-for="result in resultList" v-bind:key="result._id" v-on:click="gotoProject(result._id)" class="col-md-6 each-container">
                             <div class="each-box">
-                                <div class="icon-box"><i class="ri-building-line"></i></div>
+                                <div class="icon-box"><i v-bind:class="result.icon"></i></div>
                                 <div class="proj-title">
-                                    <h4>프로젝트 이름 1</h4>
-                                    <small>프로젝트 요약</small>
+                                    <h4>{{result.title}}</h4>
+                                    <small>{{result.description}}</small>
                                 </div>
                             </div>
                         </div>
-                        <!---->
-                        <!--결과 각각의 상자-->
-                        <div class="col-md-6 each-container">
-                            <div class="each-box">
-                                <div class="icon-box"><i class="ri-building-line"></i></div>
-                                <div class="proj-title">
-                                    <h4>프로젝트 이름 1</h4>
-                                    <small>프로젝트 요약</small>
-                                </div>
-                            </div>
-                        </div>
-                        <!---->
-                        <!--결과 각각의 상자-->
-                        <div class="col-md-6 each-container">
-                            <div class="each-box">
-                                <div class="icon-box"><i class="ri-building-line"></i></div>
-                                <div class="proj-title">
-                                    <h4>프로젝트 이름 1</h4>
-                                    <small>프로젝트 요약</small>
-                                </div>
-                            </div>
-                        </div>
+                        </transition-group>
                         <!---->
                     </div>
                 </div>
@@ -64,7 +44,8 @@ export default {
   name: 'ProjectSearch',
   data () {
     return {
-      searchInputText: ''
+      searchInputText: '',
+      resultList: ''
     }
   },
   methods: {
@@ -72,7 +53,13 @@ export default {
       axios.get('/api/project/keyword/' + this.searchInputText)
       .then(res => {
         console.log(res.data)
+        this.resultList = res.data
       })
+    },
+    gotoProject(route) {
+      this.$router.replace(this.$route.query.redirect || '/projView/' + route + '/')
+      console.log('/projView/' + route + '/')
+      this.$store.commit('TOGGLE_PROJECT_SEARCH')
     }
   },
   mounted () {

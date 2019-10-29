@@ -31,7 +31,7 @@
         <ProjectSearch></ProjectSearch>
         <BlockChainLogin></BlockChainLogin>
         <transition enter-active-class="animated fadeInLeft">
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </transition>
     </div>
     <!-- /.content-wrapper -->
