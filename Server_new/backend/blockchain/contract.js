@@ -47,7 +47,7 @@ module.exports = function() {
             await blotUserContract.methods.getUserReliabilityByUserId(userId).call()
             .then( function( result ) {
                 // result에 사용자 신뢰 점수가 반환됨
-                console.log(userId+' 사용자 신뢰 점수 : '+result);
+                //console.log(userId+' 사용자 신뢰 점수 : '+result);
                 ret = result;
                 
             });

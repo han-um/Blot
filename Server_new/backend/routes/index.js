@@ -67,11 +67,11 @@ async function deadline(doc) {
                 content.push(src);
             }       
         }
-
+        console.log('CONTENT');
         console.log(content);
 
         // 최종문장 찾기
-        var final; // 뽑힌사람의 번역 문장
+        var final = -1; // 뽑힌사람의 번역 문장
         var finalIdx = -1;
         var max = -1;
         for(var k=0; k<content.length; k++) {
@@ -82,8 +82,8 @@ async function deadline(doc) {
             }
         }
 
-        console.log('final : ' + final);
-        console.log('finalIdx : ' + finalIdx);
+        //console.log('final : ' + final);
+        //console.log('finalIdx : ' + finalIdx);
 
         // 최종문장 번역자 찾기 && 최종문장 등록
         var trans_user;
@@ -125,7 +125,7 @@ async function deadline(doc) {
                 for(var l=0; l<eval.length; ++l) {
                     if(eval[l].name === content[finalIdx].eval[k]) {
                         eval[l].sIdx.push(j);
-                        eval[l].tIdx.push(fianl);
+                        eval[l].tIdx.push(final);
                         eflag = true;
                         break;
                     }
@@ -142,12 +142,16 @@ async function deadline(doc) {
                 }         
             }
         }
-    }   
+    } 
+    console.log('TRANS');
+    console.log(trans);
+    console.log('EVAL');
+    console.log(eval);
 }
 
 
 // 익일 마다 검사 [테스트 코드 10초마다]
-cron.schedule('*/20 * * * * *', () => {
+cron.schedule('* */10 * * * *', () => {
     Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
     if(err) console.log('err');
         else {
@@ -155,15 +159,23 @@ cron.schedule('*/20 * * * * *', () => {
             var month = moment().format('MM');
             var day = moment().format('DD');
             
+            console.log('now : '+year+'-'+month+'-'+day);
+            
             for(var i=0; i<doc2.length; i++) {
                 var dd = doc2[i].end;
                 var y = dd.getFullYear();
                 var m = dd.getMonth()+1;
                 var d = dd.getDate();
                 
+                console.log(dd);
+                
                 if(year == y && month == m && day == d) {
-                    var _id = doc2[i]._id;
                     
+                    console.log('chk');
+                    console.log('')
+                    //console.log(y+'-'+m+'-'+d);
+                    
+                    var _id = doc2[i]._id;
                     var trans = new Array();
                     var eval = new Array();
                     
@@ -188,8 +200,7 @@ cron.schedule('*/20 * * * * *', () => {
                             else { console.log('updated.') }
                         });
                         
-                        
-                        
+
                     });
                 }
             }
