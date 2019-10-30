@@ -54,6 +54,8 @@ module.exports = function() {
             return ret;
         },
         
+        
+        
         // userId로 사용자 지갑 주소 조회
         getWalletAddress : async function(user) {
             var userId = user;

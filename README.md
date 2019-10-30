@@ -139,6 +139,10 @@
 	> userId : 계정명[string]
     > 설명 : 번역문장의 평가가 존재하면 평가내용변경 존재하지 않으면 평가내용추가
     
+- 프로젝트 마감 유효성 조회 [GET] - /api/project/:p_num/deadline
+    > p_num : 프로젝트 ObjectId[string]
+    > Return : 마감 상태 아닐시 false, 마감 상태시 true
+    
 - 검색어 조회 [GET] - /api/project/keyword/:key
     > key : 검색어 내용
     > Return : [프로젝트 ObjectId, 제목, 요약, 아이콘, 색상] 배열 존재하지 않을시 false
