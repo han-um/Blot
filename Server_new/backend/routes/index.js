@@ -28,34 +28,139 @@ const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
 const myKlaytn = Klaytn();
-myKlaytn.getTrust('kss').then( result => {console.log(result)});
 
+async function deadline(doc) {
+    
+    var trans = new Array();
+    var eval = new Array();
+    
+    for(var j=0; j<doc.sentence.length; j++) {
+        var content = new Array();
 
+        // 특정문장 평가점수 계산
+        for(var k=0; k<doc.sentence[j].like.length; k++) {
 
-var date = new Date();
-console.log(date);
+            var tmp = doc.sentence[j].like[k].trans_id;
+            var user = doc.sentence[j].like[k].user;
+            var flag = false;
+            var trust;
+
+            for(var l=0; l<content.length; l++) {
+                if(content[l].trans == tmp) {
+                    //content[l].score += 1;  // 1*신뢰도
+                    trust = await myKlaytn.getTrust('kss');
+                    trust = level(parseInt(trust));
+                    content[l].score += 1 * trust;
+                    content[l].eval.push(user);
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag == false) {
+                var src = new Object;
+                src['trans'] = tmp;
+                trust = await myKlaytn.getTrust('kss');
+                trust = level(parseInt(trust));
+                src['score'] = 1 * trust; // 1*신뢰도
+                src['eval'] = new Array;
+                src['eval'].push(user);
+                content.push(src);
+            }       
+        }
+
+        console.log(content);
+
+        // 최종문장 찾기
+        var final; // 뽑힌사람의 번역 문장
+        var finalIdx = -1;
+        var max = -1;
+        for(var k=0; k<content.length; k++) {
+            if(max < content[k].score) {
+                max = content[k].score;
+                final = content[k].trans;
+                finalIdx = k;
+            }
+        }
+
+        console.log('final : ' + final);
+        console.log('finalIdx : ' + finalIdx);
+
+        // 최종문장 번역자 찾기 && 최종문장 등록
+        var trans_user;
+        for(var k=0; k<doc.sentence[j].trans.length; k++) {
+            if(doc.sentence[j].trans[k].idx == final) {
+                trans_user = doc.sentence[j].trans[k].user;
+                doc.sentence[j].trans_text = doc.sentence[j].trans[k].text;
+                //console.log(j+'번문장 번역자 : '+trans_user);
+                break;
+            }
+        }
+
+        // 번역활동기록
+        var sflag = false;
+        for(var k=0; k<trans.length; ++k) {
+            if(trans[k].name === trans_user) {
+                trans[k].sIdx.push(j);
+                trans[k].tIdx.push(final);
+                sflag = true;
+                break;
+            }
+        }
+        if(sflag === false) {
+            var obj = new Object();
+            trans.push(obj);
+            var idx = trans.length-1;
+            trans[idx].name = trans_user;
+            trans[idx].sIdx = new Array();
+            trans[idx].sIdx.push(j);
+            trans[idx].tIdx = new Array();
+            trans[idx].tIdx.push(final);
+        }
+
+        // 평가활동기록
+        var eflag = false;
+        if(finalIdx !== -1) {
+            for(var k=0; k<content[finalIdx].eval.length; ++k) {
+                var eflag = false;
+                for(var l=0; l<eval.length; ++l) {
+                    if(eval[l].name === content[finalIdx].eval[k]) {
+                        eval[l].sIdx.push(j);
+                        eval[l].tIdx.push(fianl);
+                        eflag = true;
+                        break;
+                    }
+                }
+                if(eflag === false) {
+                    var obj = new Object();
+                    eval.push(obj);
+                    var idx = eval.length-1;
+                    eval[idx].name = content[finalIdx].eval[k];
+                    eval[idx].sIdx = new Array();
+                    eval[idx].sIdx.push(j);
+                    eval[idx].tIdx = new Array();
+                    eval[idx].tIdx.push(final);
+                }         
+            }
+        }
+    }   
+}
+
 
 // 익일 마다 검사 [테스트 코드 10초마다]
-cron.schedule('* * * * 11 *', () => {
+cron.schedule('*/20 * * * * *', () => {
     Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
     if(err) console.log('err');
         else {
-            /*
-            var now = new Date();
-            var year = now.getFullYear();
-            var month = now.getMonth()+1;
-            var day = now.getDate();
-            */
             var year = moment().format('YYYY');
             var month = moment().format('MM');
             var day = moment().format('DD');
             
-            //var cnt = doc2.length;
             for(var i=0; i<doc2.length; i++) {
                 var dd = doc2[i].end;
                 var y = dd.getFullYear();
                 var m = dd.getMonth()+1;
                 var d = dd.getDate();
+                
                 if(year == y && month == m && day == d) {
                     var _id = doc2[i]._id;
                     
@@ -63,126 +168,18 @@ cron.schedule('* * * * 11 *', () => {
                     var eval = new Array();
                     
                     Project.findOne({'_id': _id}, function(err, doc) {
-                        // 문장마다
-                        for(var j=0; j<doc.sentence.length; j++) {
-                            
-                            var content = new Array();
-                            
-                            // 특정문장 평가점수 계산
-                            for(var k=0; k<doc.sentence[j].like.length; k++) {
-                                
-                                var tmp = doc.sentence[j].like[k].trans_id;
-                                var user = doc.sentence[j].like[k].user;
-                                var flag = false;
-                                
-                                for(var l=0; l<content.length; l++) {
-                                    if(content[l].trans == tmp) {
-                                        //content[l].score += 1;  // 1*신뢰도
-                                        content[l].score += 1 * myKlaytn.getTrust(user);
-                                        content[l].eval.push(user);
-                                        flag = true;
-                                        break;
-                                    }
-                                }
-                                if(flag == false) {
-                                    var src = new Object;
-                                    src['trans'] = tmp;
-                                    src['score'] = 1 * getTrust(user); // 1*신뢰도
-                                    src['eval'] = new Array;
-                                    src['eval'].push(user);
-                                    content.push(src);
-                                }       
-                            }
-  
-                            console.log(content);
-                            
-                            // 최종문장 찾기
-                            var final; // 뽑힌사람의 번역 문장
-                            var finalIdx = -1;
-                            var max = 0;
-                            for(var k=0; k<content.length; k++) {
-                                if(max < content[k].score) {
-                                    max = content[k].score;
-                                    final = content[k].trans;
-                                    finalIdx = k;
-                                }
-                            }
-                            
-                            // 최종문장 번역자 찾기 && 최종문장 등록
-                            var trans_user;
-                            for(var k=0; k<doc.sentence[j].trans.length; k++) {
-                                if(doc.sentence[j].trans[k].idx == final) {
-                                    trans_user = doc.sentence[j].trans[k].user;
-                                    doc.sentence[j].trans_text = doc.sentence[j].trans[k].text;
-                                    //console.log(j+'번문장 번역자 : '+trans_user);
-                                    break;
-                                }
-                            }
-                            
-                            // 번역활동기록
-                            var sflag = false;
-                            for(var k=0; k<trans.length; ++k) {
-                                if(trans[k].obj.name === trans_user) {
-                                    trans[k].obj.sIdx.push(j);
-                                    trans[k].obj.tIdx.push(final);
-                                    sflag = true;
-                                    break;
-                                }
-                            }
-                            if(sflag === false) {
-                                var obj = new Object();
-                                trans.push(obj);
-                                trans.obj.name = trans_user;
-                                trans.obj.sIdx = new Array();
-                                trans.obj.sIdx.push(j);
-                                trans.obj.tIdx = new Array();
-                                trans.obj.tIdx.push(final);
-                            }
-                            
-                            // 평가활동기록
-                            var eflag = false;
-                            if(finalIdx !== -1) {
-                                for(var k=0; k<content[finalIdx].eval.length; ++k) {
-                                    var eflag = false;
-                                    for(var l=0; l<eval.length; ++l) {
-                                        if(eval[l].obj.name === content[finalIdx].eval[k]) {
-                                            eval[l].obj.sIdx.push(j);
-                                            eval[l].obj.tIdx.push(fianl);
-                                            eflag = true;
-                                            break;
-                                        }
-                                    }
-                                    if(eflag === false) {
-                                        var obj = new Object();
-                                        eval.push(obj);
-                                        eval.obj.name = content[finalIdx].eval[k];
-                                        eval.obj.sIdx = new Array();
-                                        eval.obj.sIdx.push(j);
-                                        eval.obj.tIdx = new Array();
-                                        eval.obj.tIdx.push(final);
-                                    }         
-                                }
-                                
-                            } 
-                            //for(var k=0; k<content[finalIdx])
-                            
-                            for(var k=0; k<eval.length; ++k) {
-                                //if(eval[k].obj.name === )
-                            }
-                            if(eflag === false) {
-                                
-                            }
-                            
-                            
-                        }
-                            
+                        
+                        deadline(doc);
+                        
+                        
                         // 최종문장 평가자 신뢰도 올리기 Content Object
                         // 최종문장 번역자 신뢰도 올리기 trans_user
                             
                         // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
                         // 최종문장 평가자 보상금 지급 [보상금 * 0.1 / 평가자수]
                         
-                        // 블록체인에 내용기록하기
+                        // 블록체인에 내용기록하기 []
+                        
                         
                         // 번역 마감 표시
                         doc.valid = 1;
@@ -190,7 +187,7 @@ cron.schedule('* * * * 11 *', () => {
                             if(err) { console.log(err); }
                             else { console.log('updated.') }
                         });
-
+                        
                         
                         
                     });
@@ -459,6 +456,18 @@ router.get('/keyword/:key', function(req, res, next) {
     });
 });
 
+// 프로젝트가 마감유효성 조회
+router.get('/:p_num/deadline', function(req, res, next) {
+    Project.findOne({'_id': req.params.p_num},{'valid': true}, function(err, doc) {
+        if(err) { console.log('err'); return; }
+        else {
+            
+            if(doc.valid === 0) res.send(false);
+            else res.send(true);
+        }
+    });
+});
+
 // 특정유저가 등록한 프로젝트ObjectId 조회
 router.get('/user/:userId', function(req, res, next) {
     Project.find({'user': req.params.userId}, {'title': true, 'description': true, 'icon': true, 'color': true}, function(err, doc) {
@@ -486,6 +495,24 @@ function shuffle(d) {
     }
     return d;
 };
+
+function level(d) {
+    var ret;
+    
+    if(d > 900 && d <= 1000) ret = 1.0;
+    else if(d > 800 && d <= 900 ) ret = 0.9;
+    else if(d > 700 && d <= 800 ) ret = 0.8;
+    else if(d > 600 && d <= 700 ) ret = 0.7;
+    else if(d > 500 && d <= 600 ) ret = 0.6;
+    else if(d > 400 && d <= 500 ) ret = 0.5;
+    else if(d > 300 && d <= 400 ) ret = 0.4;
+    else if(d > 200 && d <= 300 ) ret = 0.3;
+    else if(d > 100 && d <= 200 ) ret = 0.2;
+    else if(d > 0 && d <= 100 ) ret = 0.1;
+    else ret = 0.0
+    
+    return ret;
+}
 
 module.exports = router;
 
