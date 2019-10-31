@@ -2,8 +2,8 @@ const BlotToken = artifacts.require("BlotToken");
 const fs = require('fs');
 
 module.exports = function(deployer) {
-  deployer.deploy(BlotToken)
-  .then(()=> {
+    deployer.deploy(BlotToken)
+    .then(()=> {
     if(BlotToken._json) {
         fs.writeFile(
             './metadata/BlotToken_ABI',
@@ -23,5 +23,5 @@ module.exports = function(deployer) {
             console.log("BlotToken Address 기록 성공");
         }
     )
-  });
+    });
 };
