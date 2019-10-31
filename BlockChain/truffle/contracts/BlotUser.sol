@@ -26,7 +26,7 @@ contract BlotUser {
     function userSignUp(string memory userId, address payable walletAddress) public returns (bool) {
         // 해당 User 아이디가 사용중이 아니어야 함
         require(!userExist(userId), "ERROR : That userId already exists.");
-        userInfo[userId] = User(walletAddress, 100, true);
+        userInfo[userId] = User(walletAddress, 1000, true);
         return true;
     }
 

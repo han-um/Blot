@@ -49,16 +49,16 @@ contract BlotMain is Ownable {
     }
 
     // Blot 토큰 판매하고 Klay로 바꿔가는 함수
-    function sellToken(address payable userAddress, uint256 blotNum) public returns (bool) {
+    function sellToken(uint256 blotNum) public returns (bool) {
         // blotNum이 10000으로 나누어떨어져야 함
         require(blotNum.mod(1e4)==0, "Please enter BLOT token number in units of 10000");
 
         // blotNum 만큼 토큰을 없앰
-        if(blotTokenAddress.burnBlot(userAddress, blotNum)) {
+        if(blotTokenAddress.burnBlot(_msgSender(), blotNum)) {
             // 사용자 계정으로 klay(Peb 단위) 입금하기 위해 컨트랙트 계정의 잔고를 확인하고 송금
             uint256 pebNum = KlaytnMonetaryUnit.blotToPeb(blotNum, uint256(blotTokenAddress.decimals()));
             require(address(this).balance >= pebNum, "Error : Contract owner doesn't have enough money.");
-            userAddress.transfer(pebNum);
+             address(uint160(_msgSender())).transfer(pebNum);
             return true;
         }
         else
@@ -199,7 +199,7 @@ contract BlotMain is Ownable {
     }
 
     // klay 수신 내역
-    event LogDepositReceived(address indexed userAddress, uint256 klayNum);
+    event LogDepositReceived(address indexed userAddress, uint256 pebNum);
 
     // 번역 및 평가 활동 기록
     event NewTranslation(
