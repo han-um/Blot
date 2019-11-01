@@ -47,7 +47,6 @@ async function deadline(doc) {
 
             for(var l=0; l<content.length; l++) {
                 if(content[l].trans == tmp) {
-                    //content[l].score += 1;  // 1*신뢰도
                     trust = await myKlaytn.getTrust('kss');
                     trust = level(parseInt(trust));
                     content[l].score += 1 * trust;
@@ -147,11 +146,30 @@ async function deadline(doc) {
     console.log(trans);
     console.log('EVAL');
     console.log(eval);
+    
+    // 최종문장 번역자 신뢰도 올리기 trans_user
+    /*
+    for(var k=0; k<trans.length; k++) {
+        
+    }
+    */
+    
+    var balance = await myKlaytn.getBalance('kss');
+    console.log('kss의 토큰 : ' + balance);
+    
+    
+    // 최종문장 평가자 신뢰도 올리기 Content Object
+
+    // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
+    // 최종문장 평가자 보상금 지급 [보상금 * 0.1 / 평가자수]
+
+    // 블록체인에 내용기록하기 []
+    
 }
 
 
 // 익일 마다 검사 [테스트 코드 10초마다]
-cron.schedule('* */10 * * * *', () => {
+cron.schedule('*/10 * * * * *', () => {
     Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
     if(err) console.log('err');
         else {
@@ -167,13 +185,9 @@ cron.schedule('* */10 * * * *', () => {
                 var m = dd.getMonth()+1;
                 var d = dd.getDate();
                 
-                console.log(dd);
-                
                 if(year == y && month == m && day == d) {
                     
-                    console.log('chk');
-                    console.log('')
-                    //console.log(y+'-'+m+'-'+d);
+                    console.log(y+'-'+m+'-'+d);
                     
                     var _id = doc2[i]._id;
                     var trans = new Array();
@@ -286,11 +300,7 @@ router.post('/', function(req, res, next){
 // 프로젝트 등록시 대납서명 요청
 
 
-router.post('/sign', function(req, res, next) {
-    /*
-    const senderRawTransaction = '0x31f9010b138505d21dba008307a120944f8a7325059220a32a8679efb16e87a9e971b82080946f560ac6ede19461b28382816232c4dd50bd4843b884484e139100000000000000000000000000000000000000000000000000000000000000400000000000000000000000006f560ac6ede19461b28382816232c4dd50bd4843000000000000000000000000000000000000000000000000000000000000000a7573657249645465737400000000000000000000000000000000000000000000f847f8458207f5a0740fe1bfea4ef2cc33456dda1e7504965836b9a1d4165ac033d657a349dda2daa07cc489a1f3c7614d01fee27eab82c2de39eb18c6d8d94b5e1edf345421cca4ea80c4c3018080';
-    */
-    
+router.post('/sign', function(req, res, next) { 
     const senderRawTransaction = req.params.rawTransaction;
     
     var ret = myKlaytn.payProxy(senderRawTransaction);
@@ -520,7 +530,7 @@ function level(d) {
     else if(d > 200 && d <= 300 ) ret = 0.3;
     else if(d > 100 && d <= 200 ) ret = 0.2;
     else if(d > 0 && d <= 100 ) ret = 0.1;
-    else ret = 0.0
+    else ret = 1.0;
     
     return ret;
 }

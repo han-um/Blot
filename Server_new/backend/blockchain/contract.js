@@ -41,19 +41,16 @@ module.exports = function() {
         },
         
         // userId로 사용자 신뢰 점수 조회
-        getTrust : async function(user) {
-            var userId = user;
-            var ret;
+        getTrust : async function(userId) {
             await blotUserContract.methods.getUserReliabilityByUserId(userId).call()
             .then( function( result ) {
                 // result에 사용자 신뢰 점수가 반환됨
                 //console.log(userId+' 사용자 신뢰 점수 : '+result);
-                ret = result;
+                //ret = result;
+                return result;
                 
             });
-            return ret;
         },
-        
         
         
         // userId로 사용자 지갑 주소 조회
@@ -64,6 +61,13 @@ module.exports = function() {
                 // result에 사용자 지갑 주소가 반환됨
                 // console.log(userId+'의 지갑 주소 :'+result);
                 return result;
+            });
+        },
+        
+        getBalance : async function(userId) {
+            await blotMainContract.methods.getUserBalanceByUserId(userId).call()
+            .then( function(result) {
+                  return result;
             });
         },
         
