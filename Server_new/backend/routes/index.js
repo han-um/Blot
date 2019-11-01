@@ -111,7 +111,8 @@ async function deadline(doc) {
 
             for(var l=0; l<content.length; l++) {
                 if(content[l].trans == tmp) {
-                    trust = await myKlaytn.getTrust('kss');
+                    //trust = await myKlaytn.getTrust('kss');
+                    trust = 1000;
                     trust = level(parseInt(trust));
                     content[l].score += 1 * trust;
                     content[l].eval.push(user);
@@ -122,7 +123,8 @@ async function deadline(doc) {
             if(flag == false) {
                 var src = new Object;
                 src['trans'] = tmp;
-                trust = await myKlaytn.getTrust('kss');
+                //trust = await myKlaytn.getTrust('kss');
+                trust = 1000;
                 trust = level(parseInt(trust));
                 src['score'] = 1 * trust; // 1*신뢰도
                 src['eval'] = new Array;
@@ -211,17 +213,13 @@ async function deadline(doc) {
     console.log('EVAL');
     console.log(eval);
     
-    // 최종문장 번역자 신뢰도 올리기 trans_user
-    /*
-    for(var k=0; k<trans.length; k++) {
-        
-    }
-    */
     
-    var balance = await myKlaytn.getBalance('kss');
-    console.log('kss의 토큰 : ' + balance);
-    
-    
+    doc.valid = 0;
+    doc.save(function(err){
+        if(err) { console.log(err); }
+        else { console.log('updated.') }
+    });
+    // 최종문장 번역자 신뢰도 올리기 trans_user    
     // 최종문장 평가자 신뢰도 올리기 Content Object
 
     // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
@@ -272,12 +270,13 @@ cron.schedule('*/10 * * * * *', () => {
                         
                         
                         // 번역 마감 표시
+                        /*
                         doc.valid = 1;
                         doc.save(function(err){
                             if(err) { console.log(err); }
                             else { console.log('updated.') }
                         });
-                        
+                        */
 
                     });
                 }
