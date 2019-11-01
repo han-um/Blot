@@ -29,6 +29,70 @@ const Trans = mongoose.model('Trans', require('../models/trans'));
 
 const myKlaytn = Klaytn();
 
+//============================================================================
+// 예외 처리 방법
+// 1. 컨트랙트 함수를 호출 구문을 try, catch 구문으로 감싼다.
+// 2. catch 구문에는 잘못된 실행, 없는 데이터를 불러오라 했을 때 실행되므로
+//    이 예외가 발생하면 무슨 조치를 취할지 적어줌
+
+
+// // 예제 1) 단순히 블록체인 상의 데이터를 읽어오는 함수의 경우
+// async function testGetTrust(userId) {
+//     var userTrust; 
+//     try {
+//         userTrust = await myKlaytn.getTrust(userId);
+//         console.log(userId+'의 신뢰도 : '+userTrust);
+//     } catch(err) {
+//         // 에러 이유
+//         console.log(userId+'로 조회되는 신뢰 점수가 없습니다.');
+//         // 에러 메세지 출력
+//         console.log(err);
+//     }
+// }
+
+// testGetTrust('kss');
+
+
+// // 예제 2) 블록체인 상의 데이터를 변경하는 경우
+// //         Transaction Hash 값을 얻어와 트랜잭션 결과를 확인할 수 있는 홈페이지 링크를 클라이언트에게 돌려줌
+// async function testSetTrust(userId, value) {
+//     var result; 
+//     try {
+//         result = await myKlaytn.setTrust(userId, value);
+//         console.log('result : '+result.transactionHash);
+//     } catch(err) {
+//         // 에러 이유
+//         console.log(userId+'의 신뢰 점수를 수정할 수 없습니다.');
+//         // 에러 메세지 출력
+//         console.log(err);
+//     }
+// }
+
+// testSetTrust('kss', 10);
+
+// // 예제 3) 블록체인 상의 이벤트 로그를 조회하는 경우(블록체인 상의 데이터를 조회하는 것임)
+// async function testGetTranslationLog() {
+//     var result; 
+//     try {
+//         result = await myKlaytn.getTranslationLog();
+//         for(var i=0; i<result.length; i++) {
+//             console.log('project Id:'+JSON.stringify(result[i].returnValues.projectId));
+//             console.log('translator Id:'+JSON.stringify(result[i].returnValues.translatorId));
+//             console.log('sentenceId List:'+JSON.stringify(result[i].returnValues.sentenceId));
+//             console.log('translationId List:'+JSON.stringify(result[i].returnValues.translationId));
+//             console.log('user Share:'+JSON.stringify(result[i].returnValues.userShare));
+//         }
+//     } catch(err) {
+//         // 에러 이유
+//         console.log('번역 기록을 가져오는 데 실패하였습니다.');
+//         // 에러 메세지 출력
+//         console.log(err);
+//     }
+// }
+
+//testGetTranslationLog();
+//============================================================================
+
 async function deadline(doc) {
     
     var trans = new Array();
