@@ -1,1078 +1,975 @@
+/* eslint-disable */
 module.exports = {
   DEPLOYED_BLOTTOKEN_ABI: [
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "name",
+    "outputs": [
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'name',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'string'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "",
+      "type": "string"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x06fdde03"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+    {
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x18160ddd"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
+    {
+      "name": "",
+      "type": "uint8"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x313ce567"
+  },
+  {
+    "constant": true,
+    "inputs": [
+    {
+      "name": "account",
+      "type": "address"
+    }],
+    "name": "balanceOf",
+    "outputs": [
+    {
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x70a08231"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+    {
+      "name": "",
+      "type": "string"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x95d89b41"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "recipient",
+      "type": "address"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'totalSupply',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "amount",
+      "type": "uint256"
+    }],
+    "name": "transfer",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0xa9059cbb"
+  },
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "signature": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+    {
+      "indexed": true,
+      "name": "from",
+      "type": "address"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'decimals',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint8'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "indexed": true,
+      "name": "to",
+      "type": "address"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'account',
-          'type': 'address'
-        }
-      ],
-      'name': 'balanceOf',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "indexed": false,
+      "name": "value",
+      "type": "uint256"
+    }],
+    "name": "Transfer",
+    "type": "event",
+    "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userAddress",
+      "type": "address"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'symbol',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'string'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "blotNum",
+      "type": "uint256"
+    }],
+    "name": "mintBlot",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0xb567edaf"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userAddress",
+      "type": "address"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'recipient',
-          'type': 'address'
-        },
-        {
-          'name': 'amount',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'transfer',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
-    },
+      "name": "blotNum",
+      "type": "uint256"
+    }],
+    "name": "burnBlot",
+    "outputs": [
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userAddress',
-          'type': 'address'
-        },
-        {
-          'name': 'blotNum',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'mintBlot',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
-    },
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0xe10c6e1e"
+  },
+  {
+    "constant": true,
+    "inputs": [
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userAddress',
-          'type': 'address'
-        },
-        {
-          'name': 'blotNum',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'burnBlot',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
-    },
+      "name": "userAddress",
+      "type": "address"
+    }],
+    "name": "getUserBalanceByUserAddress",
+    "outputs": [
     {
-      'inputs': [],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'constructor'
-    },
-    {
-      'anonymous': false,
-      'inputs': [
-        {
-          'indexed': true,
-          'name': 'from',
-          'type': 'address'
-        },
-        {
-          'indexed': true,
-          'name': 'to',
-          'type': 'address'
-        },
-        {
-          'indexed': false,
-          'name': 'value',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'Transfer',
-      'type': 'event'
-    }
-  ],
-  DEPLOYED_BLOTTOKEN_ADDRESS: '0xf99A14017c804d1471633C4aAeaA41f0B767E91b',
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x39f5e34f"
+  }],
+  DEPLOYED_BLOTTOKEN_ADDRESS: '0x78fa5884bEf3f45E88DBC33C2Cb13834Cc4676E7',
   DEPLOYED_BLOTPROJECT_ABI: [
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "signature": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getProjectReward',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "indexed": true,
+      "name": "reward",
+      "type": "uint256"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        },
-        {
-          'name': 'writerId',
-          'type': 'string'
-        },
-        {
-          'name': 'deadline',
-          'type': 'string'
-        },
-        {
-          'name': 'reward',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'createProject',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "deadline",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        }
-      ],
-      'name': 'projectExist',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "indexed": false,
+      "name": "projectId",
+      "type": "string"
+    }],
+    "name": "NewProject",
+    "type": "event",
+    "signature": "0x3b4c6bcdcc03f648f73a0b75f9dec05127819dfaade9279f01acfebde0975f3a"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "projectId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getProjectInfo',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'string'
-        },
-        {
-          'name': '',
-          'type': 'string'
-        },
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "writerId",
+      "type": "string"
     },
     {
-      'anonymous': false,
-      'inputs': [
-        {
-          'indexed': true,
-          'name': 'reward',
-          'type': 'uint256'
-        },
-        {
-          'indexed': false,
-          'name': 'deadline',
-          'type': 'string'
-        },
-        {
-          'indexed': false,
-          'name': 'projectId',
-          'type': 'string'
-        }
-      ],
-      'name': 'NewProject',
-      'type': 'event'
-    }
-  ],
-  DEPLOYED_BLOTPROJECT_ADDRESS: '0x1D4F3fe25f87E376B5d844C76Ea6D85764d9A26D',
+      "name": "deadline",
+      "type": "string"
+    },
+    {
+      "name": "reward",
+      "type": "uint256"
+    }],
+    "name": "createProject",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x1ca73896"
+  },
+  {
+    "constant": true,
+    "inputs": [
+    {
+      "name": "projectId",
+      "type": "string"
+    }],
+    "name": "getProjectRewardByprojectId",
+    "outputs": [
+    {
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x60e5ef16"
+  },
+  {
+    "constant": true,
+    "inputs": [
+    {
+      "name": "projectId",
+      "type": "string"
+    }],
+    "name": "getProjectInfoByprojectId",
+    "outputs": [
+    {
+      "name": "",
+      "type": "string"
+    },
+    {
+      "name": "",
+      "type": "string"
+    },
+    {
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x7024bf46"
+  },
+  {
+    "constant": true,
+    "inputs": [
+    {
+      "name": "projectId",
+      "type": "string"
+    }],
+    "name": "projectExist",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0xe0e5c830"
+  }],
+  DEPLOYED_BLOTPROJECT_ADDRESS: '0xe7dd4eb48A9b45E2ba5720e6BA793EF82DDca5c4',
   DEPLOYED_BLOTUSER_ABI: [
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "signature": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        }
-      ],
-      'name': 'userExist',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "indexed": true,
+      "name": "userIdHash",
+      "type": "bytes32"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        },
-        {
-          'name': 'oldUserAddress',
-          'type': 'address'
-        },
-        {
-          'name': 'newUserAddress',
-          'type': 'address'
-        }
-      ],
-      'name': 'modifyUserAddress',
-      'outputs': [],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "userId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getUserAddress',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'address'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "indexed": false,
+      "name": "value",
+      "type": "int256"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        },
-        {
-          'name': 'value',
-          'type': 'uint128'
-        }
-      ],
-      'name': 'addUserReliability',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "totalUserReliability",
+      "type": "uint256"
+    }],
+    "name": "Reliability",
+    "type": "event",
+    "signature": "0xc0b9af745dd70a604197c415fd38e2b33b98904fafcd4be30d11f66648d74710"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getUserReliability',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "walletAddress",
+      "type": "address"
+    }],
+    "name": "userSignUp",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x484e1391"
+  },
+  {
+    "constant": true,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
+    }],
+    "name": "getUserAddressByUserId",
+    "outputs": [
+    {
+      "name": "",
+      "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x542c0d8f"
+  },
+  {
+    "constant": true,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
+    }],
+    "name": "getUserReliabilityByUserId",
+    "outputs": [
+    {
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x7612cd1b"
+  },
+  {
+    "constant": true,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
+    }],
+    "name": "userExist",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x1b81e2d2"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        },
-        {
-          'name': 'walletAddress',
-          'type': 'address'
-        }
-      ],
-      'name': 'createUser',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "name": "oldUserAddress",
+      "type": "address"
     },
     {
-      'anonymous': false,
-      'inputs': [
-        {
-          'indexed': true,
-          'name': 'userIdHash',
-          'type': 'bytes32'
-        },
-        {
-          'indexed': false,
-          'name': 'userId',
-          'type': 'string'
-        },
-        {
-          'indexed': false,
-          'name': 'value',
-          'type': 'int128'
-        },
-        {
-          'indexed': false,
-          'name': 'totalUserReliability',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'Reliability',
-      'type': 'event'
-    }
-  ],
-  DEPLOYED_BLOTUSER_ADDRESS: '0x94a5827F74c48211F708894FB36B0e10A9BE4577',
+      "name": "newUserAddress",
+      "type": "address"
+    }],
+    "name": "modifyUserAddress",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x268f231a"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "uint256"
+    }],
+    "name": "addUserReliability",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0xed8c09af"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "uint256"
+    }],
+    "name": "subUserReliability",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0xb271b6d1"
+  }],
+  DEPLOYED_BLOTUSER_ADDRESS: '0x31672379bB03839619AFf2106FEADF060c48C40E',
   DEPLOYED_BLOTMAIN_ABI: [
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x715018a6"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "blotUserAddress",
+    "outputs": [
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        },
-        {
-          'name': 'evaluatorId',
-          'type': 'string'
-        },
-        {
-          'name': 'sentenceList',
-          'type': 'uint256[]'
-        },
-        {
-          'name': 'translationList',
-          'type': 'uint256[]'
-        },
-        {
-          'name': 'listSize',
-          'type': 'uint256'
-        },
-        {
-          'name': 'userShare',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'generateEvaluationEvent',
-      'outputs': [],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "name": "",
+      "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x723d6a68"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "blotTokenAddress",
+    "outputs": [
+    {
+      "name": "",
+      "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x89e30fa5"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+    {
+      "name": "",
+      "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x8da5cb5b"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "isOwner",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x8f32d59b"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "newOwner",
+      "type": "address"
+    }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0xf2fde38b"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "blotProjectAddress",
+    "outputs": [
+    {
+      "name": "",
+      "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0xf6f5d851"
+  },
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "signature": "constructor"
+  },
+  {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+    {
+      "indexed": true,
+      "name": "userAddress",
+      "type": "address"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        },
-        {
-          'name': 'translatorId',
-          'type': 'string'
-        },
-        {
-          'name': 'sentenceList',
-          'type': 'uint256[]'
-        },
-        {
-          'name': 'translationList',
-          'type': 'uint256[]'
-        },
-        {
-          'name': 'listSize',
-          'type': 'uint256'
-        },
-        {
-          'name': 'userShare',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'generateTranslationEvent',
-      'outputs': [],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "pebNum",
+      "type": "uint256"
+    }],
+    "name": "LogDepositReceived",
+    "type": "event",
+    "signature": "0x3916187166447a01764df803fb1147a37c55a4ca1c7271a7a75c0ab1079b2d95"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+    {
+      "indexed": true,
+      "name": "projectIdHash",
+      "type": "bytes32"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userAddress',
-          'type': 'address'
-        },
-        {
-          'name': 'klayNum',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'purchaseToken',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': true,
-      'stateMutability': 'payable',
-      'type': 'function'
+      "indexed": true,
+      "name": "translatorIdHash",
+      "type": "bytes32"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        },
-        {
-          'name': 'writerId',
-          'type': 'string'
-        },
-        {
-          'name': 'deadline',
-          'type': 'string'
-        },
-        {
-          'name': 'reward',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'registerNewProject',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "projectId",
+      "type": "string"
     },
     {
-      'constant': false,
-      'inputs': [],
-      'name': 'renounceOwnership',
-      'outputs': [],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "translatorId",
+      "type": "string"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        },
-        {
-          'name': 'newUserAddress',
-          'type': 'address'
-        }
-      ],
-      'name': 'replaceOldToNewUserAddress',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        },
-        {
-          'name': '',
-          'type': 'bytes'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "sentenceIdList",
+      "type": "uint256[]"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userAddress',
-          'type': 'address'
-        },
-        {
-          'name': 'blotNum',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'sellToken',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "translationIdList",
+      "type": "uint256[]"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userAddress',
-          'type': 'address'
-        },
-        {
-          'name': 'reward',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'sendRewardToUser',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "listSize",
+      "type": "uint256"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'newOwner',
-          'type': 'address'
-        }
-      ],
-      'name': 'transferOwnership',
-      'outputs': [],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "userShare",
+      "type": "uint256"
+    }],
+    "name": "NewTranslation",
+    "type": "event",
+    "signature": "0x5704c59ca004c775681505b7b7140309e49cbed23c9041b5f91f189df8859737"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+    {
+      "indexed": true,
+      "name": "projectIdHash",
+      "type": "bytes32"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        },
-        {
-          'name': 'value',
-          'type': 'uint128'
-        }
-      ],
-      'name': 'updateUserReliability',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": true,
+      "name": "evaluatorIdHash",
+      "type": "bytes32"
     },
     {
-      'constant': false,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        },
-        {
-          'name': 'walletAddress',
-          'type': 'address'
-        }
-      ],
-      'name': 'userSignUp',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'function'
+      "indexed": false,
+      "name": "projectId",
+      "type": "string"
     },
     {
-      'inputs': [
-        {
-          'name': '_blotTokenAddress',
-          'type': 'address'
-        },
-        {
-          'name': '_blotProjectAddress',
-          'type': 'address'
-        },
-        {
-          'name': '_blotUserAddress',
-          'type': 'address'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'nonpayable',
-      'type': 'constructor'
+      "indexed": false,
+      "name": "evaluatorId",
+      "type": "string"
     },
     {
-      'payable': true,
-      'stateMutability': 'payable',
-      'type': 'fallback'
+      "indexed": false,
+      "name": "sentenceIdList",
+      "type": "uint256[]"
     },
     {
-      'anonymous': false,
-      'inputs': [
-        {
-          'indexed': true,
-          'name': 'userAddress',
-          'type': 'address'
-        },
-        {
-          'indexed': false,
-          'name': 'klayNum',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'LogDepositReceived',
-      'type': 'event'
+      "indexed": false,
+      "name": "translationIdList",
+      "type": "uint256[]"
     },
     {
-      'anonymous': false,
-      'inputs': [
-        {
-          'indexed': true,
-          'name': 'projectIdHash',
-          'type': 'bytes32'
-        },
-        {
-          'indexed': true,
-          'name': 'translatorIdHash',
-          'type': 'bytes32'
-        },
-        {
-          'indexed': false,
-          'name': 'projectId',
-          'type': 'string'
-        },
-        {
-          'indexed': false,
-          'name': 'translatorId',
-          'type': 'string'
-        },
-        {
-          'indexed': false,
-          'name': 'sentenceIdList',
-          'type': 'uint256[]'
-        },
-        {
-          'indexed': false,
-          'name': 'translationIdList',
-          'type': 'uint256[]'
-        },
-        {
-          'indexed': false,
-          'name': 'listSize',
-          'type': 'uint256'
-        },
-        {
-          'indexed': false,
-          'name': 'userShare',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'NewTranslation',
-      'type': 'event'
+      "indexed": false,
+      "name": "listSize",
+      "type": "uint256"
     },
     {
-      'anonymous': false,
-      'inputs': [
-        {
-          'indexed': true,
-          'name': 'projectIdHash',
-          'type': 'bytes32'
-        },
-        {
-          'indexed': true,
-          'name': 'evaluatorIdHash',
-          'type': 'bytes32'
-        },
-        {
-          'indexed': false,
-          'name': 'projectId',
-          'type': 'string'
-        },
-        {
-          'indexed': false,
-          'name': 'evaluatorId',
-          'type': 'string'
-        },
-        {
-          'indexed': false,
-          'name': 'sentenceIdList',
-          'type': 'uint256[]'
-        },
-        {
-          'indexed': false,
-          'name': 'translationIdList',
-          'type': 'uint256[]'
-        },
-        {
-          'indexed': false,
-          'name': 'listSize',
-          'type': 'uint256'
-        },
-        {
-          'indexed': false,
-          'name': 'userShare',
-          'type': 'uint256'
-        }
-      ],
-      'name': 'NewEvaluation',
-      'type': 'event'
+      "indexed": false,
+      "name": "userShare",
+      "type": "uint256"
+    }],
+    "name": "NewEvaluation",
+    "type": "event",
+    "signature": "0x8d98d3e1599c998c20134cc84cde4aa2a035b52fe4ccd3591ff2eb0576921e81"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+    {
+      "indexed": true,
+      "name": "previousOwner",
+      "type": "address"
     },
     {
-      'anonymous': false,
-      'inputs': [
-        {
-          'indexed': true,
-          'name': 'previousOwner',
-          'type': 'address'
-        },
-        {
-          'indexed': true,
-          'name': 'newOwner',
-          'type': 'address'
-        }
-      ],
-      'name': 'OwnershipTransferred',
-      'type': 'event'
+      "indexed": true,
+      "name": "newOwner",
+      "type": "address"
+    }],
+    "name": "OwnershipTransferred",
+    "type": "event",
+    "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userAddress",
+      "type": "address"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'blotProjectAddress',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'address'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "klayNum",
+      "type": "uint256"
+    }],
+    "name": "purchaseToken",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function",
+    "signature": "0x1cc2c911"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "blotNum",
+      "type": "uint256"
+    }],
+    "name": "sellToken",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x2397e4d7"
+  },
+  {
+    "constant": true,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
+    }],
+    "name": "getUserBalanceByUserId",
+    "outputs": [
+    {
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x3acdfecb"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'blotTokenAddress',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'address'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "newUserAddress",
+      "type": "address"
+    }],
+    "name": "replaceOldToNewUserAddress",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x01915007"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'blotUserAddress',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'address'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "value",
+      "type": "int256"
+    }],
+    "name": "updateUserReliability",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0xb7cdabeb"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "projectId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'getContractBalance',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "writerId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getProjectInfoByprojectId',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'string'
-        },
-        {
-          'name': '',
-          'type': 'string'
-        },
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "deadline",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'projectId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getProjectRewardByprojectId',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "reward",
+      "type": "uint256"
+    }],
+    "name": "registerNewProject",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x0b50734e"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "userAddress",
+      "type": "address"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getUserAddressByUserId',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'address'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "reward",
+      "type": "uint256"
+    }],
+    "name": "sendRewardToUser",
+    "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0xf1984d25"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "projectId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'userAddress',
-          'type': 'address'
-        }
-      ],
-      'name': 'getUserBalanceByUserAddress',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "translatorId",
+      "type": "string"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getUserBalanceByUserId',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "sentenceList",
+      "type": "uint256[]"
     },
     {
-      'constant': true,
-      'inputs': [
-        {
-          'name': 'userId',
-          'type': 'string'
-        }
-      ],
-      'name': 'getUserReliabilityByUserId',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'uint256'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "translationList",
+      "type": "uint256[]"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'isOwner',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'bool'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
+      "name": "listSize",
+      "type": "uint256"
     },
     {
-      'constant': true,
-      'inputs': [],
-      'name': 'owner',
-      'outputs': [
-        {
-          'name': '',
-          'type': 'address'
-        }
-      ],
-      'payable': false,
-      'stateMutability': 'view',
-      'type': 'function'
-    }
-  ],
-  DEPLOYED_BLOTMAIN_ADDRESS: '0x4F8a7325059220A32a8679efb16E87a9E971B820'
+      "name": "userShare",
+      "type": "uint256"
+    }],
+    "name": "generateTranslationEvent",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x162dce8f"
+  },
+  {
+    "constant": false,
+    "inputs": [
+    {
+      "name": "projectId",
+      "type": "string"
+    },
+    {
+      "name": "evaluatorId",
+      "type": "string"
+    },
+    {
+      "name": "sentenceList",
+      "type": "uint256[]"
+    },
+    {
+      "name": "translationList",
+      "type": "uint256[]"
+    },
+    {
+      "name": "listSize",
+      "type": "uint256"
+    },
+    {
+      "name": "userShare",
+      "type": "uint256"
+    }],
+    "name": "generateEvaluationEvent",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x42d214cd"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getContractBalance",
+    "outputs": [
+    {
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x6f9fb98a"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "transferBalanceToOwner",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x47f07a8e"
+  }],
+  DEPLOYED_BLOTMAIN_ADDRESS: '0xEa841585E12E9392563446099d48615F1A8e87E1'
 }
