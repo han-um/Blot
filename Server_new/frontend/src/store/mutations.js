@@ -48,6 +48,9 @@ export default {
   SET_CURRENT_BLOTS (state, blots) {
     state.crntBlots = blots
   },
+  SET_CURRENT_RELIABILITY (state, userReliability) {
+    state.crntReliability = userReliability
+  },
   /* -----------------------------------------------------------
     Co-Pilot Variables (삭제할것)
   ----------------------------------------------------------- */
