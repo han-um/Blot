@@ -118,21 +118,11 @@ module.exports = function() {
 
         // 수수료 대납
         payProxy : async function(rawTransaction) {
-            const senderRawTransaction = rawTransaction;
-            cav.klay.sendTransaction({
-                senderRawTransaction: senderRawTransaction,
+            return await cav.klay.sendTransaction({
+                senderRawTransaction: rawTransaction,
                 feePayer: this._getFeePayerWalletAddress()
-            })
-            .on('transactionHash', function(txhash){
-                console.log('Transaction Result URL : https://baobob.klaytn.com/tx/'+txHash);
-                return txhash;
-            })
-            .on('receipt', function(receipt){
-                console.log('receipt', receipt);
-            })
-            .on('error', console.error);
+            });
         },
-
 
         // 번역 활동 기록 불러오기
         getTranslationLog : async function() {
@@ -142,7 +132,6 @@ module.exports = function() {
               toBlock: 'latest'          
             });
           },
-    
     
         //  평가 활동 기록 불러오기
         getEvaluationLog : async function() {
