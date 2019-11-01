@@ -13,9 +13,10 @@
   },
   "dependencies": {
     "caver-js": "^1.1.2",
+    "js-beautify": "^1.10.2",
     "truffle-hdwallet-provider-klaytn": "^1.0.13-a"
   },
   "scripts": {
-    "deploy" : "truffle migrate --compile-all --reset --network klaytn && node memoContractInfo.js"
+    "deploy": "truffle migrate --compile-all --reset --network klaytn && node memoContractInfo.js && node contractInfoForFront.js"
   }
 }

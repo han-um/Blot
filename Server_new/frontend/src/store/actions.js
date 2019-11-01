@@ -3,36 +3,90 @@ import Caver from 'caver-js'
 import contractInfo from '../contractInfo'
 const cav = new Caver('https://api.baobab.klaytn.net:8651/')
 const blotMainContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTMAIN_ABI, contractInfo.DEPLOYED_BLOTMAIN_ADDRESS)
-// const blotUserContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTUSER_ABI, contractInfo.DEPLOYED_BLOTUSER_ADDRESS);
+const blotUserContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTUSER_ABI, contractInfo.DEPLOYED_BLOTUSER_ADDRESS)
 // const blotProjectContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTPROJECT_ABI, contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS);
-// const blotTokenContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTTOKEN_ABI, contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS);
+const blotTokenContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTTOKEN_ABI, contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS)
 
 export default {
   getUserWalletAddressByUserId (state, userId) {
-    console.log(userId)
     try {
-      return blotMainContract.methods.getUserAddressByUserId(userId).call()
+      return blotUserContract.methods.getUserAddressByUserId(userId).call()
     } catch (e) {
-      alert('error!!!' + e)
+      console.log(e)
     }
   },
   getUserBalanceByUserId (state, userId) {
     try {
       return blotMainContract.methods.getUserBalanceByUserId(userId).call()
     } catch (e) {
-      alert(e)
+      console.log(e)
     }
   },
+  getUserBalanceByUserAddress (state, userAddress) {
+    try {
+      return blotTokenContract.methods.getUserBalanceByUserAddress(userAddress).call()
+    } catch (e) {
+      console.log(e)
+    }
+  },
+  getUserReliabilityByUserId (state, userId) {
+    try {
+      return blotUserContract.methods.getUserReliabilityByUserId(userId).call()
+    } catch (e) {
+      console.log(e)
+    }
+  },
+  // userId로 사용자 지갑 주소 조회
   REFRESH_CURRENT_WALLET_ID (state, userId) {
-    console.log(userId)
     state.dispatch('getUserWalletAddressByUserId', userId).then(function (resolvedData) {
       state.commit('SET_CURRENT_WALLET_ID', resolvedData)
     })
   },
-  REFRESH_CURRENT_BLOTS (state, userId) {
+  // userId로 사용자 잔고 조회
+  REFRESH_CURRENT_BLOTS_BY_ID (state, userId) {
     state.dispatch('getUserBalanceByUserId', userId).then(function (resolvedData) {
       state.commit('SET_CURRENT_BLOTS', resolvedData)
     })
+  },
+  // userAddress로 사용자 잔고 조회
+  REFRESH_CURRENT_BLOTS_BY_ADDR (state, userAddress) {
+    state.dispatch('getUserBalanceByUserAddress', userAddress).then(function (resolvedData) {
+      state.commit('SET_CURRENT_BLOTS', resolvedData)
+    })
+  },
+  // userId로 사용자 신뢰 점수 조회
+  REFRESH_USER_RELIABILITY (state, userId) {
+    state.dispatch('getUserReliabilityByUserId', userId).then(function (resolvedData) {
+      state.commit('SET_CURRENT_RELIABILITY', resolvedData)
+    })
+  },
+  // 블록체인 상에 새로운 프로젝트 정보 등록 요청(서버 대납을 거쳐 블록체인 저장됨)
+  CREATE_NEW_PROJECT (state, payload) {
+    // 세션 스토리지에 wallet instance 정보가 있는지 확인
+    const walletFromSession = JSON.parse(sessionStorage.getItem('walletInstance'))
+    if (walletFromSession) {
+      try {
+        // transacetion sernder first signature
+        cav.klay.accounts.signTransaction({
+          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+          from: walletFromSession.address,
+          to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+          data: blotMainContract.methods.registerNewProject(payload.projectId, payload.writerId, payload.deadline, payload.reward).encodeABI(),
+          gas: '500000'
+        }, walletFromSession.privateKey)
+        .then(function (transactionInfo) {
+          console.log(transactionInfo)
+          axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
+          .then(res => {
+            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/' + res.data)
+          })
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      console.log('Please activate with your klaytn wallet address to use blockchain service.')
+    }
   },
   REFRESH_CURRENT_SENTENCE (state, payload) {
     console.log('Print:' + payload.index + payload.text)

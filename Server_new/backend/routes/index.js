@@ -348,17 +348,16 @@ router.post('/', function(req, res, next){
 });
 
 // 프로젝트 등록시 대납서명 요청
-
-
-router.post('/sign', function(req, res, next) {
-    /*
-    const senderRawTransaction = '0x31f9010b138505d21dba008307a120944f8a7325059220a32a8679efb16e87a9e971b82080946f560ac6ede19461b28382816232c4dd50bd4843b884484e139100000000000000000000000000000000000000000000000000000000000000400000000000000000000000006f560ac6ede19461b28382816232c4dd50bd4843000000000000000000000000000000000000000000000000000000000000000a7573657249645465737400000000000000000000000000000000000000000000f847f8458207f5a0740fe1bfea4ef2cc33456dda1e7504965836b9a1d4165ac033d657a349dda2daa07cc489a1f3c7614d01fee27eab82c2de39eb18c6d8d94b5e1edf345421cca4ea80c4c3018080';
-    */
-    
-    const senderRawTransaction = req.params.rawTransaction;
-    
-    var ret = myKlaytn.payProxy(senderRawTransaction);
-    res.send(ret);
+router.post('/sign', async function(req, res, next) {
+    const rawTransaction = req.body.rawTransaction;
+    try {
+        // transcation 대납 서명 후 블록체인에 보내기
+        var result = await myKlaytn.payProxy(rawTransaction);
+        // transaction hash 값만 반환해주기
+        res.send(result.transactionHash);
+    } catch(err) {
+        res.status(500).send('Can\'t register transaction' + err);
+    }
 });
 
 
