@@ -88,6 +88,101 @@ export default {
       console.log('Please activate with your klaytn wallet address to use blockchain service.')
     }
   },
+  // 토큰 구매 : Klay 코인만큼 BLOT 토큰 구매하기
+  PURCHASE_BLOT_TOKEN (state, payload) {
+    // 세션 스토리지에 wallet instance 정보가 있는지 확인
+    const walletFromSession = JSON.parse(sessionStorage.getItem('walletInstance'))
+    if (walletFromSession) {
+      try {
+        // transacetion sernder first signature
+        cav.klay.accounts.signTransaction({
+          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+          from: walletFromSession.address,
+          to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+          data: blotMainContract.methods.purchaseToken(payload.userAddress, payload.klayNum).encodeABI(),
+          value: cav.utils.toPeb(payload.klayNum, 'KLAY'),
+          gas: '500000'
+        }, walletFromSession.privateKey)
+        .then(function (transactionInfo) {
+          console.log(transactionInfo)
+          axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
+          .then(res => {
+            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/' + res.data)
+            // BLOT을 충전한 지갑 주소가 블록체인 계정으로 로그인한 지갑주소와 같다면 BLOT 잔고 표시 업데이트
+            if (state.state.crntWalletId === payload.userAddress) {
+              state.dispatch('REFRESH_CURRENT_BLOTS_BY_ADDR', payload.userAddress)
+            }
+          })
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      console.log('Please activate with your klaytn wallet address to use blockchain service.')
+    }
+  },
+  // 토큰 환불 : BLOT 토큰만큼 Klay 코인으로 바꿔가기
+  SELL_BLOT_TOKEN (state, payload) {
+    // 세션 스토리지에 wallet instance 정보가 있는지 확인
+    const walletFromSession = JSON.parse(sessionStorage.getItem('walletInstance'))
+    if (walletFromSession) {
+      try {
+        // transacetion sernder first signature
+        cav.klay.accounts.signTransaction({
+          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+          from: walletFromSession.address,
+          to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+          data: blotMainContract.methods.sellToken(payload.blotNum).encodeABI(),
+          gas: '500000'
+        }, walletFromSession.privateKey)
+        .then(function (transactionInfo) {
+          console.log(transactionInfo)
+          axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
+          .then(res => {
+            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/' + res.data)
+            // BLOT을 환불한 지갑 주소가 블록체인 계정으로 로그인한 지갑주소와 같다면 BLOT 잔고 표시 업데이트
+            state.dispatch('REFRESH_CURRENT_WALLET_ID', payload.userId)
+          })
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      console.log('Please activate with your klaytn wallet address to use blockchain service.')
+    }
+  },
+  // 사용자 지갑 주소 변경하기
+  CHANGE_USER_WALLET_ADDR (state, payload) {
+    // 세션 스토리지에 wallet instance 정보가 있는지 확인
+    const walletFromSession = JSON.parse(sessionStorage.getItem('walletInstance'))
+    if (walletFromSession) {
+      try {
+        // transacetion sernder first signature
+        cav.klay.accounts.signTransaction({
+          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+          from: walletFromSession.address,
+          to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+          data: blotMainContract.methods.replaceOldToNewUserAddress(payload.userId, payload.newUserAddress).encodeABI(),
+          gas: '500000'
+        }, walletFromSession.privateKey)
+        .then(function (transactionInfo) {
+          console.log(transactionInfo)
+          axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
+          .then(res => {
+            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/' + res.data)
+            // 사용자 지갑 주소 업데이트
+            if (state.state.crntWalletId === payload.userAddress) {
+              state.dispatch('REFRESH_CURRENT_BLOTS_BY_ADDR', payload.userAddress)
+            }
+          })
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      console.log('Please activate with your klaytn wallet address to use blockchain service.')
+    }
+  },
   REFRESH_CURRENT_SENTENCE (state, payload) {
     console.log('Print:' + payload.index + payload.text)
     // 받은 문장의 INDEX 반영
