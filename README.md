@@ -161,3 +161,40 @@
 - 즐겨찾기 API에 이미 중복값이 있을경우 예외처리 기능
 - 프로젝트ID와 유저ID를 주면 현재 즐겨찾기에 등록되어있는지 확인하는 API
 - 프로젝트 이름으로 검색 API (param: 검색어 / return : 제목에 검색어가 포함된 프로젝트 object list)
+
+<br><br>
+
+## 블록체인과 관련하여 Front side에서 알아야할 내용 
+
+### FRONT SIDE에서 사용하는 지갑 주소와 사용자 정보 Sample
+1. 지갑 주소
+    - key info.txt의 [1]번 계정
+        - 공개키 : 0x6f560ac6ede19461b28382816232c4dd50bd4843
+        - 비밀키 : key info.txt 파일 참고
+
+2. (서비스 사용을 위한) 사용자 정보
+    - userId : 'u1'
+    - userAddress : 0x6f560ac6ede19461b28382816232c4dd50bd4843
+
+### 구현 내용
+- /src/store의 action.js에 스마트 컨트랙트 내 함수를 호출하는 로직 구현
+- /src/components/layout/SeungSooTest.vue파일에 /src/store/action.js 내 함수를 호출하는 로직 구현
+
+<br><br>
+
+## 블록체인과 관련하여 Backend에서 알아야할 내용 
+
+### Backend에서 사용하는 지갑 주소, 사용자 정보, 프로젝트 정보 Sample
+1. 지갑 주소
+    - key info.txt의 [0]번 계정 == 대납자 == 컨트랙트 소유자
+        - 공개키 : 0x4aff875cb544368fd51b8f7fda6d247582b5b87c
+        - 비밀키 : key info.txt 파일 참고
+
+2. (서비스 사용을 위한) 사용자 정보
+    - userId : 'nkw'
+    - key info.txt의 [3]번 계정
+        - userAddress : 0xad4abd5ba764b4cbd1c97219bb42365749f6d03c 
+
+3. 프로젝트 정보
+    - projectId : '5d84a8e73c9f67a60a0d42f1'
+    - writerId : 'nkw'
