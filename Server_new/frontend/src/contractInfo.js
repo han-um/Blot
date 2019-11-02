@@ -188,7 +188,7 @@ module.exports = {
     "type": "function",
     "signature": "0x39f5e34f"
   }],
-  DEPLOYED_BLOTTOKEN_ADDRESS: '0x78fa5884bEf3f45E88DBC33C2Cb13834Cc4676E7',
+  DEPLOYED_BLOTTOKEN_ADDRESS: '0xE7A3CEFaec887F47e1384468736D9b90543D099B',
   DEPLOYED_BLOTPROJECT_ABI: [
   {
     "inputs": [],
@@ -311,7 +311,7 @@ module.exports = {
     "type": "function",
     "signature": "0xe0e5c830"
   }],
-  DEPLOYED_BLOTPROJECT_ADDRESS: '0xe7dd4eb48A9b45E2ba5720e6BA793EF82DDca5c4',
+  DEPLOYED_BLOTPROJECT_ADDRESS: '0xC5E0cCc87ec87225D5971B062535209DA9c0b8bc',
   DEPLOYED_BLOTUSER_ABI: [
   {
     "inputs": [],
@@ -493,7 +493,7 @@ module.exports = {
     "type": "function",
     "signature": "0xb271b6d1"
   }],
-  DEPLOYED_BLOTUSER_ADDRESS: '0x31672379bB03839619AFf2106FEADF060c48C40E',
+  DEPLOYED_BLOTUSER_ADDRESS: '0x5138517707cAFA1f7A62675C7DFA3eA35A1F4DaF',
   DEPLOYED_BLOTMAIN_ABI: [
   {
     "constant": false,
@@ -653,17 +653,12 @@ module.exports = {
     },
     {
       "indexed": false,
-      "name": "listSize",
-      "type": "uint256"
-    },
-    {
-      "indexed": false,
       "name": "userShare",
       "type": "uint256"
     }],
     "name": "NewTranslation",
     "type": "event",
-    "signature": "0x5704c59ca004c775681505b7b7140309e49cbed23c9041b5f91f189df8859737"
+    "signature": "0x0f0fc6603a4d5a7ef06a7fc95dfa5a2e1e89ee13fa1b952bf4e5040f05b52b89"
   },
   {
     "anonymous": false,
@@ -700,17 +695,12 @@ module.exports = {
     },
     {
       "indexed": false,
-      "name": "listSize",
-      "type": "uint256"
-    },
-    {
-      "indexed": false,
       "name": "userShare",
       "type": "uint256"
     }],
     "name": "NewEvaluation",
     "type": "event",
-    "signature": "0x8d98d3e1599c998c20134cc84cde4aa2a035b52fe4ccd3591ff2eb0576921e81"
+    "signature": "0x126f59e9eb7f48766ad988edbcfe1bf4b3651b796454b31ff68d95d4f2d0cdb5"
   },
   {
     "anonymous": false,
@@ -899,10 +889,6 @@ module.exports = {
       "type": "uint256[]"
     },
     {
-      "name": "listSize",
-      "type": "uint256"
-    },
-    {
       "name": "userShare",
       "type": "uint256"
     }],
@@ -911,7 +897,7 @@ module.exports = {
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function",
-    "signature": "0x162dce8f"
+    "signature": "0x94714d0d"
   },
   {
     "constant": false,
@@ -933,10 +919,6 @@ module.exports = {
       "type": "uint256[]"
     },
     {
-      "name": "listSize",
-      "type": "uint256"
-    },
-    {
       "name": "userShare",
       "type": "uint256"
     }],
@@ -945,7 +927,7 @@ module.exports = {
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function",
-    "signature": "0x42d214cd"
+    "signature": "0xc773b67a"
   },
   {
     "constant": true,
@@ -971,5 +953,5 @@ module.exports = {
     "type": "function",
     "signature": "0x47f07a8e"
   }],
-  DEPLOYED_BLOTMAIN_ADDRESS: '0xEa841585E12E9392563446099d48615F1A8e87E1'
+  DEPLOYED_BLOTMAIN_ADDRESS: '0x9A58e4F202Be29E477b22Abc66eAEe0dE9Ed7b9a'
 }
