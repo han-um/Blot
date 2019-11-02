@@ -192,7 +192,7 @@
 
 2. (서비스 사용을 위한) 사용자 정보
     - userId : 'nkw'
-    - - key info.txt의 [3]번 계정
+    - key info.txt의 [3]번 계정
         - userAddress : 0xad4abd5ba764b4cbd1c97219bb42365749f6d03c 
 
 3. 프로젝트 정보
