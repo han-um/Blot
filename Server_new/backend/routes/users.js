@@ -24,8 +24,11 @@ db.Library.belongsTo(db.User);
 db.User.sync();
 db.Library.sync();
 
+const Klaytn = require('../blockchain/contract');
+const myKlaytn = Klaytn();
 
 // 회원가입 POST: userId(사용자계정) password(비밀번호) email(이메일계정) wAddr(지갑주소)
+
 router.post('/', function(req, res, next){
     bcrypt.hash(req.body.password, null, null, function(err, hash) {
         if(err) console.error(err);
@@ -35,7 +38,8 @@ router.post('/', function(req, res, next){
                 password: hash,
                 email: req.body.email,
                 wAddr: req.body.wAddr
-            }).then(result => {
+            }).then(async result => {
+                await myKlaytn.userSignUp(req.body.userId, req.body.wAddr);
                 res.send(result);
             }).catch(err => {
                 console.error(err);

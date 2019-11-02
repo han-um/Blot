@@ -29,6 +29,8 @@ const Trans = mongoose.model('Trans', require('../models/trans'));
 
 const myKlaytn = Klaytn();
 
+
+
 //============================================================================
 // 예외 처리 방법
 // 1. 컨트랙트 함수를 호출 구문을 try, catch 구문으로 감싼다.
@@ -78,8 +80,8 @@ const myKlaytn = Klaytn();
 //         for(var i=0; i<result.length; i++) {
 //             console.log('project Id:'+JSON.stringify(result[i].returnValues.projectId));
 //             console.log('translator Id:'+JSON.stringify(result[i].returnValues.translatorId));
-//             console.log('sentenceId List:'+JSON.stringify(result[i].returnValues.sentenceId));
-//             console.log('translationId List:'+JSON.stringify(result[i].returnValues.translationId));
+//             console.log('sentenceId List:'+JSON.stringify(result[i].returnValues.sentenceIdList));
+//             console.log('translationId List:'+JSON.stringify(result[i].returnValues.translationIdList));
 //             console.log('user Share:'+JSON.stringify(result[i].returnValues.userShare));
 //         }
 //     } catch(err) {
@@ -94,9 +96,9 @@ const myKlaytn = Klaytn();
 //============================================================================
 
 async function deadline(doc) {
-    
     var trans = new Array();
     var eval = new Array();
+    var eval_cnt = new Array();
     
     for(var j=0; j<doc.sentence.length; j++) {
         var content = new Array();
@@ -111,8 +113,7 @@ async function deadline(doc) {
 
             for(var l=0; l<content.length; l++) {
                 if(content[l].trans == tmp) {
-                    //trust = await myKlaytn.getTrust('kss');
-                    trust = 1000;
+                    trust = await myKlaytn.getTrust('nkw');
                     trust = level(parseInt(trust));
                     content[l].score += 1 * trust;
                     content[l].eval.push(user);
@@ -123,8 +124,8 @@ async function deadline(doc) {
             if(flag == false) {
                 var src = new Object;
                 src['trans'] = tmp;
-                //trust = await myKlaytn.getTrust('kss');
-                trust = 1000;
+                trust = await myKlaytn.getTrust('nkw');
+                //trust = 1000;
                 trust = level(parseInt(trust));
                 src['score'] = 1 * trust; // 1*신뢰도
                 src['eval'] = new Array;
@@ -132,6 +133,7 @@ async function deadline(doc) {
                 content.push(src);
             }       
         }
+        
         console.log('CONTENT');
         console.log(content);
 
@@ -146,7 +148,9 @@ async function deadline(doc) {
                 finalIdx = k;
             }
         }
-
+        
+        if(content.length != 0) { eval_cnt.push(content[finalIdx].eval.length); }
+        
         //console.log('final : ' + final);
         //console.log('finalIdx : ' + finalIdx);
 
@@ -207,86 +211,126 @@ async function deadline(doc) {
                 }         
             }
         }
-    } 
+    }
+    
     console.log('TRANS');
     console.log(trans);
     console.log('EVAL');
     console.log(eval);
     
     
-    doc.valid = 0;
+    // 프로젝트 아이디 세팅
+    var projId = new String();
+    var projRaw = JSON.stringify(doc._id);
+    for(var i = 1; i < projRaw.length-1; i++) projId += projRaw[i];
+    
+    // 보상금 세팅
+    var reward = await myKlaytn.getReward(projId);
+    reward = Number(reward);
+    
+    
+    // 번역 기록
+    for(var i = 0; i < trans.length; i++) {
+        
+        //var translatorId = trans[i].name; // 임의값
+        var translatorId = 'nkw';
+        
+        //var trust = await myKlaytn.getTrust(translatorId);
+        //if(trust + 8 > 1000) await myKlaytn.setTrust(translatorId, 1000-trust);
+        //else await myKlaytn.setTrust(translatorId, 8);
+        
+        var sentenceList = trans[i].sIdx;
+        var translationList = trans[i].tIdx;
+        
+        var share = 0;
+        for(var j = 0; j < trans[i].sIdx.length; j++) {
+            //share += parseInt(doc.sentence[trans[i].sIdx[j]].ratio);
+            share += doc.sentence[trans[i].sIdx[j]].ratio;
+        }
+        
+        share = parseInt(reward * 0.8 * (share / 100));
+        
+        //await myKlaytn.setTranslation(projId, translatorId, sentenceList, translationList, share);
+        //var wAddr = await myKlaytn.getWalletAddress(translatorId);
+        //await myKlaytn.Transfer(wAddr, share);
+    }
+    
+    console.log(eval_cnt);
+    
+    // 평가 기록
+    for(var i = 0; i < eval.length; i++) {
+        
+        //var evaluatorId = eval[i].name;
+        var evaluatorId = 'nkw';
+        
+        //var trust = await myKlaytn.getTrust(evaluatorId);
+        //if(trust != 1000) await myKlaytn.setTrust(evaluatorId, 1);
+        
+        var sentenceList = eval[i].sIdx;
+        var translationList = eval[i].tIdx;
+        
+        var share = 0;
+        for(var j = 0; j < eval[i].sIdx.length; j++) {
+            share += doc.sentence[eval[i].sIdx[j]].ratio / eval_cnt[eval[i].sIdx[j]];
+        }
+        
+        share = parseInt(reward * 0.1 * (share / 100));
+        
+        //await myKlaytn.setEvaluation(projId, evaluatorId, sentenceList, translationList, share);
+        //var wAddr = await myKlaytn.getWalletAddress(evaluatorId);
+        //await myKlaytn.Transfer(wAddr, share);
+    }
+    
+    // 잉여금 송금
+    //await myKlaytn.chargeFeePayerBalance();
+    
+    
+    // 마감 저장
+    doc.valid = 1;
     doc.save(function(err){
         if(err) { console.log(err); }
         else { console.log('updated.') }
     });
-    // 최종문장 번역자 신뢰도 올리기 trans_user    
-    // 최종문장 평가자 신뢰도 올리기 Content Object
-
-    // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
-    // 최종문장 평가자 보상금 지급 [보상금 * 0.1 / 평가자수]
-
-    // 블록체인에 내용기록하기 []
-    
 }
 
 
 // 익일 마다 검사 [테스트 코드 10초마다]
-cron.schedule('*/10 * * * * *', () => {
-    Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
-    if(err) console.log('err');
-        else {
-            var year = moment().format('YYYY');
-            var month = moment().format('MM');
-            var day = moment().format('DD');
-            
-            console.log('now : '+year+'-'+month+'-'+day);
-            
-            for(var i=0; i<doc2.length; i++) {
-                var dd = doc2[i].end;
-                var y = dd.getFullYear();
-                var m = dd.getMonth()+1;
-                var d = dd.getDate();
-                
-                if(year == y && month == m && day == d) {
-                    
-                    console.log(y+'-'+m+'-'+d);
-                    
-                    var _id = doc2[i]._id;
-                    var trans = new Array();
-                    var eval = new Array();
-                    
-                    Project.findOne({'_id': _id}, function(err, doc) {
-                        
-                        deadline(doc);
-                        
-                        
-                        // 최종문장 평가자 신뢰도 올리기 Content Object
-                        // 최종문장 번역자 신뢰도 올리기 trans_user
-                            
-                        // 최종문장 번역자 보상금 지급 [보상금 * 0.8 * 문장지분]
-                        // 최종문장 평가자 보상금 지급 [보상금 * 0.1 / 평가자수]
-                        
-                        // 블록체인에 내용기록하기 []
-                        
-                        
-                        // 번역 마감 표시
-                        /*
-                        doc.valid = 1;
-                        doc.save(function(err){
-                            if(err) { console.log(err); }
-                            else { console.log('updated.') }
-                        });
-                        */
+async function finish() {
+        cron.schedule('* */10 * * * *', () => {
+        Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
+        if(err) console.log('err');
+            else {
+                var year = moment().format('YYYY');
+                var month = moment().format('MM');
+                var day = moment().format('DD');
 
-                    });
+                console.log('now : '+year+'-'+month+'-'+day);
+
+                for(var i=0; i<doc2.length; i++) {
+                    var dd = doc2[i].end;
+                    var y = dd.getFullYear();
+                    var m = dd.getMonth()+1;
+                    var d = dd.getDate();
+
+                    if(year == y && month == m && day == d) {
+
+                        console.log(y+'-'+m+'-'+d);
+
+                        var _id = doc2[i]._id;
+                        var trans = new Array();
+                        var eval = new Array();
+
+                        Project.findOne({'_id': _id}, async function(err, doc) {
+                            await deadline(doc);
+                        });
+                    }
                 }
             }
-            //console.log(cnt);
-            //console.log(doc);
-        }
+        });
     });
-    //console.log('running a task every two seconds');
-});
+} 
+
+finish();
 
 
 // 프로젝트 정보 등록하기
@@ -355,6 +399,7 @@ router.post('/', function(req, res, next){
             return;
         }
         var _id = project._id;
+        myKlaytn.createProject(_id, user, end, reward);
         res.send(_id);
         //res.send({result:1});
     });
