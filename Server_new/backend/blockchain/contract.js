@@ -65,6 +65,10 @@ module.exports = function() {
         getReward : async function(projectId) {
           return await blotProjectContract.methods.getProjectRewardByprojectId(projectId).call();
         },
+        
+        getBalance : async function(userId) {
+          return await blotMainContract.methods.getUserBalanceByUserId(userId).call();
+        },
 
         // ProjectId로 프로젝트에 정보(글쓴이, 마감일, 보상금) 조회 O
         getProjectInfo : async function(projectId) {
@@ -110,7 +114,7 @@ module.exports = function() {
         // 컨트랙트 계정으로부터 대납자 계정으로 잉여 자금 보내기 O
         // @ NOTE : 번역 마감 후 보상금 분배, 번역/평가 활동 기록 로직 종료 후 하루 한번만 실행할 것
         chargeFeePayerBalance : async function() {
-            return await blotMainContract.methods.transferBalanceToOwner(recipient, reward).send({
+            return await blotMainContract.methods.transferBalanceToOwner().send({
                 from : this._getFeePayerWalletAddress(),
                 gas : 250000
             });
