@@ -135,7 +135,6 @@ contract BlotMain is Ownable {
         string memory translatorId,
         uint[] memory sentenceList,
         uint[] memory translationList,
-        uint listSize,
         uint userShare
     )
         public onlyOwner
@@ -149,7 +148,6 @@ contract BlotMain is Ownable {
             translatorId,
             sentenceList,
             translationList,
-            listSize,
             userShare
         );
     }
@@ -160,7 +158,6 @@ contract BlotMain is Ownable {
         string memory evaluatorId,
         uint[] memory sentenceList,
         uint[] memory translationList,
-        uint listSize,
         uint userShare
     )
         public onlyOwner
@@ -174,7 +171,6 @@ contract BlotMain is Ownable {
             evaluatorId,
             sentenceList,
             translationList,
-            listSize,
             userShare
         );
     }
@@ -205,9 +201,10 @@ contract BlotMain is Ownable {
     event NewTranslation(
         bytes32 indexed projectIdHash,
         bytes32 indexed translatorIdHash,
-        string projectId, string translatorId,
-        uint[] sentenceIdList, uint[] translationIdList,
-        uint listSize,
+        string projectId,
+        string translatorId,
+        uint[] sentenceIdList,
+        uint[] translationIdList,
         uint userShare
     );
 
@@ -218,7 +215,6 @@ contract BlotMain is Ownable {
         string evaluatorId,
         uint[] sentenceIdList,
         uint[] translationIdList,
-        uint listSize,
         uint userShare
     );
 }
