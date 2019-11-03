@@ -198,3 +198,44 @@
 3. 프로젝트 정보
     - projectId : '5d84a8e73c9f67a60a0d42f1'
     - writerId : 'nkw'
+
+<br><br>
+
+## multer 사용법
+### 참고 자료
+- [multer 기본 사용법](https://wayhome25.github.io/nodejs/2017/02/21/nodejs-15-file-upload/)
+- [mongoDB와 multer를 사용한 파일 저장방법](https://m.blog.naver.com/PostView.nhn?blogId=silver889&logNo=220083873954&proxyReferer=https%3A%2F%2Fwww.google.com%2F)
+
+### 새로 추가된 사항
+- 파일 첨부를 테스트할 페이지 경로 ```/views/fileUploadTest.jade```
+
+- app.js 파일에 파일 전송을 처리할 라우터 추가
+```localhost:3000/api/files```
+
+- 실제 라우팅을 담당하는 로직은 ```/routes/attachedFilesRouter.js```에 있음
+
+- app.js에 외부(클라이언트)에서 서버에 저장된 이미지를 보기 위한 static 경로 추가
+```/api/files/attachedFiles```
+
+- MongoDB에 ```Files```라는 스키마(Collection) 추가
+    - 아래 필드를 속성으로 가짐(***원하는대로 바꾸길..***)
+        - userId
+        - 업로드 당시 원래 파일명
+        - 서버에 저장되면서 바뀐 파일명
+
+### 사용 절차
+1. multer 모듈 설치
+
+``` nodejs
+npm install --save multer
+```
+
+2. 파일 첨부 테스트할 페이지
+- 접속 URL : [localhost:3000/api/files/upload](localhost:3000/api/files/upload)
+- 테스트 페이지 경로 : /views/fileUploadTest.jade
+
+3. localhost:3000/api/files/upload 페이지에서 파일을 첨부하고 전송하면 uploads/ 디렉토리에 userId를 파일명으로 변경되어 저장됨. 데이터베이스의 Files 스키마에도 저장될 것임.
+
+4. 서버에 저장된 이미지 파일을 외부(클라이언트)에서 보고 싶다면 이미지 URL(```localhost:3000/api/files/attachedFiles/파일명```)을 치면 됨.
+
+5. 서버에 저장된 파일을 다운로드 하는 기능도  ```/routes/attachedFilesRouter.js```에 구현해놓았으니 필요하다면 쓸 것.
