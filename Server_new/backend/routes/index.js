@@ -296,7 +296,7 @@ async function deadline(doc) {
 
 // 익일 마다 검사 [테스트 코드 10초마다]
 async function finish() {
-        cron.schedule('* */10 * * * *', () => {
+        cron.schedule('*/10, * * * * *', () => {
         Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
         if(err) console.log('err');
             else {
@@ -600,19 +600,15 @@ router.get('/:p_num/deadline', function(req, res, next) {
     });
 });
 
-// 특정유저가 등록한 프로젝트ObjectId 조회
+// 특정유저가 등록한 프로젝트ObjectId, 제목, 요약, 아이콘, 색상 조회
 router.get('/user/:userId', function(req, res, next) {
     Project.find({'user': req.params.userId}, {'title': true, 'description': true, 'icon': true, 'color': true}, function(err, doc) {
         if(err) { console.log('err'); return; }
         else {
             var array = [];
             for(var i = 0; i < doc.length; i++) {
-                var title = doc[i].title;
-                
-                if(title.match(req.params.key) !== null) {
-                    var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color }
-                    array.push(data);      
-                }
+                 var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color };
+                array.push(data);
             }
             if(array.length === 0) res.send(false);
             else res.send(array);
