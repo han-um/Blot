@@ -52,7 +52,7 @@ export default {
   name: 'MyLibrary',
   data () {
     return {
-      FavoriteProj: []
+      currentList: []
     }
   },
   methods: {
@@ -60,6 +60,12 @@ export default {
       axios.get('/api/user/' + this.$session.get('username') + '/project')
       .then(res => {
         console.log(res)
+      })
+    },
+    getAddedProj () {
+      axios.get('/api/project/user/' + this.$session.get('username'))
+      .then(res => {
+        this.currentList = res.data
       })
     }
   },
@@ -70,6 +76,7 @@ export default {
     }
     // Mounted
     this.getFavoriteProj()
+    this.getAddedProj()
   }
 }
 </script>
