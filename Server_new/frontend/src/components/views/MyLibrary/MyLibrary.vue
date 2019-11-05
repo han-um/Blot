@@ -8,33 +8,23 @@
         <div class="row">
             <div class="col-md-2 col-xs-4 white-box cat-box">
                 <div class="box-header"></div>
-                <div class="cat now">내가 등록한</div>
-                <div class="cat">즐겨찾기</div>
+                <div class="cat" v-on:click="getAddedProj()" v-bind:class="{now : (this.$store.state.crntLibMenu === 'Added')}">내가 등록한</div>
+                <div class="cat" v-on:click="getFavoriteProj()" v-bind:class="{now : (this.$store.state.crntLibMenu === 'Favorite')}">즐겨찾기</div>
             </div>
             <div class="col-md-5 col-xs-8 white-box">
                 <div class="box-header"></div>
-                <div class="col-md-6 p-2">
-                    <router-link to="/projview/5d84a8e73c9f67a60a0d42f1/">
+                <!--각 프로젝트 항목-->
+            <transition-group enter-active-class="animated fadeIn" tag="div">
+                <div v-for="eachProject in currentList" class="col-md-6 p-2" v-bind:key="eachProject._id">
+                    <router-link :to="{path: '/projview/' + eachProject._id + '/'}">
                     <div class="each-box">
                         <div class="img-box"></div>
-                        <div class="title-box">프로젝트 이름 1</div>
+                        <div class="title-box">{{eachProject.title}}</div>
                     </div>
                     </router-link>
                 </div>
-                <div class="col-md-6 p-2">
-                    <router-link to="/projview/5db5da4240fe2518983319ca/">
-                    <div class="each-box">
-                        <div class="img-box"></div>
-                        <div class="title-box">Fire and Ice</div>
-                    </div>
-                    </router-link>
-                </div>
-                <div class="col-md-6 p-2">
-                    <div class="each-box">
-                        <div class="img-box"></div>
-                        <div class="title-box">프로젝트 이름 1</div>
-                    </div>
-                </div>
+            </transition-group>
+                <!---->
             </div>
             <div class="col-md-5 hidden-xs white-box">
                 <div class="box-header"></div>
@@ -59,13 +49,15 @@ export default {
     getFavoriteProj () {
       axios.get('/api/user/' + this.$session.get('username') + '/project')
       .then(res => {
-        console.log(res)
+        this.currentList = res.data
+        this.$store.commit('SET_CURRENT_LIBRARY_MENU', 'Favorite')
       })
     },
     getAddedProj () {
       axios.get('/api/project/user/' + this.$session.get('username'))
       .then(res => {
         this.currentList = res.data
+        this.$store.commit('SET_CURRENT_LIBRARY_MENU', 'Added')
       })
     }
   },
@@ -75,7 +67,6 @@ export default {
       this.$router.replace(this.$route.query.redirect || '/login/')
     }
     // Mounted
-    this.getFavoriteProj()
     this.getAddedProj()
   }
 }

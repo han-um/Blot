@@ -5,6 +5,12 @@ export default {
   SET_CURRENT_ICON (state, iconName) {
     state.crntIcon = iconName
   },
+/* -----------------------------------------------------------
+    MyLibrary
+  ----------------------------------------------------------- */
+  SET_CURRENT_LIBRARY_MENU (state, menuName) {
+    state.crntLibMenu = menuName
+  },
   /* -----------------------------------------------------------
     ProjView
     *Mutation 주의사항 : 한번에 하나의 파라미터밖에 못받음 (단순 setter)
