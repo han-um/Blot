@@ -29,8 +29,6 @@ const Trans = mongoose.model('Trans', require('../models/trans'));
 
 const myKlaytn = Klaytn();
 
-
-
 //============================================================================
 // 예외 처리 방법
 // 1. 컨트랙트 함수를 호출 구문을 try, catch 구문으로 감싼다.
@@ -219,15 +217,21 @@ async function deadline(doc) {
     console.log(eval);
     
     
-    // 프로젝트 아이디 세팅
-    var projId = new String();
-    var projRaw = JSON.stringify(doc._id);
-    for(var i = 1; i < projRaw.length-1; i++) projId += projRaw[i];
+    // 프로젝트 아이디 세팅 pId
+    var pId = new String();
+    var pRaw = JSON.stringify(doc._id);
+    for(var i = 1; i < pRaw.length-1; i++) pId += pRaw[i];
+    
+    // 프로젝트 등록자 세팅 pUser
+    var obj = await myKlaytn.getProjectInfo(projId);
+    var obj2 = JSON.parse(JSON.stringify(obj));
+    var pUser = obj2['0'];
     
     // 보상금 세팅
     var reward = await myKlaytn.getReward(projId);
     reward = Number(reward);
-    
+    var useTransReward = 0;
+    var useEvalReward = 0;
     
     // 번역 기록
     for(var i = 0; i < trans.length; i++) {
@@ -248,7 +252,9 @@ async function deadline(doc) {
             share += doc.sentence[trans[i].sIdx[j]].ratio;
         }
         
-        share = parseInt(reward * 0.8 * (share / 100));
+        share = reward * 0.8 * (share / 100);
+        useTransReward += share
+        share = parseInt(share);
         
         //await myKlaytn.setTranslation(projId, translatorId, sentenceList, translationList, share);
         //var wAddr = await myKlaytn.getWalletAddress(translatorId);
@@ -274,13 +280,24 @@ async function deadline(doc) {
             share += doc.sentence[eval[i].sIdx[j]].ratio / eval_cnt[eval[i].sIdx[j]];
         }
         
-        share = parseInt(reward * 0.1 * (share / 100));
+        share = reward * 0.1 * (share / 100);
+        useEvalReward += share;
+        share = parseInt(share);
         
         //await myKlaytn.setEvaluation(projId, evaluatorId, sentenceList, translationList, share);
         //var wAddr = await myKlaytn.getWalletAddress(evaluatorId);
         //await myKlaytn.Transfer(wAddr, share);
     }
     
+    
+    var pWADDR = await myKlaytn.getWalletAddress(pId);
+    // 잔여금 등록자에게 반환
+    // [번역 잔여금]
+    if((reward * 0.8) - useTransReward > 0)
+        await myKlaytn.Transfer(pWADDR, parseInt((reward*0.8)-useTransReward));
+    // [평가 잔여금]
+    if((reward * 0.1) - useEvalReward > 0)
+        await myKlaytn.Transfer(pWADDR, parseInt((reward*0.8)-useEvalReward))
     // 잉여금 송금
     //await myKlaytn.chargeFeePayerBalance();
     
@@ -296,7 +313,7 @@ async function deadline(doc) {
 
 // 익일 마다 검사 [테스트 코드 10초마다]
 async function finish() {
-        cron.schedule('*/10, * * * * *', () => {
+        cron.schedule(' */10 * * * *', () => {
         Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
         if(err) console.log('err');
             else {
@@ -329,7 +346,6 @@ async function finish() {
         });
     });
 } 
-
 finish();
 
 
