@@ -5,8 +5,8 @@
         <div class="col-md-12">
             <div class="box project-contents">
                 <div class="p-0 box-header with-border">
-                    <div class="icon-box"><i class="ri-building-line"></i></div>
-                    <div class="icon-box" style="background-color:#E3CA23"><i class="ri-heart-2-line"></i></div>
+                    <div class="icon-box green"><i class="ri-building-line"></i></div>
+                    <div class="icon-box"  v-bind:class="{yellow : isFavorite}" v-on:click=" setFavorite()"><i class="ri-heart-2-line"></i></div>
                     <div class="proj-title">
                         <h4>{{title}}</h4>
                         <small>{{start}} ~ {{end}}</small>
@@ -42,11 +42,13 @@ export default {
       title: '',
       icon: '',
       start: '',
-      end: ''
+      end: '',
+      isFavorite: ''
     }
   },
   methods: {
     getProjectInfo() {
+      // 프로젝트 정보 가져오기
       axios.get('/api/project/' + this.$route.params.id)
       .then(response => {
         console.log('Response:', response.data.title)
@@ -61,9 +63,20 @@ export default {
         this.end = this.$moment(response.data.end).format('YYYY년 MM월 DD일')
       })
       .catch(error => {
-      // Request failed.
         console.log('error', error.response)
         this.error = error.response.statusText
+      })
+      // 즐겨찾기 등록여부 확인
+      axios.get('/api/user/' + this.$session.get('username') + '/project/' + this.$route.params.id)
+      .then(res => {
+        this.isFavorite = res.data
+      })
+    },
+    setFavorite() {
+      axios.post('/api/user/bookmark', {userId: this.$session.get('username'), projId: this.$route.params.id})
+      .then(res => {
+        this.$swal('즐겨찾기 추가', '내 서재 메뉴에서 즐겨찾기된 프로젝트를 <br> 한눈에 확인할 수 있습니다.', 'success')
+        this.isFavorite = true
       })
     }
   },
@@ -103,7 +116,6 @@ export default {
     
     .box-header > .icon-box {
         padding: 5px;
-        background-color: #5CD590;
         float: left;
         width: 65px;
         height: 65px;
@@ -111,6 +123,7 @@ export default {
         text-align: center;
         font-size: 40px;
         color: white;
+        background-color: gray;
     }
     
     .proj-submenu {
@@ -134,6 +147,12 @@ export default {
     .project-contents{
         height:100%;    
     }
-    
+    .icon-box.green {
+        
+        background-color: #5CD590;
+    }
+    .icon-box.yellow {
+        background-color:#985656;
+    }
     
 </style>
