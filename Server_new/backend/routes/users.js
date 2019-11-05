@@ -25,16 +25,42 @@ db.Library.belongsTo(db.User);
 db.User.sync();
 db.Library.sync();
 
+
 const Klaytn = require('../blockchain/contract');
 const myKlaytn = Klaytn();
+
+const cron = require('node-cron');
 
 const mongoose = require('mongoose');
 const Project = require('../models/project');
 const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
-// 회원가입 POST: userId(사용자계정) password(비밀번호) email(이메일계정) wAddr(지갑주소)
 
+cron.schedule(' * * 1 * *', () => {
+    db.User.findAll({
+        attributes: ['userId'],
+    }).then( async result => {
+        for(var i = 0; i < result.length; i++) {
+            console.log(result[i].userId);
+            try {
+                var trust = await myKlaytn.getTrust(result[i].userId); 
+                if(trust - 25 < 0) await myKlaytn.setTrust(-trust);
+                else await myKlaytn.setTrust(-25);
+                //console.log(result[i].userId+'의 신뢰점수 : '+trust);
+            } catch(err) {
+                console.log('[신뢰도 차감 에러]'+result[i].userId+'가 존재하지 않습니다.');
+                //console.log(err);
+            }
+            
+        }
+    }).catch(err => {
+        console.log(err);
+    });
+});
+
+
+// 회원가입 POST: userId(사용자계정) password(비밀번호) email(이메일계정) wAddr(지갑주소)
 router.post('/', function(req, res, next){
     bcrypt.hash(req.body.password, null, null, function(err, hash) {
         if(err) console.error(err);
@@ -73,6 +99,15 @@ router.post('/bookmark', function(req, res, next){
     });
 });
 
+// 지갑주소 반환하기 GET: userId(사용자계정)
+router.get('/:userId/wallet/', async function(req, res, next){
+    try {
+        var wAddr = await myKlaytn.getWalletAddress(req.params.userId);
+        res.send(wAddr);  
+    } catch(err) {
+        res.send(false);
+    }
+});
 
 // 즐겨찾기 프로젝트아이디 가져오기 GET: userId(사용자계정)
 router.get('/:userId/project', function(req, res, next){
@@ -97,8 +132,6 @@ router.get('/:userId/project', function(req, res, next){
             }
             if(array.length === 0) res.send(false);
             else res.send(array);
-            
-           
         }).catch(err => {
             console.error(err);
         });
@@ -116,7 +149,6 @@ router.get('/:userId/project/:projId', function(req, res, next){
         }).then(result => {
             if(result == null) res.send(false);
             else res.send(true);
-            
         }).catch(err => {
             console.error(err);
         });
@@ -125,7 +157,6 @@ router.get('/:userId/project/:projId', function(req, res, next){
 
 // 로그인
 router.get('/:userId/password/:password', function(req, res, next){
-    
     db.User.findOne({
         attributes: ['password'],
         where:{ userId: req.params.userId }
@@ -140,5 +171,7 @@ router.get('/:userId/password/:password', function(req, res, next){
         console.error(err);
     });
 });
+
+
 
 module.exports = router;

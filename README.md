@@ -75,6 +75,10 @@
 	> userId : 계정명[string]   
 	> projId : 프로젝트 ObjectId[string]
 
+- 지갑주소 가져오기 [GET] - /api/user/:userId/wallet
+    > userId : 계정명[string]
+    > Return : 지갑주소 or FALSE
+
 - 즐겨찾기 프로젝트ObjectId 조회 [GET] - /api/user/:userId/project
 	> userId : 계정명[string]
     > Return : [프로젝트 ObjectId, 제목, 요약, 아이콘, 색상] 배열 존재하지 않을시 false
