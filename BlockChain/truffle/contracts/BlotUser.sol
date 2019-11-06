@@ -48,7 +48,7 @@ contract BlotUser is Ownable {
     }
 
     // 회원가입 시, 사용자 정보 저장
-    // 사용자 초기 신뢰 점수 100
+    // 사용자 초기 신뢰 점수 1000
     function userSignUp(string memory userId, address payable walletAddress) public returns (bool) {
         // 해당 User 아이디가 사용중이 아니어야 함
         require(!userExist(userId), "ERROR : That userId already exists.");
