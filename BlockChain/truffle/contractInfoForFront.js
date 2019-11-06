@@ -28,10 +28,10 @@ var info = beautify(
 console.log(info);
 
 fs.writeFile(
-    './contaractInfo.js',
+    './contractInfo.js',
     info,
     (err) => {
         if(err) throw err
-        console.log("contaractInfo 기록 성공");
+        console.log("contractInfo 기록 성공");
     }
 );
