@@ -16,8 +16,6 @@ moment.tz.setDefault('Asia/Seoul');
 //console.log(moment().format('YYYY'));
 //console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
 
-const Klaytn = require('../blockchain/contract');
-
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('Connected to mongod server'))
@@ -27,71 +25,27 @@ const Project = require('../models/project');
 const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
+const Sequelize = require('sequelize');
+const db = {};
+
+const sequelize = new Sequelize(process.env.MYSQL_URI);
+
+sequelize
+    .authenticate()
+    .then(() => console.log('Connected to mysqld server'))
+    .catch(e => console.error(e));
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+db.User = require('../models/user')(sequelize, Sequelize);
+db.Library = require('../models/library')(sequelize, Sequelize);
+
+db.User.hasMany(db.Library);
+db.Library.belongsTo(db.User);
+
+const Klaytn = require('../blockchain/contract');
 const myKlaytn = Klaytn();
 
-//============================================================================
-// 예외 처리 방법
-// 1. 컨트랙트 함수를 호출 구문을 try, catch 구문으로 감싼다.
-// 2. catch 구문에는 잘못된 실행, 없는 데이터를 불러오라 했을 때 실행되므로
-//    이 예외가 발생하면 무슨 조치를 취할지 적어줌
-
-
-// // 예제 1) 단순히 블록체인 상의 데이터를 읽어오는 함수의 경우
-// async function testGetTrust(userId) {
-//     var userTrust; 
-//     try {
-//         userTrust = await myKlaytn.getTrust(userId);
-//         console.log(userId+'의 신뢰도 : '+userTrust);
-//     } catch(err) {
-//         // 에러 이유
-//         console.log(userId+'로 조회되는 신뢰 점수가 없습니다.');
-//         // 에러 메세지 출력
-//         console.log(err);
-//     }
-// }
-
-// testGetTrust('kss');
-
-
-// // 예제 2) 블록체인 상의 데이터를 변경하는 경우
-// //         Transaction Hash 값을 얻어와 트랜잭션 결과를 확인할 수 있는 홈페이지 링크를 클라이언트에게 돌려줌
-// async function testSetTrust(userId, value) {
-//     var result; 
-//     try {
-//         result = await myKlaytn.setTrust(userId, value);
-//         console.log('result : '+result.transactionHash);
-//     } catch(err) {
-//         // 에러 이유
-//         console.log(userId+'의 신뢰 점수를 수정할 수 없습니다.');
-//         // 에러 메세지 출력
-//         console.log(err);
-//     }
-// }
-
-// testSetTrust('kss', 10);
-
-// // 예제 3) 블록체인 상의 이벤트 로그를 조회하는 경우(블록체인 상의 데이터를 조회하는 것임)
-// async function testGetTranslationLog() {
-//     var result; 
-//     try {
-//         result = await myKlaytn.getTranslationLog();
-//         for(var i=0; i<result.length; i++) {
-//             console.log('project Id:'+JSON.stringify(result[i].returnValues.projectId));
-//             console.log('translator Id:'+JSON.stringify(result[i].returnValues.translatorId));
-//             console.log('sentenceId List:'+JSON.stringify(result[i].returnValues.sentenceIdList));
-//             console.log('translationId List:'+JSON.stringify(result[i].returnValues.translationIdList));
-//             console.log('user Share:'+JSON.stringify(result[i].returnValues.userShare));
-//         }
-//     } catch(err) {
-//         // 에러 이유
-//         console.log('번역 기록을 가져오는 데 실패하였습니다.');
-//         // 에러 메세지 출력
-//         console.log(err);
-//     }
-// }
-
-//testGetTranslationLog();
-//============================================================================
 
 async function deadline(doc) {
     var trans = new Array();
@@ -223,12 +177,12 @@ async function deadline(doc) {
     for(var i = 1; i < pRaw.length-1; i++) pId += pRaw[i];
     
     // 프로젝트 등록자 세팅 pUser
-    var obj = await myKlaytn.getProjectInfo(projId);
+    var obj = await myKlaytn.getProjectInfo(pId);
     var obj2 = JSON.parse(JSON.stringify(obj));
     var pUser = obj2['0'];
     
     // 보상금 세팅
-    var reward = await myKlaytn.getReward(projId);
+    var reward = await myKlaytn.getReward(pId);
     reward = Number(reward);
     var useTransReward = 0;
     var useEvalReward = 0;
@@ -348,7 +302,6 @@ async function finish() {
 } 
 finish();
 
-
 // 프로젝트 정보 등록하기
 router.post('/', function(req, res, next){
     var title = req.body.title;
@@ -393,6 +346,8 @@ router.post('/', function(req, res, next){
         })(sentences[i].raw);
     }
     
+    proj.bytes = totalBytes.toFixed(1);
+    
     var sentenceArray = [];
     for(var i=0; i<sentences.length; i++) {
         if(i%2 == 1) continue;
@@ -405,21 +360,35 @@ router.post('/', function(req, res, next){
         var ratio = sentenceBytes / totalBytes;
         //sentence.idx = i/2;
         sentence.raw_text = sentences[i].raw;
-        sentence.ratio = ratio;
+        sentence.ratio = ratio.toFixed(2);
         sentenceArray.push(sentence);
     }
     proj.sentence = sentenceArray;
     
-    proj.save(function(err, project) {
+    proj.save(async function(err, project) {
         if(err) {
             console.error(err);
             res.send({result:0});
             return;
         }
         var _id = project._id;
-        //myKlaytn.createProject(_id, user, end, reward);
+        _id = JSON.parse(JSON.stringify(_id));
+        //console.log(_id);
+        //console.log(typeof(_id));
+        //await myKlaytn.createProject(_id, user, end, reward);
         res.send(_id);
         //res.send({result:1});
+    });
+});
+
+// 전체 프로젝트 정보 가져오기
+router.get('/', function(req, res, next){
+    Project.find({}, {'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
+        if(err) console.log('err');
+        else {
+            res.send(doc);
+            //res.render('index', { title: 'Express' });
+        }
     });
 });
 
@@ -461,17 +430,49 @@ router.post('/trans', function(req, res, next){
     });
 });
 
-
-// 전체 프로젝트 정보 가져오기
-router.get('/', function(req, res, next){
-    Project.find({}, {'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
+// 모든 태그리스트 가져오기
+router.get('/tags', function(req, res, next){
+    Project.find({}, {'_id': false, 'tags': true}, function(err, doc){
+        
+        var array = [];
+        
         if(err) console.log('err');
         else {
-            res.send(doc);
-            //res.render('index', { title: 'Express' });
+            for(var i = 0; i < doc.length; i++) {
+                for(var j = 0; j < doc[i].tags.length; j++) {
+                    var flag = false;
+                    for(var k = 0; k < array.length; k++) {
+                        if(array[k] == doc[i].tags[j]) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if(flag == false) array.push(doc[i].tags[j]);
+                }
+            }
+            if(array.length == 0) res.send(false);
+            else res.send(array);
         }
     });
 });
+
+// 태그 포함하는 프로젝트 ObjectId 조회
+router.get('/tags/:tag', function(req, res, next) {
+    Project.find({}, {'tags' : { $elemMatch : {$in : [req.params.tag]} }}, function(err, doc){
+        var array = [];
+        if(err) console.log('err');
+        else {
+            for(var i = 0; i < doc.length; i++) {
+                if(doc[i].tags.length != 0) {
+                    array.push(doc[i]._id);
+                }
+            }
+            if(array.length == 0) res.send(false);
+            else res.send(array);
+        }
+    });
+});
+
 
 // 특정 프로젝트 정보 가져오기
 router.get('/:p_num', function(req, res, next){
@@ -483,6 +484,63 @@ router.get('/:p_num', function(req, res, next){
         }
     });
 });
+
+// 현재 진행상황 요약
+router.get('/:p_num/summary', function(req, res, next){
+    
+    var p_num = req.params.p_num;
+    Project.findOne({'_id':p_num}, function(err, doc) {
+        if(err) { console.log(err); return; }
+        
+        var transCnt = 0;
+        for(var i = 0; i < doc.sentence.length; i++) {
+            if(doc.sentence[i].trans.length != 0)
+                transCnt += 1;
+        }
+        
+        // 번역 진척도
+        var transPer = transCnt / doc.sentence.length;
+        transPer = transPer * 100;
+        transPer = transPer.toFixed(1);
+        
+        // 번역 참여인원
+        var translator = [];
+        var transCnt = 0;
+        for(var i = 0; i< doc.sentence.length; i++) {
+            
+            var flag = false;
+            for(var j = 0; j< doc.sentence[i].trans.length; j++) {
+                var flag = false;
+                for(var k = 0; k < translator.length; k++){
+                    if(translator[k] == doc.sentence[i].trans[j].user) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if(flag == false) translator.push(doc.sentence[i].trans[j].user);
+            }
+        }
+        transCnt = translator.length;
+        
+        // 원본 분량
+        var totalBytes = doc.bytes * 0.000977;
+        var kBytes = (totalBytes * 100).toFixed(1);
+        
+        // 좋아요 수
+        var like = 0;
+        db.Library.findAndCountAll({
+            where: {projId : p_num }
+        }).then(result => {
+            like = result.count;
+            
+            var data = {transPer : transPer, transCnt : transCnt, kb : kBytes, like : like };
+            res.send(data);
+        }).catch(err => {
+            console.error(err);
+        });        
+    });
+});
+
 
 // 프로젝트의 모든 원문 문장 가져오기
 router.get('/:p_num/sentence', function(req, res, next){
@@ -587,7 +645,6 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userId', function(req, re
 
 // 검색어 조회
 router.get('/keyword/:key', function(req, res, next) {
-    
     Project.find({}, {'title': true, 'description': true, 'icon': true, 'color': true}, function(err, doc) {
         if(err) { console.log('err'); return; }
         else {
@@ -634,6 +691,61 @@ router.get('/user/:userId', function(req, res, next) {
     });
 })
 
+// 프로젝트 번역 마감시 번역정보 정리
+router.get('/:p_num/deadline/trans', async function(req, res, next) {
+    var projectId = req.params.p_num;
+    var result = await myKlaytn.getTranslationLog();
+    var reward = await myKlaytn.getReward(projectId);
+    reward = reward * 0.8;
+    
+    var array = [];
+    
+    for(var i = 0; i < result.length; i++) {
+        
+        var obj = JSON.parse(JSON.stringify(result[i]));
+        if(projectId == obj.returnValues['2']) {
+            var transId = obj.returnValues['3'];
+            var share = obj.returnValues['6'];
+            var blot = share;
+            share /= reward;
+            share *= 100;
+            share = parseInt(share);
+            
+            var data = {transId : transId, percentage : share, blot : blot };
+            array.push(data);
+        }
+    }
+    if(array.length == 0) res.send(false);
+    else res.send(array);
+});
+
+// 프로젝트 번역 마감시 평가정보 정리
+router.get('/:p_num/deadline/eval', async function(req, res, next) {
+    var projectId = req.params.p_num;
+    var result = await myKlaytn.getEvaluationLog();
+    var reward = await myKlaytn.getReward(projectId);
+    reward = reward * 0.1;
+    
+    var array = [];
+    
+    for(var i = 0; i < result.length; i++) {
+        var obj = JSON.parse(JSON.stringify(result[i]));
+        if(projectId == obj.returnValues['2']) {
+            var evalId = obj.returnValues['3'];
+            var share = obj.returnValues['6'];
+            var blot = share;
+            share /= reward;
+            share *= 100;
+            share = parseInt(share);
+            
+            var data = {evalId : evalId, percentage : share, blot : blot};
+            array.push(data);
+        }
+    }
+    if(array.length == 0) res.send(false);
+    else res.send(array);
+});
+
 function shuffle(d) {
     for(var c = d.length-1; c>0; c--) {
         var b = Math.floor(Math.random()*(c+1));
@@ -663,4 +775,66 @@ function level(d) {
 module.exports = router;
 
 
+//============================================================================
+// 예외 처리 방법
+// 1. 컨트랙트 함수를 호출 구문을 try, catch 구문으로 감싼다.
+// 2. catch 구문에는 잘못된 실행, 없는 데이터를 불러오라 했을 때 실행되므로
+//    이 예외가 발생하면 무슨 조치를 취할지 적어줌
 
+
+// // 예제 1) 단순히 블록체인 상의 데이터를 읽어오는 함수의 경우
+// async function testGetTrust(userId) {
+//     var userTrust; 
+//     try {
+//         userTrust = await myKlaytn.getTrust(userId);
+//         console.log(userId+'의 신뢰도 : '+userTrust);
+//     } catch(err) {
+//         // 에러 이유
+//         console.log(userId+'로 조회되는 신뢰 점수가 없습니다.');
+//         // 에러 메세지 출력
+//         console.log(err);
+//     }
+// }
+
+// testGetTrust('kss');
+
+
+// // 예제 2) 블록체인 상의 데이터를 변경하는 경우
+// //         Transaction Hash 값을 얻어와 트랜잭션 결과를 확인할 수 있는 홈페이지 링크를 클라이언트에게 돌려줌
+// async function testSetTrust(userId, value) {
+//     var result; 
+//     try {
+//         result = await myKlaytn.setTrust(userId, value);
+//         console.log('result : '+result.transactionHash);
+//     } catch(err) {
+//         // 에러 이유
+//         console.log(userId+'의 신뢰 점수를 수정할 수 없습니다.');
+//         // 에러 메세지 출력
+//         console.log(err);
+//     }
+// }
+
+// testSetTrust('kss', 10);
+
+// // 예제 3) 블록체인 상의 이벤트 로그를 조회하는 경우(블록체인 상의 데이터를 조회하는 것임)
+// async function testGetTranslationLog() {
+//     var result; 
+//     try {
+//         result = await myKlaytn.getTranslationLog();
+//         for(var i=0; i<result.length; i++) {
+//             console.log('project Id:'+JSON.stringify(result[i].returnValues.projectId));
+//             console.log('translator Id:'+JSON.stringify(result[i].returnValues.translatorId));
+//             console.log('sentenceId List:'+JSON.stringify(result[i].returnValues.sentenceIdList));
+//             console.log('translationId List:'+JSON.stringify(result[i].returnValues.translationIdList));
+//             console.log('user Share:'+JSON.stringify(result[i].returnValues.userShare));
+//         }
+//     } catch(err) {
+//         // 에러 이유
+//         console.log('번역 기록을 가져오는 데 실패하였습니다.');
+//         // 에러 메세지 출력
+//         console.log(err);
+//     }
+// }
+
+//testGetTranslationLog();
+//============================================================================
