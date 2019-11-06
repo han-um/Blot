@@ -172,13 +172,18 @@
 
 ### FRONT SIDE에서 사용하는 지갑 주소와 사용자 정보 Sample
 1. 지갑 주소
-    - key info.txt의 [1]번 계정
-        - 공개키 : 0x6f560ac6ede19461b28382816232c4dd50bd4843
+    - key info.txt의 [4]번 계정
+        - 공개키 : 0x1c2ab35c73cd04279e8273832dc925d2db101d8e
         - 비밀키 : key info.txt 파일 참고
 
 2. (서비스 사용을 위한) 사용자 정보
     - userId : 'u1'
-    - userAddress : 0x6f560ac6ede19461b28382816232c4dd50bd4843
+    - userAddress : 0x1c2ab35c73cd04279e8273832dc925d2db101d8e
+    - 신뢰점수 : 1000
+    - 현재 토큰 보유량 10000 BLOT
+
+3. 트랜잭션 결과값 중 유의미한 데이터
+    - 본철이에게 알려줄 것
 
 ### 구현 내용
 - /src/store의 action.js에 스마트 컨트랙트 내 함수를 호출하는 로직 구현
@@ -194,14 +199,56 @@
         - 공개키 : 0x4aff875cb544368fd51b8f7fda6d247582b5b87c
         - 비밀키 : key info.txt 파일 참고
 
-2. (서비스 사용을 위한) 사용자 정보
+2. (테스트를 위한) 사용자 정보
     - userId : 'nkw'
-    - key info.txt의 [3]번 계정
-        - userAddress : 0xad4abd5ba764b4cbd1c97219bb42365749f6d03c 
+    - key info.txt의 [0]번 계정
+        - userAddress(공개키) : 0x4aff875cb544368fd51b8f7fda6d247582b5b87c
+    - 현재 토큰 보유량 : 9000 BLOT
+    - 신뢰점수 : 1000
 
-3. 프로젝트 정보
+3. 샘플 프로젝트 정보 및 번역/평가 기록
     - projectId : '5d84a8e73c9f67a60a0d42f1'
     - writerId : 'nkw'
+    - deadline : '2019.11.30'
+    - reward : 1000 BLOT 
+    
+    - 번역 참여자 => 800 BLOT 보상금 할당
+        - devNam
+            - 70% => 800 Blot * 70% = 560 BLOT
+            - 계정주소 : key info.txt의 [1]번 계정 0x6f560ac6ede19461b28382816232c4dd50bd4843
+            - 현재 신뢰 점수 : 1000 점
+            - 현재 잔고 : 0 BLOT
+        - devKu
+            - 20% => 160 BLOT
+            - 계정주소 : key info.txt의 [2]번 계정 0x19f74f83114ad84736df48534f3b0c569ebcd419
+            - 현재 신뢰 점수 : 1000 점
+            - 현재 잔고 : 0 BLOT
+        - devKim
+            - 10% => 80 BLOT
+            - 계정주소 : key info.txt의 [3]번 계정 0xad4abd5ba764b4cbd1c97219bb42365749f6d03c
+            - 현재 신뢰 점수 : 1000 점
+            - 현재 잔고 : 0 BLOT
+
+   - 평가자 => 100 BLOT 보상금 할당
+        - devKu
+            - 40% => 100 Blot * 40% = 40 BLOT
+           
+        - devKim
+            - 40% => 40 BLOT
+
+        - devNam
+            - 20% => 20 BLOT
+
+
+4. 신뢰 점수 조정 함수 파라미터
+    - projectId : string
+    - userID : string
+    - value : int
+    - reason : int
+        - 0 : 번역 활동에 따른 신뢰도 증가
+        - 1 : 평가 활동에 따른 신뢰도 증가
+        - 2 : 월별 신뢰 점수 차감
+    - totalUserReliability : int
 
 <br><br>
 
