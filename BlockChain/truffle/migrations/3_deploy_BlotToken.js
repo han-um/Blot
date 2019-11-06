@@ -1,7 +1,10 @@
 const BlotToken = artifacts.require("BlotToken");
+const KlaytnMonetaryUnit = artifacts.require("KlaytnMonetaryUnit");
 const fs = require('fs');
 
 module.exports = function(deployer) {
+    deployer.deploy(KlaytnMonetaryUnit);
+    deployer.link(KlaytnMonetaryUnit, BlotToken);
     deployer.deploy(BlotToken)
     .then(()=> {
     if(BlotToken._json) {
