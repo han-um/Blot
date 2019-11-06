@@ -24,8 +24,9 @@ export default {
       this.$store.dispatch('CREATE_NEW_PROJECT', payload)
     },
     // 블록체인으로부터 토큰을 구매하기 위해 서버에 대납 요청을 보내는 로직
+    // @ Params : userAddress 토큰이 입금될 주소, klayNum : 구매 금액(정수형 타입)
     purchaseToken() {
-      var payload = {'userAddress': 'u1', 'klayNum': 1}
+      var payload = {'userAddress': '토큰을_충전할_지갑주소', 'klayNum': 1}
       this.$store.dispatch('PURCHASE_BLOT_TOKEN', payload)
     },
     // 구매한 토큰을 다시 Klay 코인으로 바꿔가기 위해 서버에 대납 요청을 보내는 로직

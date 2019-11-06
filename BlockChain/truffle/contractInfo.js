@@ -463,7 +463,7 @@ module.exports = {
     "type": "function",
     "signature": "0x24d58e25"
   }],
-  DEPLOYED_BLOTTOKEN_ADDRESS: '0x4486dCB6ee119F148ad8685A4810d4407155C9f3',
+  DEPLOYED_BLOTTOKEN_ADDRESS: '0x7b47040a9DBBCC3553b0155EE612F194Ff31Ad17',
   DEPLOYED_BLOTPROJECT_ABI: [
   {
     "constant": false,
@@ -844,7 +844,7 @@ module.exports = {
     "type": "function",
     "signature": "0x8148f1cd"
   }],
-  DEPLOYED_BLOTPROJECT_ADDRESS: '0xD3223EF5784FdAF8bD6aBb414e03Cc83e44D85c4',
+  DEPLOYED_BLOTPROJECT_ADDRESS: '0xb436d3a8658C55eaFab24f5741B48B1270254Ca0',
   DEPLOYED_BLOTUSER_ABI: [
   {
     "constant": false,
@@ -1163,5 +1163,5 @@ module.exports = {
     "type": "function",
     "signature": "0x24d58e25"
   }],
-  DEPLOYED_BLOTUSER_ADDRESS: '0xDeD47A679ad8Fd4deeBC4B5B1d044280a163c6D9'
+  DEPLOYED_BLOTUSER_ADDRESS: '0x96bFC4e512b997D8bB618948FE39A531a4B7f8cB'
 }
