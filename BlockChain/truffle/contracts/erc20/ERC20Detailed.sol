@@ -9,6 +9,7 @@ contract ERC20Detailed is IERC20 {
     string private _name;
     string private _symbol;
     uint8 private _decimals;
+    address private owner;
 
     /**
      * @dev Sets the values for `name`, `symbol`, and `decimals`. All three of
@@ -19,6 +20,7 @@ contract ERC20Detailed is IERC20 {
         _name = name;
         _symbol = symbol;
         _decimals = decimals;
+        owner = msg.sender;
     }
 
     /**
@@ -50,5 +52,11 @@ contract ERC20Detailed is IERC20 {
      */
     function decimals() public view returns (uint8) {
         return _decimals;
+    }
+
+    // 토큰과 코인 교환 비율 변경
+    function setDecimals(uint8 rate) public {
+        require(owner == msg.sender);
+        _decimals = rate;
     }
 }
