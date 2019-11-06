@@ -7,18 +7,26 @@
         <!--img src="/static/img/group36.png"-->
     </div>
     <div class="contents">
-          프로젝트 상세요약 내용
+          <apexchart width="33%" type="donut" :options="chartOptions" :series="series"></apexchart>
     </div>
   </div>
 </template>
 
 <script>
 // import axios from 'axios'
-
+import VueApexCharts from 'vue-apexcharts'
 export default {
   name: 'ProjectViewOverview',
   data () {
-    return {}
+    return {
+      chartOptions: {
+        colors: ['#5AE0A1', '#51C991', '#48AF7F', '#3C936B']
+      },
+      series: [44, 55, 41, 17, 15]
+    }
+  },
+  components: {
+    apexcharts: VueApexCharts
   },
   methods: {},
   mounted () {}
@@ -62,7 +70,7 @@ export default {
         top:-300px;
     }
     .contents {
+        padding-top:20px;
         width:100%;
-        height:100px;
     }
 </style>
