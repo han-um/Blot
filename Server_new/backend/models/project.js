@@ -38,6 +38,7 @@ const projectSchema = new mongoose.Schema({
     color: { type: String },
     valid: { type: Number, default: 1},
     all: { type: String },
+    bytes: { type: Number },
     //sentence: [sentenceSchema],
     sentence: [ Sentence ],
 });
