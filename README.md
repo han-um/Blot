@@ -31,7 +31,7 @@
     > this.$session.get(key)
 - 세션 체크하기
     > this.$session.has(key)
-- 세션 제거하기
+- 세션 제거하기g
     > this.$session.clear()
 
 ### VUE
@@ -120,7 +120,7 @@
 - 특정프로젝트 제목,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/:p_num
 	> p_num : 프로젝트 ObjectId[string]
     > Return : [제목, 시작일, 마감일 ,아이콘, 색상] 반환
-    
+
 - 특정프로젝트 전체원본문장 조회 [GET] - /api/project/:p_num/sentence
 	> p_num : 프로젝트 ObjectId[string]
     > Return : 프로젝트 원본 문장
@@ -154,6 +154,25 @@
 - 특정유저가 등록한 프로젝트 ObjectId [GET] - /api/project/user/:userId
     > userId : 계정명[string]
     > Return : [프로젝트 ObjectId, 제목, 요약, 아이콘, 색상] 배열 존재하지 않을시 false
+
+- 모든 태그리스트 조회 [GET] - /api/project/tags
+    > Return : [태그] 배열 존재하지 않을 시 false
+    
+- 태그가 존재하는 프로젝트 조회 [GET] - /api/project/tags/:tag
+    > tag : 태그 키[string]
+    > Return : [프로젝트 ObjectId] 배열 존재하지 않을 시 false
+
+- 프로젝트 번역 마감시 번역정보 조회 [GET] - /api/project/:p_num/deadline/trans
+    > p_num : 프로젝트 ObjectId[string]
+    > Return : [ {transId : 번역자, percentage : 참여율%, blot : 보상금(blot)} ] 객체배열 존재하지 않을시 false
+    
+- 프로젝트 번역 마감시 평가정보 조회 [GET] - /api/project/:p_num/deadline/eval
+    > p_num : 프로젝트 ObjectId[string]
+    > Return : [ {evalId : 평가자, percentage : 참여율%, blot : 보상금(blot)} ] 배열 존재하지 않을시 false
+    
+- 프로젝트 진행도 정보 조회 [GET] - /api/project/:p_num/summary
+    > p_num : 프로젝트 ObjectId[string]
+    > Return : { transPer : 진행률%, transCnt : 번역참여자수, kb : 원문크기Kbytes, like : 좋아요 수 } 객체 반환 
     
 ### TODO
 - 프로젝트 검색어 조회 ( GET /api/project/keyword/:key ) 에서 description이 일부 프로젝트만 출력되는 문제 해결
