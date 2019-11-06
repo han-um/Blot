@@ -57,6 +57,12 @@ export default {
   SET_CURRENT_RELIABILITY (state, userReliability) {
     state.crntReliability = userReliability
   },
+/* -----------------------------------------------------------
+    USERMENU (Header)
+  ----------------------------------------------------------- */
+  SET_CURRENT_USER_IMAGE (state, userImage) {
+    state.crntUserImg = '/api/files/attachedFiles/' + userImage
+  },
   /* -----------------------------------------------------------
     Co-Pilot Variables (삭제할것)
   ----------------------------------------------------------- */

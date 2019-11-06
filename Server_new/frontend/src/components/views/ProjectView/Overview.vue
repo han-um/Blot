@@ -1,6 +1,6 @@
 <template>
   <div class="overview-wrapper">
-    <div class="image-box">
+    <div class="image-box" v-bind:style="{ backgroundImage: 'url(' + image + ')' }">
         <div class="inner-box">
             <center><img src="/static/img/group36.png" class="img-box hidden-xs" alt="Responsive image"></center>
         </div>
@@ -13,12 +13,13 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import VueApexCharts from 'vue-apexcharts'
 export default {
   name: 'ProjectViewOverview',
   data () {
     return {
+      image: '',
       chartOptions: {
         colors: ['#5AE0A1', '#51C991', '#48AF7F', '#3C936B']
       },
@@ -28,8 +29,26 @@ export default {
   components: {
     apexcharts: VueApexCharts
   },
-  methods: {},
-  mounted () {}
+  methods: {
+    getProjectInfo() {
+      axios.get('/api/project/' + this.$route.params.id)
+      .then(response => {
+        console.log('Response:', response.data.title)
+        if (response.status !== 200) {
+          this.error = response.statusText
+          return
+        }
+        this.image = '/api/files/attachedFiles/' + response.data.image
+      })
+      .catch(error => {
+        console.log('error', error.response)
+        this.error = error.response.statusText
+      })
+    }
+  },
+  mounted () {
+    this.getProjectInfo()
+  }
 }
 </script>
 <style scoped>
@@ -43,7 +62,7 @@ export default {
       height: 300px;
       /* Create the parallax scrolling effect */
       background-attachment: fixed;
-      background-position: center;
+      background-position: bottom;
       background-repeat: no-repeat;
       background-size: cover;
     }

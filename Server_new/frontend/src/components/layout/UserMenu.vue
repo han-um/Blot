@@ -3,7 +3,7 @@
   <li class="dropdown user user-menu" >
     <a v-if="isLoggedIn" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
       <!-- The user image in the navbar-->
-      <img :src="user.avatar" class="user-image" alt="User Image">
+      <img :src="this.$store.state.crntUserImg" class="user-image" alt="User Image">
       <!-- hidden-xs hides the username on small devices so only the image appears. -->
       <span class="hidden-xs">{{this.$session.get('username')}}</span>
     </a>
@@ -92,6 +92,7 @@ export default {
       if (this.$session.has('username')) {
         this.$store.dispatch('REFRESH_CURRENT_WALLET_ID', 'kim')
         this.$store.dispatch('REFRESH_CURRENT_BLOTS_BY_ID', 'kim')
+        this.$store.dispatch('REFRESH_CURRENT_USER_IMAGE', this.$session.get('username'))
       }
     }
   },
