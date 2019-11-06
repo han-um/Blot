@@ -134,10 +134,11 @@ export default {
     .token-value {
         display:inline;
         line-height: 0px;
+        color:#FBC02D;
     }
     
     .yellow {
-        color:#E3CA23;
+        color:#FBC02D;
         font-weight:900;
     }
     
@@ -166,6 +167,7 @@ export default {
         font-size:20px;
         vertical-align: middle;
         display:inline;
+        color:#FBC02D;
     }
     .line {
       width:1px;

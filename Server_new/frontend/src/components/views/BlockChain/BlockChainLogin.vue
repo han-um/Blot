@@ -226,14 +226,14 @@ export default {
     
     #input-password {
       background:none;
-      border:2px solid white;
+      border:2px solid #FBC02D;
         color:white;
     }
     #keystore {
         position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip:rect(0,0,0,0); border: 0;
     }
     #keystore-button {
-        background-color:#5CD590;
+        background-color:#FBC02D;
         padding:5px;
         width:100%;
         margin-top:10px;
@@ -241,7 +241,7 @@ export default {
         text-align: center;
     }
     #keystore-button:hover {
-        background-color:#3F8D60;
+        background-color:#F9A825;
     }
 
 </style>

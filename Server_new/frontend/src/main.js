@@ -41,16 +41,11 @@ Vue.use(VueSession)
 
 // Caver-js
 import Caver from 'caver-js'
-// import contractInfo from './contractInfo'
 Vue.use(Caver)
-// const config = {
-//   rpcURL: 'https://api.baobab.klaytn.net:8651/'
-// }
-// const cav = new Caver(config.rpcURL)
-// const blotMainContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTMAIN_ABI, contractInfo.DEPLOYED_BLOTMAIN_ADDRESS)
-// const blotUserContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTUSER_ABI, contractInfo.DEPLOYED_BLOTUSER_ADDRESS)
-// const blotProjectContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTPROJECT_ABI, contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS)
-// const blotTokenContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTTOKEN_ABI, contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS)
+
+// Vue-apexcharts
+import VueApexCharts from 'vue-apexcharts'
+Vue.component('apexchart', VueApexCharts)
 
 // Routing logic
 var router = new VueRouter({

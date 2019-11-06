@@ -15,6 +15,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "apexcharts": "^3.10.1",
     "async": "^3.1.0",
     "axios": "^0.15.3",
     "babel-runtime": "^5.8.0",
@@ -31,6 +32,7 @@
     "v-calendar": "^0.9.7",
     "v-tag-input": "0.0.3",
     "vue": "^2.2.2",
+    "vue-apexcharts": "^1.5.1",
     "vue-date-picker": "^1.0.2",
     "vue-momentjs": "^0.1.2",
     "vue-resource": "^1.0.3",

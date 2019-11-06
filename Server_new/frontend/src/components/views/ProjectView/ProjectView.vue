@@ -73,11 +73,15 @@ export default {
       })
     },
     setFavorite() {
-      axios.post('/api/user/bookmark', {userId: this.$session.get('username'), projId: this.$route.params.id})
-      .then(res => {
-        this.$swal('즐겨찾기 추가', '내 서재 메뉴에서 즐겨찾기된 프로젝트를 <br> 한눈에 확인할 수 있습니다.', 'success')
-        this.isFavorite = true
-      })
+      if (this.isFavorite) {
+        this.$swal('즐겨찾기 실패', '이미 즐겨찾기에 등록되어 있습니다.', 'error')
+      } else {
+        axios.post('/api/user/bookmark', {userId: this.$session.get('username'), projId: this.$route.params.id})
+        .then(res => {
+          this.$swal('즐겨찾기 추가', '내 서재 메뉴에서 즐겨찾기된 프로젝트를 <br> 한눈에 확인할 수 있습니다.', 'success')
+          this.isFavorite = true
+        })
+      }
     }
   },
   mounted () {
