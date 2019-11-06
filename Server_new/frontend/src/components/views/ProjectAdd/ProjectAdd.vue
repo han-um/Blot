@@ -317,7 +317,7 @@ Vue.use(VCalendar)
     }
     
     .submit-btn {
-        background-color:#5CD590;
+        background-color:#FBC02D;
         height:55px;
         border-radius:5px;
         text-align: center;
