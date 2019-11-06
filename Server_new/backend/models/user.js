@@ -18,7 +18,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING(45),
             unique: true,
             allowNull: false
-        } 
+        },
+        image: {
+            type: DataTypes.STRING(45),
+            unique: true,
+            allowNull: false
+        }
     }, {
         tableName: 'user',
         timestamps: false

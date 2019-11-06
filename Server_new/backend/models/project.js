@@ -41,6 +41,7 @@ const projectSchema = new mongoose.Schema({
     bytes: { type: Number },
     //sentence: [sentenceSchema],
     sentence: [ Sentence ],
+    image: { type: String },
 });
 
 module.exports = mongoose.model('Project', projectSchema, 'Project');

@@ -40,7 +40,7 @@
                           </div>
                       <center>보상 금액</center>
                       <div class="reward-box"><div class="inner">
-                          <span class="number">72</span><br>
+                          <span class="number">{{this.$store.state.crntBlots}}</span><br>
                           {{this.$store.state.tokenName}}<br>
                           현재 보유중
                       </div></div>
@@ -50,7 +50,7 @@
                           번역 보상금
                       </div></div>
                        <div class="reward-box"><div class="inner">
-                          <span class="number">68</span><br>
+                          <span class="number">{{this.$store.state.crntBlots - reward}}</span><br>
                           {{this.$store.state.tokenName}}<br>
                           지급후 잔액
                       </div></div><br><br>
@@ -76,6 +76,9 @@
                       <center>대표 아이콘</center>
                       <br>
                       <IconSelector></IconSelector>
+                      <br>
+                      <center>대표 이미지</center>
+                      <input class="input-file" type="file" name="myfile" ref='projectImage'>
                   </div>
               </div>
           </div>
@@ -117,24 +120,31 @@ export default {
       projectOverview: '',
       reward: '',
       selectedDate: null,
-      projectAll: ''
+      projectAll: '',
+      projectImage: ''
     }
   },
   methods: {
     addProject () {
-      axios.post('/api/project/', {
-        title: this.projectTitle,
-        description: this.projectOverview,
-        language: 'English',
-        tags: this.projectTags,
-        end: this.selectedDate,
-        reward: this.reward,
-        icon: this.$store.state.crntIcon,
-        all: this.projectAll,
-        user: this.$session.get('username')
-      })
-      .then(res => {
-        this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
+      this.projectImage = this.$refs.projectImage.files[0]
+      const formData = new FormData()
+      formData.append('userfile', this.projectImage)
+      axios.post('/api/files/upload', formData).then(res => {
+        axios.post('/api/project/', {
+          title: this.projectTitle,
+          description: this.projectOverview,
+          language: 'English',
+          tags: this.projectTags,
+          end: this.selectedDate,
+          reward: this.reward,
+          icon: this.$store.state.crntIcon,
+          all: this.projectAll,
+          user: this.$session.get('username'),
+          image: res.data
+        })
+        .then(res2 => {
+          this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
+        })
       })
     }
   },
@@ -227,7 +237,7 @@ Vue.use(VCalendar)
     }
     
     .highlight {
-        background-color:#5CD590;
+        background-color:#FBC02D;
     }
     
     .highlight .inner {
@@ -257,7 +267,7 @@ Vue.use(VCalendar)
     }
     
     .reward-box .inner .number {
-        font-size:30px;
+        font-size:25px;
         font-weight:600;
     }
     

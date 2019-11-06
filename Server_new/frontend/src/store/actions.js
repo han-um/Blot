@@ -8,6 +8,14 @@ const blotUserContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTUSER_AB
 const blotTokenContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTTOKEN_ABI, contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS)
 
 export default {
+  // 유저이미지 새로고침
+  REFRESH_CURRENT_USER_IMAGE (state, username) {
+    axios.get('/api/user/' + username)
+    .then(res => {
+      console.log(res.data.image)
+      state.commit('SET_CURRENT_USER_IMAGE', res.data.image)
+    })
+  },
   getUserWalletAddressByUserId (state, userId) {
     try {
       return blotUserContract.methods.getUserAddressByUserId(userId).call()

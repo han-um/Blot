@@ -30,7 +30,8 @@ var storage = multer.diskStorage({
         var fileNameArray = (file.originalname).split('.');
         // 유일한 파일이름(ex 사용자 아이디)을 가지도록 파일명을 고쳐주고
         setUserId();
-        var uniqueFileName = userId+'.'+fileNameArray[1];
+        var d = new Date();
+        var uniqueFileName = d.getTime() + Math.floor(Math.random() * 1000) + 1 + '.' + fileNameArray[1];
         // 그 이름으로 전송된 파일을 저장
         cb(null, uniqueFileName);
     }
@@ -93,7 +94,7 @@ router.post('/upload', upload.single('userfile'), function(req, res){
         newData.save(function(err){
             if(err) res.send(err); // 에러 확인
             console.log('DB에 성공적으로 file 정보를 저장');
-            res.end("ok");  
+            res.end(req.file.filename);  
         });
     } catch(err) {
         console.log(err);
