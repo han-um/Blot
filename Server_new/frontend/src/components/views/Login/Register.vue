@@ -57,6 +57,9 @@
                           <input type="text" v-model="inpEmail" placeholder="이메일" name="email" id="email">
                           <button class="email-button"><i class="ri-send-plane-fill"></i></button>
                       </form>
+                      <br>
+                      <input class="input-file" type="file" name="myfile" ref='userImage' id="real-file-input">
+                      <label for="real-file-input" class="fake-file-input">프로필 이미지</label>
                   </div>
               </div>
               <div class="p-0 col-xs-12 col-md-6">
@@ -98,7 +101,8 @@ export default {
       inpPassword: '',
       inpPasswordRe: '',
       inpEmail: '',
-      inpWAddr: ''
+      inpWAddr: '',
+      inpImage: ''
     }
   },
   methods: {
@@ -110,9 +114,14 @@ export default {
     ValidCheck: function (event) {
     },
     RegisterPost: function (event) {
-      axios.post('/api/user/', {userId: this.inpUserId, password: this.inpPassword, email: this.inpEmail, wAddr: this.inpWAddr})
-      .then(res => {
-        console.log(res)
+      this.inpImage = this.$refs.userImage.files[0]
+      const formData = new FormData()
+      formData.append('userfile', this.inpImage)
+      axios.post('/api/files/upload', formData).then(res => {
+        axios.post('/api/user/', {userId: this.inpUserId, password: this.inpPassword, email: this.inpEmail, wAddr: this.inpWAddr, image: res.data})
+        .then(res2 => {
+          console.log(res2)
+        })
       })
     }
   },
@@ -212,7 +221,7 @@ export default {
         border:0.5px solid white;
         margin:3px;
         padding:6px;
-        height:150px;
+        height:200px;
     }
     
     .inner-box input {
@@ -267,6 +276,22 @@ export default {
         text-align: center;
         font-size:12px;
         color:red;
+    }
+    #real-file-input {
+        display:none;
+    }
+    .fake-file-input { 
+        background-color:rgba(255,255,255,0.7);
+        color:gray;
+        border:0px;
+        width:100%;
+        height:30px;
+        margin-bottom:6px;
+        text-align: center;
+        line-height: 30px;
+    }
+    .fake-file-input:hover {
+        background-color:rgba(255,255,255,0.9);
     }
     
 </style>

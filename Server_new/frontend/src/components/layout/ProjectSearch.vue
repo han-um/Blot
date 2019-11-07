@@ -128,6 +128,8 @@ export default {
         float: left;
         vertical-align: middle;
         display:inline;
+        overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+        width:calc(100% - 95px)
     }
     
     .proj-title h4 {

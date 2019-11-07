@@ -18,7 +18,7 @@
                 <div v-for="eachProject in currentList" class="col-md-6 p-2" v-bind:key="eachProject._id">
                     <router-link :to="{path: '/projview/' + eachProject._id + '/'}">
                     <div class="each-box">
-                        <div class="img-box"></div>
+                        <div class="img-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + eachProject.image + ')' }"></div>
                         <div class="title-box">{{eachProject.title}}</div>
                     </div>
                     </router-link>

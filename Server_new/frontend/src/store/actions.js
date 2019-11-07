@@ -2,12 +2,20 @@ import axios from 'axios'
 import Caver from 'caver-js'
 import contractInfo from '../contractInfo'
 const cav = new Caver('https://api.baobab.klaytn.net:8651/')
-const blotMainContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTMAIN_ABI, contractInfo.DEPLOYED_BLOTMAIN_ADDRESS)
+//const blotMainContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTMAIN_ABI, contractInfo.DEPLOYED_BLOTMAIN_ADDRESS)
 const blotUserContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTUSER_ABI, contractInfo.DEPLOYED_BLOTUSER_ADDRESS)
-// const blotProjectContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTPROJECT_ABI, contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS);
+const blotProjectContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTPROJECT_ABI, contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS);
 const blotTokenContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTTOKEN_ABI, contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS)
 
 export default {
+  // 유저이미지 새로고침
+  REFRESH_CURRENT_USER_IMAGE (state, username) {
+    axios.get('/api/user/' + username)
+    .then(res => {
+      console.log(res.data.image)
+      state.commit('SET_CURRENT_USER_IMAGE', res.data.image)
+    })
+  },
   getUserWalletAddressByUserId (state, userId) {
     try {
       return blotUserContract.methods.getUserAddressByUserId(userId).call()
@@ -17,7 +25,7 @@ export default {
   },
   getUserBalanceByUserId (state, userId) {
     try {
-      return blotMainContract.methods.getUserBalanceByUserId(userId).call()
+      return blotUserContract.methods.getUserBalanceByUserId(userId).call()
     } catch (e) {
       console.log(e)
     }
@@ -71,14 +79,14 @@ export default {
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: walletFromSession.address,
           to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
-          data: blotMainContract.methods.registerNewProject(payload.projectId, payload.writerId, payload.deadline, payload.reward).encodeABI(),
+          data: blotProjectContract.methods.registerNewProject(payload.projectId, payload.writerId, payload.deadline, payload.reward).encodeABI(),
           gas: '500000'
         }, walletFromSession.privateKey)
         .then(function (transactionInfo) {
           console.log(transactionInfo)
           axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
           .then(res => {
-            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/' + res.data)
+            console.log('transaction 결과 정보 : ' + res.data)
           })
         })
       } catch (err) {
@@ -99,7 +107,7 @@ export default {
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: walletFromSession.address,
           to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
-          data: blotMainContract.methods.purchaseToken(payload.userAddress, payload.klayNum).encodeABI(),
+          data: blotTokenContract.methods.purchaseToken(payload.userAddress, payload.klayNum).encodeABI(),
           value: cav.utils.toPeb(payload.klayNum, 'KLAY'),
           gas: '500000'
         }, walletFromSession.privateKey)
@@ -107,7 +115,7 @@ export default {
           console.log(transactionInfo)
           axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
           .then(res => {
-            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/' + res.data)
+            console.log('transaction 결과 transaction 결과 정보 : ' + res.data)
             // BLOT을 충전한 지갑 주소가 블록체인 계정으로 로그인한 지갑주소와 같다면 BLOT 잔고 표시 업데이트
             if (state.state.crntWalletId === payload.userAddress) {
               state.dispatch('REFRESH_CURRENT_BLOTS_BY_ADDR', payload.userAddress)
@@ -132,14 +140,14 @@ export default {
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: walletFromSession.address,
           to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
-          data: blotMainContract.methods.sellToken(payload.blotNum).encodeABI(),
+          data: blotTokenContract.methods.sellToken(payload.blotNum).encodeABI(),
           gas: '500000'
         }, walletFromSession.privateKey)
         .then(function (transactionInfo) {
           console.log(transactionInfo)
           axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
           .then(res => {
-            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/' + res.data)
+            console.log('transaction 결과 정보 : ' + res.data)
             // BLOT을 환불한 지갑 주소가 블록체인 계정으로 로그인한 지갑주소와 같다면 BLOT 잔고 표시 업데이트
             state.dispatch('REFRESH_CURRENT_WALLET_ID', payload.userId)
           })
@@ -162,14 +170,14 @@ export default {
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: walletFromSession.address,
           to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
-          data: blotMainContract.methods.replaceOldToNewUserAddress(payload.userId, payload.newUserAddress).encodeABI(),
+          data: blotTokenContract.methods.replaceOldToNewUserAddress(payload.userId, payload.newUserAddress).encodeABI(),
           gas: '500000'
         }, walletFromSession.privateKey)
         .then(function (transactionInfo) {
           console.log(transactionInfo)
           axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
           .then(res => {
-            console.log('transaction 결과 보고 싶으면 여기 >> https://baobab.scope.klaytn.com/tx/' + res.data)
+            console.log('transaction 결과 정보 : ' + res.data)
             // 사용자 지갑 주소 업데이트
             if (state.state.crntWalletId === payload.userAddress) {
               state.dispatch('REFRESH_CURRENT_BLOTS_BY_ADDR', payload.userAddress)

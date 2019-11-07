@@ -69,7 +69,8 @@ router.post('/', function(req, res, next){
                 userId: req.body.userId,
                 password: hash,
                 email: req.body.email,
-                wAddr: req.body.wAddr
+                wAddr: req.body.wAddr,
+                image: req.body.image
             }).then(async result => {
                 await myKlaytn.userSignUp(req.body.userId, req.body.wAddr);
                 res.send(result);
@@ -122,10 +123,10 @@ router.get('/:userId/project', function(req, res, next){
             var array = []
             for(var i = 0; i < result.length; i++) {
                 var projId = result[i].projId;
-                await Project.findOne({'_id': projId}, {'title': true, 'description': true, 'icon': true, 'color': true}, function(err, doc) {
+                await Project.findOne({'_id': projId}, {'title': true, 'description': true, 'icon': true, 'color': true, 'image': true}, function(err, doc) {
                     if(err) { console.log('err'); return; }
                     else {
-                        var data = { _id: doc._id, title: doc.title, description: doc.description, icon: doc.icon, color: doc.color };
+                        var data = { _id: doc._id, title: doc.title, description: doc.description, icon: doc.icon, color: doc.color, image: doc.image };
                         array.push(data);
                     }
                 });
@@ -172,6 +173,14 @@ router.get('/:userId/password/:password', function(req, res, next){
     });
 });
 
-
+// 회원정보확인
+router.get('/:userId', function(req, res, next){
+    db.User.findOne({
+        attributes: ['userId','email','image'],
+        where:{ userId: req.params.userId }
+    }).then(result => {
+        res.send(result);
+    })
+});
 
 module.exports = router;

@@ -362,6 +362,7 @@ router.post('/', function(req, res, next){
     var icon = req.body.icon;
     var color = req.body.color;
     var all = req.body.all;
+    var image = req.body.image;
         
     var tag = [];
     
@@ -380,6 +381,7 @@ router.post('/', function(req, res, next){
     proj.icon = icon;
     proj.color = color;
     proj.all = all;
+    proj.image = image;
     
     let sentences = splitter.split(all);
     
@@ -419,7 +421,10 @@ router.post('/', function(req, res, next){
         }
         var _id = project._id;
         _id = JSON.parse(JSON.stringify(_id));
-        await myKlaytn.createProject(_id, user, end, reward);
+
+        //console.log(_id);
+        //console.log(typeof(_id));
+        //await myKlaytn.createProject(_id, user, end, reward);
         res.send(_id);
     });
 });
@@ -441,8 +446,8 @@ router.post('/sign', async function(req, res, next) {
     try {
         // transcation 대납 서명 후 블록체인에 보내기
         var result = await myKlaytn.payProxy(rawTransaction);
-        // transaction hash 값만 반환해주기
-        res.send(result.transactionHash);
+        // transaction 관련 모든 정보 반환해주기
+        res.send(result);
     } catch(err) {
         res.status(500).send('Can\'t register transaction' + err);
     }
@@ -520,7 +525,7 @@ router.get('/tags/:tag', function(req, res, next) {
 // 특정 프로젝트 정보 가져오기
 router.get('/:p_num', function(req, res, next){
     var p_num = req.params.p_num;
-    Project.findOne({'_id':p_num},{'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
+    Project.findOne({'_id':p_num},{'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true}, function(err, doc){
         if(err) console.log('err');
         else {
             res.send(doc);
@@ -720,12 +725,12 @@ router.get('/:p_num/deadline', function(req, res, next) {
 
 // 특정유저가 등록한 프로젝트ObjectId, 제목, 요약, 아이콘, 색상 조회
 router.get('/user/:userId', function(req, res, next) {
-    Project.find({'user': req.params.userId}, {'title': true, 'description': true, 'icon': true, 'color': true}, function(err, doc) {
+    Project.find({'user': req.params.userId}, {'title': true, 'description': true, 'icon': true, 'color': true, 'image': true}, function(err, doc) {
         if(err) { console.log('err'); return; }
         else {
             var array = [];
             for(var i = 0; i < doc.length; i++) {
-                 var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color };
+                 var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color, image: doc[i].image };
                 array.push(data);
             }
             if(array.length === 0) res.send(false);
