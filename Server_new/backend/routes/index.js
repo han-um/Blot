@@ -207,8 +207,8 @@ async function deadline(doc) {
         var translatorId = 'nkw';
         
         //var trust = await myKlaytn.getTrust(translatorId);
-        //if(trust + 8 > 1000) await myKlaytn.setTrust(translatorId, 1000-trust);
-        //else await myKlaytn.setTrust(translatorId, 8);
+        //if(trust + 8 > 1000) await myKlaytn.setTrust(pId, translatorId, 1000-trust, 0);
+        //else await myKlaytn.setTrust(pId, translatorId, 8, 0);
         
         var sentenceList = trans[i].sIdx;
         var translationList = trans[i].tIdx;
@@ -237,7 +237,7 @@ async function deadline(doc) {
         var evaluatorId = 'nkw';
         
         //var trust = await myKlaytn.getTrust(evaluatorId);
-        //if(trust != 1000) await myKlaytn.setTrust(evaluatorId, 1);
+        //if(trust != 1000) await myKlaytn.setTrust(pId, evaluatorId, 1, 1);
         
         var sentenceList = eval[i].sIdx;
         var translationList = eval[i].tIdx;
@@ -279,7 +279,7 @@ async function deadline(doc) {
 
 
 // 익일 마다 검사 [테스트 코드 10초마다]
-async function finish() {
+async function endDetect() {
         cron.schedule(' */10 * * * *', () => {
         Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
             if(err) console.log('err');
@@ -313,7 +313,8 @@ async function finish() {
         });
     });
 } 
-finish();
+// 자동 감지 off
+// endDetect();
 
 // 수동 마감
 router.get('/manual', function(req, res, next) {
@@ -796,11 +797,50 @@ router.get('/:p_num/deadline/eval', async function(req, res, next) {
 
 // 프로젝트의 참여자 신뢰도 이력 로그
 router.get('/:p_num/trust', async function(req, res, next) {
-    
+    var projectId = req.params.p_num;
     var result = await myKlaytn.getReliabilityLog();
     
+     var array = [];
     
-})
+    for(var i = 0; i < result.length; i++) {
+        var obj = JSON.parse(JSON.stringify(result[i]));
+        if(projectId == obj.returnValues['2']) {
+            var userId = obj.returnValues['3'];
+            var score = obj.returnValues['4'];
+            var type = obj.returnValues['5'];
+            var ascore = obj.returnValues['6'];
+            
+            var data = {userId:userId, score:score, type:type, ascore: ascore};
+            array.push(data);
+        }
+    }
+    if(array.length == 0) res.send(false);
+    else res.send(array);
+});
+
+// 사용자 신뢰도 이력 로그
+router.get('/user/:userId/trust', async function(req, res, next) {
+    var userId = req.params.userId;
+    var result = await myKlaytn.getReliabilityLog();
+    
+     var array = [];
+    
+    for(var i = 0; i < result.length; i++) {
+        var obj = JSON.parse(JSON.stringify(result[i]));
+        if(userId == obj.returnValues['3']) {
+            var projId = obj.returnValues['2'];
+            var score = obj.returnValues['4'];
+            var type = obj.returnValues['5'];
+            var ascore = obj.returnValues['6'];
+            
+            var data = {projId:projId, score:score, type:type, ascore: ascore};
+            array.push(data);
+        }
+    }
+    if(array.length == 0) res.send(false);
+    else res.send(array);
+});
+
 
 function shuffle(d) {
     for(var c = d.length-1; c>0; c--) {

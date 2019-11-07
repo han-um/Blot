@@ -8,8 +8,8 @@ const blotTokenContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTTOKEN_
 const blotProjectContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTPROJECT_ABI, contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS);
 const blotUserContract = new cav.klay.Contract(contractInfo.DEPLOYED_BLOTUSER_ABI, contractInfo.DEPLOYED_BLOTUSER_ADDRESS);
 
+//const privatekey = '0xa86989e8db32b234489fd06e6f622e8913777372f7553363c0bed137e32315f5';
 const privatekey = '0xa86989e8db32b234489fd06e6f622e8913777372f7553363c0bed137e32315f5';
-
 const walletInstance = cav.klay.accounts.privateKeyToAccount(privatekey);
 
 cav.klay.accounts.wallet.add(walletInstance);

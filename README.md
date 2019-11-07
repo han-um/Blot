@@ -170,11 +170,21 @@
     
 - 프로젝트 번역 마감시 평가정보 조회 [GET] - /api/project/:p_num/deadline/eval
     > p_num : 프로젝트 ObjectId[string]
-    > Return : [ {evalId : 평가자, percentage : 참여율%, blot : 보상금(blot)} ] 배열 존재하지 않을시 false
+    > Return : [ {evalId : 평가자, percentage : 참여율%, blot : 보상금(blot)} ] 객체배열 존재하지 않을시 false
     
 - 프로젝트 진행도 정보 조회 [GET] - /api/project/:p_num/summary
     > p_num : 프로젝트 ObjectId[string]
     > Return : { transPer : 진행률%, transCnt : 번역참여자수, kb : 원문크기Kbytes, like : 좋아요 수 } 객체 반환 
+    
+- 프로젝트 참여자 신뢰도 이력 로그 [GET] - /api/project/:p_num/trust
+    > p_num : 프로젝트 ObjectId[string]
+    > Return : [ {userId : 참여자, score : 추가신뢰도점수, type : 유형, ascore : 반영후 신뢰도 점수} ] 객체배열 존재하지 않을시 false
+    > type 정의 : [0 : 번역활동, 1 : 평가활동]
+    
+- 사용자 신뢰도 이력 로그 [GET] - /api/project/user/:userId/trust
+    > userId : 계정명[string] 
+    > Return : [ {projId : 프로젝트 아이디, score : 추가신뢰도점수, type : 유형, ascore : 반영후 신뢰도 점수} ] 객체배열 존재하지 않을시 false
+    > type 정의 : [0 : 번역활동, 1 : 평가활동, 2 : 정기적 감소]
     
 ### TODO
 - 프로젝트 검색어 조회 ( GET /api/project/keyword/:key ) 에서 description이 일부 프로젝트만 출력되는 문제 해결
