@@ -105,6 +105,8 @@
 	> all : 원문[string]
     > Return : 생성된 프로젝트 ObjectId
     
+- 프로젝트 수동 마감 [GET] - /api/project/manual
+    
 - 프로젝트 등록시 대납서명 요청 [POST] - /api/project/sign
     > rawTransaction : 승인정보[string]
 
