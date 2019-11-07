@@ -3,3 +3,4 @@
 /Server_new/backend/node_modules/*
 /BlockChain/truffle/node_modules/*
 /BlockChain/truffle/build/contracts/*
+/Server_new/backend/node_modules/
