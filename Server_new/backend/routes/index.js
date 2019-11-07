@@ -645,7 +645,7 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userId', function(req, re
 
 // 검색어 조회
 router.get('/keyword/:key', function(req, res, next) {
-    Project.find({}, {'title': true, 'description': true, 'icon': true, 'color': true}, function(err, doc) {
+    Project.find({}, {'title': true, 'description': true, 'icon': true, 'color': true, 'image': true}, function(err, doc) {
         if(err) { console.log('err'); return; }
         else {
             var array = [];
@@ -653,7 +653,7 @@ router.get('/keyword/:key', function(req, res, next) {
                 var title = doc[i].title;
                 
                 if(title.match(req.params.key) !== null) {
-                    var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color }
+                    var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color, image: doc[i].image }
                     array.push(data);      
                 }
             }
