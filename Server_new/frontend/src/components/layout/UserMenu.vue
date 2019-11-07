@@ -90,8 +90,8 @@ export default {
       this.checkLoggedIn()
       this.checkBlockChain()
       if (this.$session.has('username')) {
-        this.$store.dispatch('REFRESH_CURRENT_WALLET_ID', 'kim')
-        this.$store.dispatch('REFRESH_CURRENT_BLOTS_BY_ID', 'kim')
+        this.$store.dispatch('REFRESH_CURRENT_WALLET_ID', this.$session.get('username'))
+        this.$store.dispatch('REFRESH_CURRENT_BLOTS_BY_ID', this.$session.get('username'))
         this.$store.dispatch('REFRESH_CURRENT_USER_IMAGE', this.$session.get('username'))
       }
     }
