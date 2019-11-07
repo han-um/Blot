@@ -37,27 +37,33 @@ const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
 
-cron.schedule(' * * 1 * *', () => {
-    db.User.findAll({
-        attributes: ['userId'],
-    }).then( async result => {
-        for(var i = 0; i < result.length; i++) {
-            console.log(result[i].userId);
-            try {
-                var trust = await myKlaytn.getTrust(result[i].userId); 
-                if(trust - 25 < 0) await myKlaytn.setTrust(-trust);
-                else await myKlaytn.setTrust(-25);
-                //console.log(result[i].userId+'의 신뢰점수 : '+trust);
-            } catch(err) {
-                console.log('[신뢰도 차감 에러]'+result[i].userId+'가 존재하지 않습니다.');
-                //console.log(err);
+function mReduceDetect() {
+    cron.schedule(' * * 1 * *', () => {
+        db.User.findAll({
+            attributes: ['userId'],
+        }).then( async result => {
+            for(var i = 0; i < result.length; i++) {
+                console.log(result[i].userId);
+                try {
+                    var trust = await myKlaytn.getTrust(result[i].userId); 
+                    if(trust - 25 < 0) {
+                        if(trust != 0) {
+                            await myKlaytn.setTrust('monthly', result[i].userId, -25, 2);
+                        }
+                    } 
+                    else await myKlaytn.setTrust('monthly', result[i].userId, -25, 2);
+                    //console.log(result[i].userId+'의 신뢰점수 : '+trust);
+                } catch(err) {
+                    console.log('[신뢰도 차감 에러]'+result[i].userId+'가 존재하지 않습니다.');
+                }
             }
-            
-        }
-    }).catch(err => {
-        console.log(err);
+        }).catch(err => {
+            console.log(err);
+        });
     });
-});
+}
+// 월별감소 감지 off
+// mReduceDetect();
 
 
 // 회원가입 POST: userId(사용자계정) password(비밀번호) email(이메일계정) wAddr(지갑주소)
