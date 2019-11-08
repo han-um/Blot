@@ -91,7 +91,7 @@ contract BlotUser is Ownable {
         onlyOwner
         returns (bool)
     {
-        require(blotProjectAddress.projectExist(projectId), "ERROR : There is not the project. Can't add user reliability.");
+        require(reason == 2 || blotProjectAddress.projectExist(projectId), "ERROR : There is not the project. Can't add user reliability.");
         require(userExist(userId), "ERROR : There is not the user. Can't add user reliability.");
 
         if(value >= 0)
