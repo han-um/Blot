@@ -78,7 +78,7 @@ export default {
         cav.klay.accounts.signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: walletFromSession.address,
-          to: contractInfo.DEPLOYED_PROJECT_ADDRESS,
+          to: contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS,
           data: blotProjectContract.methods.registerNewProject(payload.projectId, payload.writerId, payload.deadline, payload.reward).encodeABI(),
           gas: '500000'
         }, walletFromSession.privateKey)
@@ -106,7 +106,7 @@ export default {
         cav.klay.accounts.signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: walletFromSession.address,
-          to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+          to: contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS,
           data: blotTokenContract.methods.purchaseToken(payload.userAddress, payload.klayNum).encodeABI(),
           value: cav.utils.toPeb(payload.klayNum, 'KLAY'),
           gas: '500000'
@@ -139,7 +139,7 @@ export default {
         cav.klay.accounts.signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: walletFromSession.address,
-          to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+          to: contractInfo.DEPLOYED_BLOTTOKEN_ADDRESS,
           data: blotTokenContract.methods.sellToken(payload.blotNum).encodeABI(),
           gas: '500000'
         }, walletFromSession.privateKey)

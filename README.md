@@ -74,10 +74,16 @@
 - 즐겨찾기 등록 [POST] - /api/user/bookmark
 	> userId : 계정명[string]   
 	> projId : 프로젝트 ObjectId[string]
-
+    
+- 지갑주소 변경 [POST] - /api/user/change/wallet
+    > userId : 계정명[string] 
+    > wAddr : 지갑주소[string]
+    > Return : 성공시 true 실패시 false
+    
 - 지갑주소 가져오기 [GET] - /api/user/:userId/wallet
     > userId : 계정명[string]
     > Return : 지갑주소 or FALSE
+    
 
 - 즐겨찾기 프로젝트ObjectId 조회 [GET] - /api/user/:userId/project
 	> userId : 계정명[string]
@@ -103,7 +109,11 @@
 	> icon : 아이콘명[string]
     > color : 색상[string]
 	> all : 원문[string]
-    > Return : 생성된 프로젝트 ObjectId
+    > Return : 생성된 프로젝트 ObjectId 실패시 false
+    
+- 특정프로젝트 삭제 - [POST] - /api/project/
+    > p_num : 프로젝트 ObjectId[string]
+    > Return : 성공시 true 실패시 false
     
 - 프로젝트 수동 마감 [GET] - /api/project/manual
     
@@ -122,6 +132,7 @@
 - 특정프로젝트 제목,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/:p_num
 	> p_num : 프로젝트 ObjectId[string]
     > Return : [제목, 시작일, 마감일 ,아이콘, 색상] 반환
+    
 
 - 특정프로젝트 전체원본문장 조회 [GET] - /api/project/:p_num/sentence
 	> p_num : 프로젝트 ObjectId[string]
@@ -196,90 +207,6 @@
 - 즐겨찾기 API에 이미 중복값이 있을경우 예외처리 기능
 - 프로젝트ID와 유저ID를 주면 현재 즐겨찾기에 등록되어있는지 확인하는 API
 - 프로젝트 이름으로 검색 API (param: 검색어 / return : 제목에 검색어가 포함된 프로젝트 object list)
-
-<br><br>
-
-## 블록체인과 관련하여 Front side에서 알아야할 내용 
-
-### FRONT SIDE에서 사용하는 지갑 주소와 사용자 정보 Sample
-1. 지갑 주소
-    - key info.txt의 [4]번 계정
-        - 공개키 : 0x1c2ab35c73cd04279e8273832dc925d2db101d8e
-        - 비밀키 : key info.txt 파일 참고
-
-2. (서비스 사용을 위한) 사용자 정보
-    - userId : 'u1'
-    - userAddress : 0x1c2ab35c73cd04279e8273832dc925d2db101d8e
-    - 신뢰점수 : 1000
-    - 현재 토큰 보유량 10000 BLOT
-
-3. 트랜잭션 결과값 중 유의미한 데이터
-    - 본철이에게 알려줄 것
-
-### 구현 내용
-- /src/store의 action.js에 스마트 컨트랙트 내 함수를 호출하는 로직 구현
-- /src/components/layout/SeungSooTest.vue파일에 /src/store/action.js 내 함수를 호출하는 로직 구현
-
-<br><br>
-
-## 블록체인과 관련하여 Backend에서 알아야할 내용 
-
-### Backend에서 사용하는 지갑 주소, 사용자 정보, 프로젝트 정보 Sample
-1. 지갑 주소
-    - key info.txt의 [0]번 계정 == 대납자 == 컨트랙트 소유자
-        - 공개키 : 0x4aff875cb544368fd51b8f7fda6d247582b5b87c
-        - 비밀키 : key info.txt 파일 참고
-
-2. (테스트를 위한) 사용자 정보
-    - userId : 'nkw'
-    - key info.txt의 [0]번 계정
-        - userAddress(공개키) : 0x4aff875cb544368fd51b8f7fda6d247582b5b87c
-    - 현재 토큰 보유량 : 9000 BLOT
-    - 신뢰점수 : 1000
-
-3. 샘플 프로젝트 정보 및 번역/평가 기록
-    - projectId : '5d84a8e73c9f67a60a0d42f1'
-    - writerId : 'nkw'
-    - deadline : '2019.11.30'
-    - reward : 1000 BLOT 
-    
-    - 번역 참여자 => 800 BLOT 보상금 할당
-        - devNam
-            - 70% => 800 Blot * 70% = 560 BLOT
-            - 계정주소 : key info.txt의 [1]번 계정 0x6f560ac6ede19461b28382816232c4dd50bd4843
-            - 현재 신뢰 점수 : 1000 점
-            - 현재 잔고 : 0 BLOT
-        - devKu
-            - 20% => 160 BLOT
-            - 계정주소 : key info.txt의 [2]번 계정 0x19f74f83114ad84736df48534f3b0c569ebcd419
-            - 현재 신뢰 점수 : 1000 점
-            - 현재 잔고 : 0 BLOT
-        - devKim
-            - 10% => 80 BLOT
-            - 계정주소 : key info.txt의 [3]번 계정 0xad4abd5ba764b4cbd1c97219bb42365749f6d03c
-            - 현재 신뢰 점수 : 1000 점
-            - 현재 잔고 : 0 BLOT
-
-   - 평가자 => 100 BLOT 보상금 할당
-        - devKu
-            - 40% => 100 Blot * 40% = 40 BLOT
-           
-        - devKim
-            - 40% => 40 BLOT
-
-        - devNam
-            - 20% => 20 BLOT
-
-
-4. 신뢰 점수 조정 함수 파라미터
-    - projectId : string
-    - userID : string
-    - value : int
-    - reason : int
-        - 0 : 번역 활동에 따른 신뢰도 증가
-        - 1 : 평가 활동에 따른 신뢰도 증가
-        - 2 : 월별 신뢰 점수 차감
-    - totalUserReliability : int
 
 <br><br>
 

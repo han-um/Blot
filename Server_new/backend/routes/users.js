@@ -38,7 +38,7 @@ const Trans = mongoose.model('Trans', require('../models/trans'));
 
 
 function mReduceDetect() {
-    cron.schedule(' * * 1 * *', () => {
+    cron.schedule('* * 1 1 * *', () => {
         db.User.findAll({
             attributes: ['userId'],
         }).then( async result => {
@@ -64,7 +64,6 @@ function mReduceDetect() {
 }
 // 월별감소 감지 off
 // mReduceDetect();
-
 
 // 회원가입 POST: userId(사용자계정) password(비밀번호) email(이메일계정) wAddr(지갑주소)
 router.post('/', function(req, res, next){
@@ -103,6 +102,27 @@ router.post('/bookmark', function(req, res, next){
         })
     }).catch(err => {
         console.error(err);
+    });
+});
+
+// 지갑주소 변경
+router.post('/change/wallet', function(req, res, next) {
+    var userId = req.body.userId;
+    var wAddr = req.body.wAddr;
+    if(userId == null || wAddr == null) {
+        console.log('not null');
+        res.send(false);
+        return;
+    }
+    
+    db.User.update({ 
+        wAddr : wAddr,
+    }, {where : {userId : userId}
+    }).then(result => {
+       res.send(true); 
+    }).catch(err => {
+        console.error(err);
+        res.send(false);
     });
 });
 
