@@ -74,10 +74,16 @@
 - 즐겨찾기 등록 [POST] - /api/user/bookmark
 	> userId : 계정명[string]   
 	> projId : 프로젝트 ObjectId[string]
-
+    
+- 지갑주소 변경 [POST] - /api/user/change/wallet
+    > userId : 계정명[string] 
+    > wAddr : 지갑주소[string]
+    > Return : 성공시 true 실패시 false
+    
 - 지갑주소 가져오기 [GET] - /api/user/:userId/wallet
     > userId : 계정명[string]
     > Return : 지갑주소 or FALSE
+    
 
 - 즐겨찾기 프로젝트ObjectId 조회 [GET] - /api/user/:userId/project
 	> userId : 계정명[string]
@@ -103,7 +109,11 @@
 	> icon : 아이콘명[string]
     > color : 색상[string]
 	> all : 원문[string]
-    > Return : 생성된 프로젝트 ObjectId
+    > Return : 생성된 프로젝트 ObjectId 실패시 false
+    
+- 특정프로젝트 삭제 - [POST] - /api/project/
+    > p_num : 프로젝트 ObjectId[string]
+    > Return : 성공시 true 실패시 false
     
 - 프로젝트 수동 마감 [GET] - /api/project/manual
     
@@ -122,6 +132,7 @@
 - 특정프로젝트 제목,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/:p_num
 	> p_num : 프로젝트 ObjectId[string]
     > Return : [제목, 시작일, 마감일 ,아이콘, 색상] 반환
+    
 
 - 특정프로젝트 전체원본문장 조회 [GET] - /api/project/:p_num/sentence
 	> p_num : 프로젝트 ObjectId[string]
