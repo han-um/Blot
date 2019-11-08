@@ -24,6 +24,7 @@ export default {
   keystore: '',
   password: '',
   showBlockChainLogin: false,
+  showPurchase: false,
   rpcURL: 'https://api.baobab.klaytn.net:8651/',
   /* -----------------------------------------------------------
     Search

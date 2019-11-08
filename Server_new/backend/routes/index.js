@@ -6,15 +6,13 @@ const app = require('express')();
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 
+
 const mongoose = require('mongoose');
 const splitter = require('sentence-splitter');
 const cron = require('node-cron');
 const moment = require('moment');
 require('moment-timezone');
 moment.tz.setDefault('Asia/Seoul');
-
-//console.log(moment().format('YYYY'));
-//console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -57,6 +55,13 @@ async function deadline(doc) {
     var eval = new Array();     // 평가 기록 : 누가, 어떤 원문 문장에 대한 몇번째 번역 문장을 평가했는가
     var eval_cnt = new Array(); // 하나의 최종 번역문장을 평가한 사람 수
     
+    // 마감 저장
+    doc.valid = 0;
+    doc.save(function(err){
+        if(err) { console.log(err); }
+        else { console.log('updated.') }
+    });
+    
     // 전체 문장 접근
     for(var j=0; j<doc.sentence.length; j++) {
         
@@ -73,9 +78,13 @@ async function deadline(doc) {
             var trust;
 
             for(var l=0; l<content.length; l++) {
+
                 // 동일한 번역 문장을 2명 이상 좋다고 평가한 경우
                 if(content[l].trans == transId) {
+
                     trust = await myKlaytn.getTrust(user); // @TODO user로 변경
+
+
                     trust = level(parseInt(trust));
                     content[l].score += 1 * trust;
                     content[l].eval.push(user);
@@ -85,8 +94,11 @@ async function deadline(doc) {
             }
             if(flag == false) {
                 var src = new Object;
+
                 src['trans'] = transId;
+
                 trust = await myKlaytn.getTrust(user); // @TODO user로 변경
+
                 trust = level(parseInt(trust));
                 src['score'] = 1 * trust;
                 src['eval'] = new Array;
@@ -164,7 +176,7 @@ async function deadline(doc) {
         }
 
         // 평가활동기록
-        //var eflag = false;
+        var eflag = false;
         if(finalIdx !== -1) {
             for(var k=0; k<content[finalIdx].eval.length; ++k) {
                 var eflag = false;
@@ -203,6 +215,7 @@ async function deadline(doc) {
     var pRaw = JSON.stringify(doc._id);
     for(var i = 1; i < pRaw.length-1; i++) pId += pRaw[i];  // TODO : 이게 뭐하는 작업인지 알아볼 것
 
+
     // 프로젝트 등록자 세팅 pUser
     var obj = await myKlaytn.getProjectInfo(pId);
     var obj2 = JSON.parse(JSON.stringify(obj));
@@ -218,7 +231,7 @@ async function deadline(doc) {
     for(var i = 0; i < trans.length; i++) {
         
         var translatorId = trans[i].name; // 임의값
-        
+      
         // 번역자 신뢰도 조정
         var trust = await myKlaytn.getTrust(translatorId);
         if(1000-trust > 0 && 1000-trust < 8) {
@@ -229,6 +242,8 @@ async function deadline(doc) {
             await myKlaytn.setTrust(pId, translatorId, 8, 0);
             console.log(translatorId+'에게 문장 번역에 대한 신뢰도 점수 8점 추가');
         }
+
+
 
         var sentenceList = trans[i].sIdx;
         var translationList = trans[i].tIdx;
@@ -252,15 +267,16 @@ async function deadline(doc) {
         // 보상금 송금
         await myKlaytn.Transfer(wAddr, parseInt(userReward));
         console.log('번역자 '+ wAddr + '에게 보상금 '+ userReward + ' 송금');
+
     }
     
     console.log(eval_cnt);
     
     // 평가 기록
     for(var i = 0; i < eval.length; i++) {
-        
         var evaluatorId = eval[i].name;
         
+
         // 평가자 신뢰도 조정
         var trust = await myKlaytn.getTrust(evaluatorId);
         if(trust != 1000) {
@@ -285,6 +301,7 @@ async function deadline(doc) {
 
         //console.log(pId, evaluatorId, sentenceList, translationList, userReward);
         
+
         // 보상금 송금
         await myKlaytn.setEvaluation(pId, evaluatorId, sentenceList, translationList, parseInt(userReward));
         console.log('평가기록 저장', pId, evaluatorId, sentenceList, translationList, userReward);
@@ -292,9 +309,7 @@ async function deadline(doc) {
         await myKlaytn.Transfer(wAddr, parseInt(userReward));
         console.log('평가자 '+ wAddr + '에게 보상금 '+ userReward + ' 송금');
     }
-    
-    //console.log(doc.user);
-    
+  
     var pWADDR = await myKlaytn.getWalletAddress(doc.user);
 
     // [번역/평가 잔여금]을 등록자에게 반환
@@ -306,12 +321,14 @@ async function deadline(doc) {
 
     /*
     // 마감 저장
-    doc.valid = 1;
+    /*
+    doc.valid = 0;
     doc.save(function(err){
         if(err) { console.log(err); }
         else { console.log('updated.') }
     });
-
+    */
+}
     // 잉여금 송금 TODO : 이건 번역 마감할 프로젝트들 모두 처리하고 한번만 실행
     //await myKlaytn.chargeFeePayerBalance();
     */
@@ -319,9 +336,11 @@ async function deadline(doc) {
 
 // 익일 마다 검사 [테스트 코드 10분마다]
 async function endDetect() {
-    cron.schedule(' */10 * * * *', () => {
-        // 10분마다 DB안의 번역 프로젝트의 마감기한 정보를 불러옴
-        Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
+
+    // 정각 1초마다 DB안의 번역 프로젝트의 마감기한 정보를 불러옴
+    cron.schedule(' 1 0 0 * * *', () => {
+
+        Project.find({}, {'_id':true, 'end':true}, async function(err, doc2) {
             if(err) console.log('err');
             else {
                 // 현재 날짜
@@ -352,6 +371,9 @@ async function endDetect() {
                     //     });
                     // }       
                 }
+                
+                // 잉여금 송금 TODO : 이건 번역 마감할 프로젝트들 모두 처리하고 한번만 실행
+                await myKlaytn.chargeFeePayerBalance();
             }
         });
     });
@@ -361,7 +383,7 @@ async function endDetect() {
 
 // 수동 마감
 router.get('/manual', function(req, res, next) {
-    Project.find({}, {'_id':true, 'end':true}, function(err, doc) {
+    Project.find({}, {'_id':true, 'end':true}, async function(err, doc) {
         if(err) console.log('err');
         else {
             var year = moment().format('YYYY');
@@ -389,6 +411,8 @@ router.get('/manual', function(req, res, next) {
                     });
                 }
             }
+            // 잉여금 송금 TODO : 이건 번역 마감할 프로젝트들 모두 처리하고 한번만 실행
+            await myKlaytn.chargeFeePayerBalance();
         }
     });
 })
@@ -456,33 +480,24 @@ router.post('/', function(req, res, next){
     }
     proj.sentence = sentenceArray;
     
-    try {
-        // 디비에 프로젝트 정보 저장
-        proj.save(async function(err, project) {
-            if(err) {
-                console.error(err);
-                res.send({result:0});
-                return;
-            }
-            var _id = project._id;
-            _id = JSON.parse(JSON.stringify(_id));
-    
-            try {
-                //console.log(_id + ' ' + user + ' ' + end + ' ' + reward);
-                // 블록체인에 프로젝트 정보 저장
-                var transactionResult = await myKlaytn.createProject(_id, user, end, parseInt(reward));
-                console.log(transactionResult);
-                res.send(_id);
-            } catch(err) {
-                console.log(err);
-                res.status(500).send('Can\'t register new project' + err);
-            }
-            
-        });
-    } catch(err) {
-        console.log(err);
-        res.status(500).send('Can\'t register new project' + err);
-    }
+    proj.save(async function(err, project) {
+        if(err) {
+            console.error(err);
+            res.send(false);
+            return;
+        }
+        var _id = project._id;
+        _id = JSON.parse(JSON.stringify(_id));
+
+        try {
+            await myKlaytn.createProject(_id, user, end, reward);    
+        }
+        catch {
+            res.send(false);
+            return;
+        }
+        res.send(_id);
+    });
 });
 
 // 전체 프로젝트 정보 가져오기
@@ -491,7 +506,20 @@ router.get('/', function(req, res, next){
         if(err) console.log('err');
         else {
             res.send(doc);
-            //res.render('index', { title: 'Express' });
+        }
+    });
+});
+
+// 특정 프로젝트 삭제하기
+router.post('/delete', function(req, res, next){
+    var p_num = req.body.p_num;
+    Project.findOneAndDelete({_id: p_num}, function(err) {
+        if(err) {
+            console.log('err');
+            res.send(false);
+            return;
+        } else {
+            res.send(true);
         }
     });
 });

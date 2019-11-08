@@ -25,7 +25,7 @@
   </li>
     <li class="line"> </li>
   <li>
-      <a v-if="isLoggedIn">
+      <a v-if="isLoggedIn"  v-on:click="$store.commit('TOGGLE_TOKEN_PURCHASE')">
           <div class="hidden-xs token-logo"><i class="tokenIcon ri-money-dollar-circle-line"></i></div>
           <div class="token-value hidden-xs"> {{this.$store.state.crntBlots}}</div>
       </a>
