@@ -321,14 +321,12 @@ async function deadline(doc) {
 
     /*
     // 마감 저장
-    /*
     doc.valid = 0;
     doc.save(function(err){
         if(err) { console.log(err); }
         else { console.log('updated.') }
     });
-    */
-}
+    
     // 잉여금 송금 TODO : 이건 번역 마감할 프로젝트들 모두 처리하고 한번만 실행
     //await myKlaytn.chargeFeePayerBalance();
     */
