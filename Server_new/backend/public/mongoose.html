@@ -27,6 +27,22 @@
     </form>
     -->
     
+    <form method='POST' action='/update' name='mongoform3'> 
+        userId
+        <input type='text' size='100' name='userId'>
+        wAddr
+        <input type='text' size='100' name='wAddr'>
+        <input type='submit' value='post' onclick='this.form.action="/api/user/change/wallet"'>
+    </form>
+    
+    
+    <form method='POST' action='/delete' name='mongoform2'> 
+        projid
+        <input type='text' size='100' name='p_num'>
+        <input type='submit' value='post' onclick='this.form.action="/api/project/delete"'>
+    </form>
+    
+    
     <form method='post' action='/insert' name='mongoform'>
     
         title
