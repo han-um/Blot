@@ -30,6 +30,7 @@
         -->
         <ProjectSearch></ProjectSearch>
         <BlockChainLogin></BlockChainLogin>
+        <TokenPurchase></TokenPurchase>
         <transition enter-active-class="animated fadeInLeft">
       <router-view :key="$route.fullPath"></router-view>
     </transition>
@@ -51,7 +52,7 @@ import Sidebar from './layout/Sidebar'
 import BlockChainLogin from './views/BlockChain/BlockChainLogin'
 import ProjectSearch from './layout/ProjectSearch'
 import 'hideseek'
-
+import TokenPurchase from './views/BlockChain/TokenPurchase'
 export default {
   name: 'Dash',
   components: {
@@ -59,7 +60,8 @@ export default {
     DashHeader,
     Sidebar,
     BlockChainLogin,
-    ProjectSearch
+    ProjectSearch,
+    TokenPurchase
   },
   data: function () {
     return {

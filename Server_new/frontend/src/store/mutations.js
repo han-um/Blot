@@ -45,6 +45,18 @@ export default {
   TOGGLE_BLOCKCHAIN_LOGIN (state) {
     state.showBlockChainLogin = !state.showBlockChainLogin
   },
+/* -----------------------------------------------------------
+    TokenPurchase
+  ----------------------------------------------------------- */
+  TOGGLE_TOKEN_PURCHASE (state) {
+    state.showPurchase = !state.showPurchase
+  },
+  SHOW_TOKEN_PURCHASE (state) {
+    state.showPurchase = true
+  },
+  HIDE_TOKEN_PURCHASE (state) {
+    state.showPurchase = false
+  },
   /* -----------------------------------------------------------
     BlockChain
   ----------------------------------------------------------- */

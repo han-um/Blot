@@ -78,7 +78,7 @@ export default {
         cav.klay.accounts.signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
           from: walletFromSession.address,
-          to: contractInfo.DEPLOYED_BLOTMAIN_ADDRESS,
+          to: contractInfo.DEPLOYED_PROJECT_ADDRESS,
           data: blotProjectContract.methods.registerNewProject(payload.projectId, payload.writerId, payload.deadline, payload.reward).encodeABI(),
           gas: '500000'
         }, walletFromSession.privateKey)
