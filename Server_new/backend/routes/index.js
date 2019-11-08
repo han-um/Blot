@@ -28,8 +28,8 @@ const Trans = mongoose.model('Trans', require('../models/trans'));
 const Sequelize = require('sequelize');
 const db = {};
 
+// express와 mysql 연결
 const sequelize = new Sequelize(process.env.MYSQL_URI);
-
 sequelize
     .authenticate()
     .then(() => console.log('Connected to mysqld server'))
@@ -37,38 +37,43 @@ sequelize
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+// Mysql 모델과 sequelize 연결
 db.User = require('../models/user')(sequelize, Sequelize);
 db.Library = require('../models/library')(sequelize, Sequelize);
 
+// User와 Library는 1:N 관계
 db.User.hasMany(db.Library);
 db.Library.belongsTo(db.User);
 
 const Klaytn = require('../blockchain/contract');
 const myKlaytn = Klaytn();
 
-
 async function deadline(doc) {
     
-    var trans = new Array();
-    var eval = new Array();
-    var eval_cnt = new Array();
+    var trans = new Array();    // 번역 기록 : 누가, 어떤 원문 문장을, 몇번째로 번역했는가
+    var eval = new Array();     // 평가 기록 : 누가, 어떤 원문 문장에 대한 몇번째 번역 문장을 평가했는가
+    var eval_cnt = new Array(); // 하나의 최종 번역문장을 평가한 사람 수
     
     // 전체 문장 접근
     for(var j=0; j<doc.sentence.length; j++) {
         
+        // STEP 1. 최종 번역 문장을 선정하기 위해 번역 문장별 평가 점수를 산출
+
+        // 번역 문장 번호, 받은 평가 점수, 평가한 사람 리스트 저장
         var content = new Array();
 
         // 특정문장 평가점수 계산
         for(var k=0; k<doc.sentence[j].like.length; k++) {
-
-            var tmp = doc.sentence[j].like[k].trans_id;
+            var transId = doc.sentence[j].like[k].trans_id; // 좋다고 평가한 번역 문장 id
             var user = doc.sentence[j].like[k].user;
             var flag = false;
             var trust;
 
             for(var l=0; l<content.length; l++) {
-                if(content[l].trans == tmp) {
-                    trust = await myKlaytn.getTrust('nkw'); // user로 변경
+                // 동일한 번역 문장을 2명 이상 좋다고 평가한 경우
+                if(content[l].trans == transId) {
+                    trust = await myKlaytn.getTrust('nkw'); // @TODO user로 변경
                     trust = level(parseInt(trust));
                     content[l].score += 1 * trust;
                     content[l].eval.push(user);
@@ -78,9 +83,8 @@ async function deadline(doc) {
             }
             if(flag == false) {
                 var src = new Object;
-                src['trans'] = tmp;
-                trust = await myKlaytn.getTrust('nkw'); // user로 벼녕
-                //trust = 1000;
+                src['trans'] = transId;
+                trust = await myKlaytn.getTrust('nkw'); // @TODO user로 변경
                 trust = level(parseInt(trust));
                 src['score'] = 1 * trust;
                 src['eval'] = new Array;
@@ -89,24 +93,27 @@ async function deadline(doc) {
             }       
         }
         
+        // 아무도 평가를 하지 않았다면
         if(content.length == 0) {
             eval_cnt.push(0);   
             continue;
         }
         
-        console.log('CONTENT');
-        console.log(content);
+        //console.log('CONTENT');
+        //console.log(content);
+
+        // STEP 2. 번역 문장별 평가 점수를 토대로 최종 번역 문장 정하기
 
         // 최종 번역문장 인덱스 찾기
-        var final = -1; // 최종 번역문장 인덱스
-        var finalIdx = -1; // 최종 번역문장 저장되어있는 인덱스
+        var final = -1; // 최종 번역 문장의 실제 인덱스(DB trans 객체의 idx)
+        var finalIdx = -1; // 최종 번역문장 저장되어있는 content 배열의 인덱스
         var max = -1;
         for(var k=0; k<content.length; k++) {
             if(max < content[k].score) {
                 max = content[k].score;
                 final = content[k].trans;
                 finalIdx = k;
-            } else if (max == content[k].score) {
+            } else if (max == content[k].score) {   // 평가 점수가 동일하다면, 길게 번역한 문장을 채택
                 if(content[finalIdx].eval.length < content[k].eval.length ) {
                     final = content[k].trans;
                     finalIdx = k;
@@ -120,7 +127,7 @@ async function deadline(doc) {
         //console.log('final : ' + final);
         //console.log('finalIdx : ' + finalIdx);
 
-        // 최종문장 번역자 찾기 && 최종문장 등록
+        // STEP 3. 최종 문장 번역자 찾기 && 최종 번역 문장 메모
         var trans_user;
         for(var k=0; k<doc.sentence[j].trans.length; k++) {
             if(doc.sentence[j].trans[k].idx == final) {
@@ -130,12 +137,15 @@ async function deadline(doc) {
             }
         }
 
-        // 번역활동기록
+        // STEP 4. 최종 번역 문장을 기준으로 번역자와 평가자를 trans, eval 배열에 메모
+
+        // 번역 활동 기록
         var sflag = false;
         for(var k=0; k<trans.length; ++k) {
+            // 다른 문장도 번역해서 최종 번역 문장으로 선정된 사람이라면
             if(trans[k].name === trans_user) {
-                trans[k].sIdx.push(j);
-                trans[k].tIdx.push(final);
+                trans[k].sIdx.push(j);      // j번째 문장을 번역했음 >> 정보 추가
+                trans[k].tIdx.push(final);  // fianl번째 번역 문장 >> 정보 추가
                 sflag = true;
                 break;
             }
@@ -152,11 +162,12 @@ async function deadline(doc) {
         }
 
         // 평가활동기록
-        var eflag = false;
+        //var eflag = false;
         if(finalIdx !== -1) {
             for(var k=0; k<content[finalIdx].eval.length; ++k) {
                 var eflag = false;
                 for(var l=0; l<eval.length; ++l) {
+                    // 다른 문장도 평가해서 최종 번역 문장으로 선정된 사람이라면
                     if(eval[l].name === content[finalIdx].eval[k]) {
                         eval[l].sIdx.push(j);
                         eval[l].tIdx.push(final);
@@ -178,24 +189,25 @@ async function deadline(doc) {
         }
     }
     
-    console.log('TRANS');
-    console.log(trans);
-    console.log('EVAL');
-    console.log(eval);
-    
+    //console.log('TRANS');
+    //console.log(trans);
+    //console.log('EVAL');
+    //console.log(eval);
+
+    // STEP 5. 번역자 및 평가자 신뢰도 조정 및 보상금 분배
     
     // 프로젝트 아이디 세팅 pId
     var pId = new String();
     var pRaw = JSON.stringify(doc._id);
-    for(var i = 1; i < pRaw.length-1; i++) pId += pRaw[i];
+    for(var i = 1; i < pRaw.length-1; i++) pId += pRaw[i];  // TODO : 이게 뭐하는 작업인지 알아볼 것
     
     // 프로젝트 등록자 세팅 pUser
     var obj = await myKlaytn.getProjectInfo(pId);
     var obj2 = JSON.parse(JSON.stringify(obj));
-    var pUser = obj2['0'];
+    var pUser = obj2['0'];  // 번역 프로젝트 등록자
     
     // 보상금 세팅
-    var reward = await myKlaytn.getReward(pId);
+    var reward = await myKlaytn.getReward(pId); // 번역 프로젝트 총 보상금
     reward = Number(reward);
     var useTransReward = 0;
     var useEvalReward = 0;
@@ -206,6 +218,7 @@ async function deadline(doc) {
         //var translatorId = trans[i].name; // 임의값
         var translatorId = 'nkw';
         
+        // 번역자 신뢰도 조정
         //var trust = await myKlaytn.getTrust(translatorId);
         //if(trust + 8 > 1000) await myKlaytn.setTrust(pId, translatorId, 1000-trust, 0);
         //else await myKlaytn.setTrust(pId, translatorId, 8, 0);
@@ -213,18 +226,23 @@ async function deadline(doc) {
         var sentenceList = trans[i].sIdx;
         var translationList = trans[i].tIdx;
         
+        // 한 번역자가 번역한 문장들의 총 지분 계산
         var share = 0;
         for(var j = 0; j < trans[i].sIdx.length; j++) {
             //share += parseInt(doc.sentence[trans[i].sIdx[j]].ratio);
             share += doc.sentence[trans[i].sIdx[j]].ratio;
         }
         
+        // 이 번역자에게 지급할 보상금 계산
         share = reward * 0.8 * (share / 100);
         useTransReward += share
         share = parseInt(share);
         
+        // 번역기록
         //await myKlaytn.setTranslation(projId, translatorId, sentenceList, translationList, share);
         //var wAddr = await myKlaytn.getWalletAddress(translatorId);
+
+        // 보상금 송금
         //await myKlaytn.Transfer(wAddr, share);
     }
     
@@ -236,26 +254,29 @@ async function deadline(doc) {
         //var evaluatorId = eval[i].name;
         var evaluatorId = 'nkw';
         
+        // 평가자 신뢰도 조정
         //var trust = await myKlaytn.getTrust(evaluatorId);
         //if(trust != 1000) await myKlaytn.setTrust(pId, evaluatorId, 1, 1);
         
         var sentenceList = eval[i].sIdx;
         var translationList = eval[i].tIdx;
         
+        // 한 평가자가 평가한 문장들의 총 지분 계산
         var share = 0;
         for(var j = 0; j < eval[i].sIdx.length; j++) {
             share += doc.sentence[eval[i].sIdx[j]].ratio / eval_cnt[eval[i].sIdx[j]];
         }
         
+        // 이 평가자에게 지급할 보상금 계산
         share = reward * 0.1 * (share / 100);
         useEvalReward += share;
         share = parseInt(share);
         
+        // 보상금 송금
         //await myKlaytn.setEvaluation(projId, evaluatorId, sentenceList, translationList, share);
         //var wAddr = await myKlaytn.getWalletAddress(evaluatorId);
         //await myKlaytn.Transfer(wAddr, share);
     }
-    
     
     var pWADDR = await myKlaytn.getWalletAddress(pId);
     // 잔여금 등록자에게 반환
@@ -265,9 +286,8 @@ async function deadline(doc) {
     // [평가 잔여금]
     if((reward * 0.1) - useEvalReward > 0)
         // await myKlaytn.Transfer(pWADDR, parseInt((reward*0.8)-useEvalReward))
-    // 잉여금 송금
+    // 잉여금 송금 TODO : 이건 번역 마감할 프로젝트들 모두 처리하고 한번만 실행
     //await myKlaytn.chargeFeePayerBalance();
-    
     
     // 마감 저장
     doc.valid = 1;
@@ -278,17 +298,19 @@ async function deadline(doc) {
 }
 
 
-// 익일 마다 검사 [테스트 코드 10초마다]
+// 익일 마다 검사 [테스트 코드 10분마다]
 async function endDetect() {
-        cron.schedule(' */10 * * * *', () => {
+    cron.schedule(' */10 * * * *', () => {
+        // 10분마다 DB안의 번역 프로젝트의 마감기한 정보를 불러옴
         Project.find({}, {'_id':true, 'end':true}, function(err, doc2) {
             if(err) console.log('err');
             else {
+                // 현재 날짜
                 var year = moment().format('YYYY');
                 var month = moment().format('MM');
                 var day = moment().format('DD');
 
-                console.log('now : '+year+'-'+month+'-'+day);
+                //console.log('now : '+year+'-'+month+'-'+day);
 
                 for(var i=0; i<doc2.length; i++) {
                     var dd = doc2[i].end;
@@ -296,14 +318,15 @@ async function endDetect() {
                     var m = dd.getMonth()+1;
                     var d = dd.getDate();
 
+                    // 마감 대상인 번역 프로젝트에 대하여
                     if(year == y && month == m && day == d) {
 
-                        console.log(y+'-'+m+'-'+d);
-
+                        //console.log(y+'-'+m+'-'+d);
                         var _id = doc2[i]._id;
-                        var trans = new Array();
-                        var eval = new Array();
+                        //var trans = new Array();
+                        //var eval = new Array();
 
+                        // 마감 기능 수행
                         Project.findOne({'_id': _id}, async function(err, doc) {
                             await deadline(doc);
                         });
