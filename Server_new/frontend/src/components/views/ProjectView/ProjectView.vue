@@ -14,7 +14,7 @@
                     <div class="proj-submenu">
                         <router-link to="./">요약</router-link>
                         <router-link to="trans">번역 보기</router-link>
-                        <router-link to="users">참여자</router-link>
+                        <!--<router-link to="users">참여자</router-link>-->
                     </div>
                 </div>
                 <div class="box-body">
@@ -90,7 +90,7 @@ export default {
       this.$router.replace(this.$route.query.redirect || '/login/')
     } else {
       this.getProjectInfo()
-      // this.$store.dispatch('CHECK_CURRENT_PROJECT_ENDED', )
+      this.$store.dispatch('CHECK_CURRENT_PROJECT_ENDED', this.$route.params.id)
     }
   }
 }

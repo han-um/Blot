@@ -25,7 +25,7 @@ export default {
     state.crntTransIndex = index
   },
   SET_CURRENT_PROJECT_ENDED (state, input) {
-    state.crntTransIndex = input
+    state.crntProjEnded = input
   },
   /* -----------------------------------------------------------
     ProjectSearch
