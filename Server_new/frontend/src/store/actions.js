@@ -99,6 +99,7 @@ export default {
   // 토큰 구매 : Klay 코인만큼 BLOT 토큰 구매하기
   PURCHASE_BLOT_TOKEN (state, payload) {
     // 세션 스토리지에 wallet instance 정보가 있는지 확인
+    console.log('들어옴')
     const walletFromSession = JSON.parse(sessionStorage.getItem('walletInstance'))
     if (walletFromSession) {
       try {
