@@ -86,9 +86,11 @@ export default {
   },
   mounted () {
     // 이 페이지는 로그인되어있어야만 사용할 수 있음
-    this.getProjectInfo()
     if (!this.$session.has('username')) {
       this.$router.replace(this.$route.query.redirect || '/login/')
+    } else {
+      this.getProjectInfo()
+      // this.$store.dispatch('CHECK_CURRENT_PROJECT_ENDED', )
     }
   }
 }
