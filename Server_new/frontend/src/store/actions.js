@@ -218,7 +218,7 @@ export default {
   CHECK_CURRENT_PROJECT_ENDED (state, projectId) {
     axios.get('/api/project/' + projectId + '/deadline')
     .then(res => {
-      state.commit('SET_CRURRENT_PROJECT_ENDED', res.data)
+      state.commit('SET_CURRENT_PROJECT_ENDED', res.data)
     })
   }
 }
