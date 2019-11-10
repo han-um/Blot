@@ -8,24 +8,26 @@
                 <div class="inner-box">
                     <div class="header">BLOT 구매</div>
                     <div class="input-box">
-                        <input type="text" placeholder="금액을 입력하세요...">
-                        <div class="small-icon"><i class="ri-bit-coin-line"></i></div><div class="small-text"> Blot 구매량 <b>20</b></div><br>
-                        <div class="small-icon"><i class="ri-bit-coin-line"></i></div><div class="small-text"> 구매 후 전체 Blot <b>20</b></div>
+                        <input type="text" v-model="inpToken" placeholder="금액을 입력하세요..."><br>
+                        <div class="small-icon"><i class="ri-bit-coin-line"></i></div><div class="small-text"> 원화 금액 <b>{{calcToken}}</b></div><br>
+                        <!--
+                        <div class="small-icon"><i class="ri-bit-coin-line"></i></div><div class="small-text"> 구매 후 전체 Blot <b>s</b></div>
+                        -->
                     </div>
                     <div class="button-box">
-                        <button>+5000원</button>
-                        <button>+10000원</button>
-                        <button>+20000원</button>
-                        <button>+50000원</button>
-                        <button>+100000원</button>
-                        <button>+500000원</button>
+                        <button v-on:click="addInpToken(10000)">+10000blot</button>
+                        <button v-on:click="addInpToken(20000)">+20000blot</button>
+                        <button v-on:click="addInpToken(50000)">+50000blot</button>
+                        <button v-on:click="addInpToken(100000)">+100000blot</button>
+                        <button v-on:click="setInpToken(0)">RESET</button>
                     </div>
                     <div class="type-box">
-                        <div class="type-inner">s</div>
-                        <div class="type-inner">s</div>
-                        <div class="type-inner">s</div>
-                        <div class="type-inner">s</div>
+                        <div class="type-inner"><div class="icon"><i class="ri-bit-coin-line"></i></div> 신용카드 결제 </div>
+                        <div class="type-inner"><div class="icon"><i class="ri-bit-coin-line"></i></div> 휴대폰 소액결제 </div>
+                        <div class="type-inner"><div class="icon"><i class="ri-bit-coin-line"></i></div> 간편결제 </div>
                     </div>
+                    <div class="submit-btn" v-on:click="purchaseToken()">구매하기</div>
+                    <div class="back-btn">돌아가기</div>
                 </div>
             </div>
           </div>
@@ -35,73 +37,29 @@
 
 <script>
 // import axios from 'axios'
-import Caver from 'caver-js'
+// import Caver from 'caver-js'
 // import contractInfo from './contractInfo'
-const cav = new Caver('https://api.baobab.klaytn.net:8651/')
+// const cav = new Caver('https://api.baobab.klaytn.net:8651/')
 
 export default {
   name: 'TokenPurchase',
   data () {
     return {
-      errorMsg: '',
-      password: ''
+      inpToken: null,
+      calcToken: null
     }
   },
   methods: {
-    handleImport() {
-      const fileReader = new FileReader()
-      fileReader.readAsText(event.target.files[0])
-      fileReader.onload = (event) => {
-        console.log(event)
-        try {
-          if (!this.checkValidKeystore(event.target.result)) {
-            this.errorMsg = '유효하지 않은 파일입니다.'
-            return
-          }
-          this.$store.commit('SET_KEYSTORE', event.target.result)
-          // this.auth.keystore = event.target.result
-          this.errorMsg = 'Keystore통과. 비밀번호를 입력하세요.'
-          document.querySelector('#input-password').focus()
-        } catch (event) {
-          this.errorMsg = 'ERROR :' + event
-          return
-        }
-      }
+    addInpToken(num) {
+      this.inpToken = this.inpToken + num
     },
-    checkValidKeystore(keystore) {
-      const parsedKeystore = JSON.parse(keystore)
-    // 파일 내용이 keystore 파일이면 가져야할 필드를 포함하고 있는지 확인
-      const isValidKeystore = parsedKeystore.version &&
-      parsedKeystore.id &&
-      parsedKeystore.address &&
-      parsedKeystore.crypto
-      return isValidKeystore
+    setInpToken(num) {
+      this.inpToken = num
     },
-    handleLoginByKeyStore() {
-      try {
-        const privateKey = cav.klay.accounts.decrypt(this.$store.state.keystore, this.password).privateKey
-        this.integrateWallet(privateKey)
-        this.$store.state.accessType === 'keystore'
-      } catch (e) {
-        this.errorMsg = '비밀번호가 잘못되었습니다!'
-      }
-    },
-    integrateWallet(privateKey) {
-       // walletInstance는 계정 정보라고 생각하면 된다.
-      const walletInstance = cav.klay.accounts.privateKeyToAccount(privateKey)
-        // walletInstance를 wallet에 저장하여 트랜잭션 일으킬 때, 이 계정 정보를 활용
-      cav.klay.accounts.wallet.add(walletInstance)
-        // walletInstance를 세션 스토리지에 저장  >> 계정이 로그인 된 상태를 유지하기 위함(페이지 이동, 새로고침해도 유지됨)
-        // 세션 스토리지는 탭이 닫히거나 브라우저가 닫힐 때까지 브라우저 내의 저장공간에 walletInstance 인스턴스를 저장
-      sessionStorage.setItem('walletInstance', JSON.stringify(walletInstance))
-      // console.log(walletInstance)
-      // 최종 화면 처리
-      this.endState()
-    },
-    endState() {
-      this.$root.$emit('UserMenu') // 유저메뉴 다시 불러오기
-      this.$store.commit('HIDE_BLOCKCHAIN_LOGIN') // 로그인창 가리기
-      this.$swal('로그인 성공', '이제 블록체인 관련 기능을 모두 이용할 수 있습니다.', 'success')
+    purchaseToken() {
+      var payload = {'userAddress': this.$store.state.crntWalletId, 'klayNum': this.inpToken / 10000}
+      this.$store.dispatch('PURCHASE_BLOT_TOKEN', payload)
+      alert('!!')
     }
   },
   mounted () {}
@@ -186,11 +144,35 @@ export default {
         padding-right:20px;
     }
     .type-box .type-inner {
-        border:2px solid #E8E8E8;
-        width:70px;
-        height:70px;
+        width:100%;
+        height:30px;
+        margin-bottom:10px;
+        background-color:#E8E8E8;
+        color:darkgray;
+    }
+    .type-box .type-inner .icon {
         display:inline-block;
-        margin-right:5px;
+        width:50px;
+        text-align: center;
+        vertical-align: middle;
+        padding-top:2px;
+        font-size:20px;
+        background-color:#6B6B6B;
+    }
+    .submit-btn {
+        margin-top:100px;
+        bottom:0px;
+        height:50px;
+        background-color:#FBC02D;
+        padding:12px;
+        font-size:17px;
+    }
+    .back-btn{
+        bottom:0px;
+        height:50px;
+        background-color:#6B6B6B;
+        padding:12px;
+        font-size:17px;
     }
 
 </style>
