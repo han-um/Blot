@@ -3,8 +3,8 @@
           <div class='container' id='login-section'>
           <!-- 로그인 -->
           <div class="row">
-            <div class="col-md-8"></div>
-            <div class="col-md-4">
+            <div class="col-md-9"></div>
+            <div class="col-md-3">
                 <div class="inner-box">
                     <div class="header">BLOT 구매</div>
                     <div class="input-box">
@@ -59,7 +59,6 @@ export default {
     purchaseToken() {
       var payload = {'userAddress': this.$store.state.crntWalletId, 'klayNum': this.inpToken / 10000}
       this.$store.dispatch('PURCHASE_BLOT_TOKEN', payload)
-      alert('!!')
     }
   },
   mounted () {}

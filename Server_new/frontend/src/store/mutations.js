@@ -24,6 +24,9 @@ export default {
   SET_CURRENT_TRANS_INDEX (state, index) {
     state.crntTransIndex = index
   },
+  SET_CURRENT_PROJECT_ENDED (state, input) {
+    state.crntTransIndex = input
+  },
   /* -----------------------------------------------------------
     ProjectSearch
   ----------------------------------------------------------- */

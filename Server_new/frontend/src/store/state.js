@@ -13,6 +13,7 @@ export default {
   crntStcIndex: 0,
   crntStcText: '_',
   crntTransIndex: 0,
+  crntProjEnded: false,
  /* -----------------------------------------------------------
     MyLibrary
   ----------------------------------------------------------- */
