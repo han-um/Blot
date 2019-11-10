@@ -802,9 +802,8 @@ router.get('/:p_num/deadline', function(req, res, next) {
     Project.findOne({'_id': req.params.p_num},{'valid': true}, function(err, doc) {
         if(err) { console.log('err'); return; }
         else {
-            
-            if(doc.valid === 0) res.send(false);
-            else res.send(true);
+            if(doc.valid === 0) res.send(true);
+            else res.send(false);
         }
     });
 });
