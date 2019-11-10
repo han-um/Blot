@@ -74,6 +74,11 @@
 - 즐겨찾기 등록 [POST] - /api/user/bookmark
 	> userId : 계정명[string]   
 	> projId : 프로젝트 ObjectId[string]
+
+- **즐겨찾기 삭제** - [POST] - /api/user/delete/bookmark
+    > userId : 계정명[string]   
+	> projId : 프로젝트 ObjectId[string]  
+    > Return : 성공시 true 실패시 false
     
 - 지갑주소 변경 [POST] - /api/user/change/wallet
     > userId : 계정명[string] 
@@ -111,11 +116,14 @@
 	> all : 원문[string]
     > Return : 생성된 프로젝트 ObjectId 실패시 false
     
-- 특정프로젝트 삭제 - [POST] - /api/project/
-    > p_num : 프로젝트 ObjectId[string]
+- 특정프로젝트 삭제 - [POST] - /api/project/delete
+    > p_num : 프로젝트 ObjectId[string]   
     > Return : 성공시 true 실패시 false
     
-- 프로젝트 수동 마감 [GET] - /api/project/manual
+- **프로젝트 수동 마감** [GET] - /api/project/manual/:p_num
+    > p_num : 프로젝트 ObjectId[string]  
+    > Return TRUE or FALSE  
+    > **@NOTE 프로젝트 마감은 시간이 오래걸리기 때문에 front 쪽에서 마감 실행 후 실행중 표시를 띄워야 함**
     
 - 프로젝트 등록시 대납서명 요청 [POST] - /api/project/sign
     > rawTransaction : 승인정보[string]
