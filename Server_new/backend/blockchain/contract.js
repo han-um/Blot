@@ -227,6 +227,14 @@ module.exports = function() {
           */
         },
 
+        getTotalSupply : async function() {
+          return await blotTokenContract.methods.totalSupply().call();
+        },
+
+        getContractBalance : async function() {
+          return await blotTokenContract.methods.getContractBalance().call()/1e18;
+        },
+
         // 사용자(수수료 대납자) 지갑 주소 반환
         _getFeePayerWalletAddress : function() {
             return cav.klay.accounts.wallet[0].address;

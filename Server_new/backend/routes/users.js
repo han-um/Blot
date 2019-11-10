@@ -48,7 +48,7 @@ function mReduceDetect() {
                     var trust = await myKlaytn.getTrust(result[i].userId); 
                     if(trust - 25 < 0) {
                         if(trust != 0) {
-                            await myKlaytn.setTrust('monthly', result[i].userId, -25, 2);
+                            await myKlaytn.setTrust('monthly', result[i].userId, -1*trust, 2);
                         }
                     } 
                     else await myKlaytn.setTrust('monthly', result[i].userId, -25, 2);
@@ -102,6 +102,27 @@ router.post('/bookmark', function(req, res, next){
         })
     }).catch(err => {
         console.error(err);
+    });
+});
+
+// 즐겨찾기삭제 POST: projId(프로젝트아이디) userId(사용자계정)
+router.post('/delete/bookmark', function(req, res, next){
+    db.User.findOne({
+        attributes: ['id'],
+        where: { userId: req.body.userId }
+    }).then(result => {
+        db.Library.destroy({where:{
+            projId: req.body.projId,
+            userId: result.id
+        }}).then(result => {
+            res.send(true);
+        }).catch(err => {
+            console.error(err);
+            res.send(false);
+        })
+    }).catch(err => {
+        console.error(err);
+        res.send(false);
     });
 });
 
