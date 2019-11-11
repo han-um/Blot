@@ -80,7 +80,7 @@ export default {
   },
   SET_IS_LOGGED_IN (state, loggedIn) {
     state.isLoggedIn = loggedIn
-  }
+  },
   /* -----------------------------------------------------------
     Co-Pilot Variables (삭제할것)
   ----------------------------------------------------------- */
