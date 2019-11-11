@@ -15,9 +15,9 @@
                 <div class="box-header"></div>
                 <!--각 프로젝트 항목-->
             <transition-group enter-active-class="animated fadeIn" tag="div">
-                <div v-for="eachProject in currentList" class="col-md-6 p-2" v-bind:key="eachProject._id">
+                <div v-for="(eachProject, index) in currentList" class="col-md-6 p-2" v-bind:key="eachProject._id">
                     <router-link :to="{path: '/projview/' + eachProject._id + '/'}">
-                    <div class="each-box">
+                    <div class="each-box"  v-on:mouseover="selectProject(index)">
                         <div class="img-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + eachProject.image + ')' }"></div>
                         <div class="title-box">{{eachProject.title}}</div>
                     </div>
@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-5 hidden-xs white-box">
                 <div class="box-header"></div>
-            
+                  <DetailBox :projectId="nowProject"></DetailBox>
             </div>
         </div>
     </section>
@@ -37,13 +37,17 @@
 
 <script>
 import axios from 'axios'
-
+import DetailBox from '../../widgets/DetailBox'
 export default {
   name: 'MyLibrary',
   data () {
     return {
-      currentList: []
+      currentList: [],
+      nowProject: ''
     }
+  },
+  components: {
+    DetailBox
   },
   methods: {
     getFavoriteProj () {
@@ -59,6 +63,9 @@ export default {
         this.currentList = res.data
         this.$store.commit('SET_CURRENT_LIBRARY_MENU', 'Added')
       })
+    },
+    selectProject(index) {
+      this.nowProject = this.currentList[index]._id
     }
   },
   mounted () {
@@ -122,5 +129,8 @@ box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
     .now {
         color:white!important;
         border-bottom:2px solid white;
+    }
+    .title-box {
+        overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
     }
 </style>

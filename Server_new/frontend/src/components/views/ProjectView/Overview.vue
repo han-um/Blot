@@ -349,12 +349,6 @@ export default {
     // 마감된 프로젝트만 블록체인 관련 정보를 불러옴
     axios.get('/api/project/' + this.$route.params.id + '/deadline')
     .then(res => {
-      if (res.data === true) {
-        this.getTransChartData()
-        this.getEvalChartData()
-        this.getTrustLog()
-        this.nowUrl = window.location.origin
-      }
     })
   }
 }
