@@ -31,6 +31,7 @@ import BlockChainLogin from './components/views/BlockChain/BlockChainLogin.vue'
 
 // MyLibrary
 import MyLibrary from './components/views/MyLibrary/MyLibrary.vue'
+import MyInfo from './components/views/MyLibrary/MyInfo.vue'
 
 // Routes
 const routes = [
@@ -132,6 +133,11 @@ const routes = [
         component: MyLibrary,
         name: 'MyLibrary',
         meta: {description: '내 서재'}
+      }, {
+        path: 'myinfo',
+        component: MyInfo,
+        name: 'MyInformation',
+        meta: {description: '내 정보'}
       }
     ]
   }, {
