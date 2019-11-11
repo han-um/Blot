@@ -64,6 +64,7 @@ export default {
       // 세션스토리지 삭제
       sessionStorage.removeItem('walletInstance')
       this.isLoggedIn = false
+      this.$store.commit('SET_IS_LOGGED_IN', false)
       this.$router.replace(this.$route.query.redirect || '/')
     },
     gotoLogin() {

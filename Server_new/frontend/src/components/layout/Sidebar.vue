@@ -49,7 +49,7 @@
               <span class="blank"></span>
               <span class="treeview-title"><router-link to="/mylibrary">내 정보</router-link></span>
           </a>
-          <ul class="treeview-menu">
+          <ul v-if="this.$store.state.isLoggedIn" class="treeview-menu">
             <li>
              <router-link to="/mylibrary"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</router-link>
             </li>
@@ -58,6 +58,11 @@
             </li>
               <li>
              <a v-on:click="logoutActive()"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a>
+            </li>
+          </ul>
+      <ul v-if="!this.$store.state.isLoggedIn" class="treeview-menu">
+            <li>
+             <router-link to="/login"><i class="fa fa-blank"></i><span class="blank"></span>로그인</router-link>
             </li>
           </ul>
         </li>
@@ -173,15 +178,18 @@
 export default {
   name: 'Sidebar',
   props: ['user'],
+  data: {
+  },
   methods: {
     logoutActive() {
       // 세션 삭제
       this.$session.destroy()
       // 세션스토리지 삭제
       sessionStorage.removeItem('walletInstance')
-      this.isLoggedIn = false
+      this.$store.commit('SET_IS_LOGGED_IN', false)
       this.$root.$emit('UserMenu')
       this.$router.replace(this.$route.query.redirect || '/')
+      // this.$store.state.isLoggedIn
     }
   },
   mounted: function() {
