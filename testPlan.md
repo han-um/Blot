@@ -37,6 +37,12 @@
         - soft2013!
         - writer1@naver.com
         - 0x6f560ac6ede19461b28382816232c4dd50bd4843
+    - [writer3]이 글 등록
+    - 1번 계정
+        - writer3
+        - soft2013!
+        - writer3@naver.com
+        - 0x6f560ac6ede19461b28382816232c4dd50bd4843
 
 > 문제점
 > - 프로젝트 등록할 때 문장별 지분 계산에 오차가 크게 남 >> 소수점 3째짜리까지해서 반올림하기로 함 O

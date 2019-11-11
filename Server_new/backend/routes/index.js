@@ -375,12 +375,16 @@ router.get('/manual/:p_num', function(req, res, next) {
             res.send(false);
             return;
         } else {
-            try {
-                await deadline(doc);
+            // 아직 마감을 안한 상태라면
+            if(doc.valid==1) {
+                try {
+                    await deadline(doc);
+                    res.send(true);
+                } catch(err) {
+                    res.send(false);
+                }
+            } else
                 res.send(true);
-            } catch(err) {
-                res.send(false);
-            }
         }
     });
 })
@@ -457,13 +461,16 @@ router.post('/', function(req, res, next){
         var _id = project._id;
         _id = JSON.parse(JSON.stringify(_id));
 
+        /*
         try {
-            await myKlaytn.createProject(_id, user, end, reward);    
+            await myKlaytn.createProject(_id, user, end, reward);
+            console.log('프로젝트 등록');    
         }
-        catch {
+        catch(err) {
+            console.log(err);
             res.send(false);
             return;
-        }
+        }*/
         res.send(_id);
     });
 });
@@ -471,7 +478,7 @@ router.post('/', function(req, res, next){
 // 전체 프로젝트 정보 가져오기
 router.get('/', function(req, res, next){
     Project.find({}, {'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
-        if(err) console.log('err');
+        if(err) console.log('ERROR : get(/)');
         else {
             res.send(doc);
         }
@@ -483,7 +490,7 @@ router.post('/delete', function(req, res, next){
     var p_num = req.body.p_num;
     Project.findOneAndDelete({_id: p_num}, function(err) {
         if(err) {
-            console.log('err');
+            console.log('ERROR : /delete');
             res.send(false);
             return;
         } else {
@@ -495,7 +502,6 @@ router.post('/delete', function(req, res, next){
 // 프로젝트 등록시 대납서명 요청
 router.post('/sign', async function(req, res, next) {
     const rawTransaction = req.body.rawTransaction;
-    console.log('gello');
     try {
         // transcation 대납 서명 후 블록체인에 보내기
         var result = await myKlaytn.payProxy(rawTransaction);
@@ -519,7 +525,7 @@ router.post('/trans', function(req, res, next){
     var userId = req.body.userId;
     
     Project.findOne({'_id':p_num}, function(err, doc) {
-        if(err) { console.log('err'); return; }
+        if(err) { console.log('ERROR : /trans'); return; }
         else {
             var trans = new Trans();
             trans.idx = doc.sentence[s_num].trans.length;
@@ -540,7 +546,7 @@ router.get('/tags', function(req, res, next){
         
         var array = [];
         
-        if(err) console.log('err');
+        if(err) console.log('ERROR : /tags');
         else {
             for(var i = 0; i < doc.length; i++) {
                 for(var j = 0; j < doc[i].tags.length; j++) {
@@ -564,7 +570,7 @@ router.get('/tags', function(req, res, next){
 router.get('/tags/:tag', function(req, res, next) {
     Project.find({}, {'tags' : { $elemMatch : {$in : [req.params.tag]} }}, function(err, doc){
         var array = [];
-        if(err) console.log('err');
+        if(err) console.log('ERROR : /tags/:tag');
         else {
             for(var i = 0; i < doc.length; i++) {
                 if(doc[i].tags.length != 0) {
@@ -581,8 +587,8 @@ router.get('/tags/:tag', function(req, res, next) {
 // 특정 프로젝트 정보 가져오기
 router.get('/:p_num', function(req, res, next){
     var p_num = req.params.p_num;
-    Project.findOne({'_id':p_num},{'_id': false, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true, 'tags':true}, function(err, doc){
-        if(err) console.log('err');
+    Project.findOne({'_id':p_num},{'_id': false, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true}, function(err, doc){
+        if(err) console.log('ERROR : /:p_num');
         else {
             res.send(doc);
         }
@@ -650,7 +656,7 @@ router.get('/:p_num/summary', function(req, res, next){
 router.get('/:p_num/sentence', function(req, res, next){
     var p_num = req.params.p_num;
     Project.findOne({'_id':p_num}, {'_id': false, 'sentence.raw_text': true}, function(err, doc){
-        if(err) console.log('err');
+        if(err) console.log('ERROR : Can\'t get all sentences of project.');
         else {
             res.send(doc);
         }
@@ -662,7 +668,7 @@ router.get('/:p_num/sentence/:s_num/trans', function(req, res, next){
     var p_num = req.params.p_num;
     var s_num = req.params.s_num;
     Project.findOne({'_id':p_num},{'_id': false, 'sentence.trans.text': true, 'sentence.trans.idx': true}, function(err, doc){
-        if(err) console.log('err');
+        if(err) console.log('ERROR : Can\'t get translation of the sentence.');
         else {
             //res.send(doc.sentence[s_num].trans);
             //res.send(doc.sentence[s_num]);
@@ -686,10 +692,10 @@ router.get('/:p_num/sentence/:s_num/user/:userId', function(req, res, next){
     var userId = req.params.userId;
     
     Project.findOne({'_id':p_num},function(err, doc){
-        if(err) { console.log('err'); return; }
+        if(err) { console.log('ERROR : Can\'t get translation index of the user'); return; }
         else {
             var len = doc.sentence[s_num].like.length;
-            console.log(len);
+            //console.log(len);
             var flag = false;
             var result = -1;
             for(var i=0; i<len; i++) {
@@ -714,7 +720,7 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userId', function(req, re
     var userId = req.params.userId;
     
     Project.findOne({'_id':p_num}, {'_id': true, 'sentence.like.user': true, 'sentence.like.trans_id': true}, function(err, doc){
-        if(err) { console.log('err'); return; }
+        if(err) { console.log('ERROR : get(/:p_num/sentence/:s_num/trans/:t_num/user/:userId)'); return; }
         else {
             var data = doc.sentence[s_num].like;
             //console.log(data);
@@ -750,7 +756,7 @@ router.get('/:p_num/sentence/:s_num/trans/:t_num/user/:userId', function(req, re
 // 검색어 조회
 router.get('/keyword/:key', function(req, res, next) {
     Project.find({}, {'title': true, 'description': true, 'icon': true, 'color': true, 'image': true}, function(err, doc) {
-        if(err) { console.log('err'); return; }
+        if(err) { console.log('ERROR : /keyword/:key'); return; }
         else {
             var array = [];
             for(var i = 0; i < doc.length; i++) {
@@ -770,7 +776,7 @@ router.get('/keyword/:key', function(req, res, next) {
 // 프로젝트가 마감유효성 조회
 router.get('/:p_num/deadline', function(req, res, next) {
     Project.findOne({'_id': req.params.p_num},{'valid': true}, function(err, doc) {
-        if(err) { console.log('err'); return; }
+        if(err) { console.log('ERROR : /:p_num/deadline'); return; }
         else {
             if(doc.valid === 0) res.send(true);
             else res.send(false);
@@ -781,7 +787,7 @@ router.get('/:p_num/deadline', function(req, res, next) {
 // 특정유저가 등록한 프로젝트ObjectId, 제목, 요약, 아이콘, 색상 조회
 router.get('/user/:userId', function(req, res, next) {
     Project.find({'user': req.params.userId}, {'title': true, 'description': true, 'icon': true, 'color': true, 'image': true}, function(err, doc) {
-        if(err) { console.log('err'); return; }
+        if(err) { console.log('ERROR : /user/:userId'); return; }
         else {
             var array = [];
             for(var i = 0; i < doc.length; i++) {
@@ -1015,3 +1021,26 @@ module.exports = router;
 
 // testDeadline();
 //testDeadline('5dc5bf0369abf82b3866fa43');
+
+// async function test() {
+//     Project.findOne({'_id': '5dc998b0acbac62b688a8929'}, async function(err, doc) {
+//         if(err) {
+//             console.log('ERROR'+p_num + '수동 마감 실패');
+//             console.log('F');
+//             return;
+//         } else {
+//             // 아직 마감을 안한 상태라면
+//             if(doc.valid==1) {
+//                 try {
+//                     await deadline(doc);
+//                     console.log('T');
+//                 } catch(err) {
+//                    console.log('F'); 
+//                 }
+//             } else
+//             console.log('T');
+//         }
+//     });
+// }
+
+// test();
