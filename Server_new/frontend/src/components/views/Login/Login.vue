@@ -36,6 +36,7 @@ export default {
         if (res.data === true) {
           this.$session.set('username', this.inpUsername)
           console.log(this.$session.get('username'))
+          this.$store.commit('SET_IS_LOGGED_IN', true)
           this.$router.replace(this.$route.query.redirect || '/')
         } else {
           this.$swal('로그인 실패', '아이디 혹은 비밀번호가 잘못되었습니다.', 'error')
