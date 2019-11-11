@@ -171,7 +171,7 @@ router.get('/:userId/project', function(req, res, next){
             for(var i = 0; i < result.length; i++) {
                 var projId = result[i].projId;
                 await Project.findOne({'_id': projId}, {'title': true, 'description': true, 'icon': true, 'color': true, 'image': true}, function(err, doc) {
-                    if(err) { console.log('err'); return; }
+                    if(err) { console.log(err); return; }
                     else {
                         var data = { _id: doc._id, title: doc.title, description: doc.description, icon: doc.icon, color: doc.color, image: doc.image };
                         array.push(data);
