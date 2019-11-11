@@ -5,18 +5,32 @@
     <section class="sidebar">
         <ul class="sidebar-menu">
             <li class="treeview active">
-          <a href="#">
+          <a>
               <span class="blank-line"></span>
             <i class="ri-stack-line"></i>
               <span class="blank"></span>
-            <span class="treeview-title">메인화면</span>
-            <span class="pull-right-container pull-right">
-              <i class="fa fa-angle-left fa-fw"></i>
-            </span>
+              <span class="treeview-title"><router-link to="/">메인화면</router-link></span>
           </a>
           <ul class="treeview-menu">
               <li><router-link to="/"><i class="fa fa-blank"></i><span class="blank"></span>메인화면</router-link></li>
+          </ul>
+        </li>
+            
+         <li class="treeview active">
+          <a href="#">
+              <span class="blank-line"></span>
+            <i class="ri-newspaper-line"></i>
+              <span class="blank"></span>
+              <span class="treeview-title"><router-link to="/projadd">번역 프로젝트</router-link></span>
+          </a>
+          <ul class="treeview-menu">
             <li>
+             <router-link to="/projadd"><i class="fa fa-blank"></i><span class="blank"></span>새로 만들기</router-link>
+            </li>
+              <li>
+             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>태그별 보기</a>
+            </li>
+              <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>인기 프로젝트</a>
             </li>
               <li>
@@ -28,51 +42,22 @@
           </ul>
         </li>
             
-         <li class="treeview active">
-          <a href="#">
-              <span class="blank-line"></span>
-            <i class="ri-newspaper-line"></i>
-              <span class="blank"></span>
-            <span class="treeview-title">번역 프로젝트</span>
-            <span class="pull-right-container pull-right">
-              <i class="fa fa-angle-left fa-fw"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li>
-             <router-link to="/projadd"><i class="fa fa-blank"></i><span class="blank"></span>새로 만들기</router-link>
-            </li>
-              <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>검색하기</a>
-            </li>
-              <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>태그별 보기</a>
-            </li>
-          </ul>
-        </li>
-            
   <li class="treeview active">
           <a href="#">
               <span class="blank-line"></span>
             <i class="ri-chat-smile-2-line"></i>
               <span class="blank"></span>
-            <span class="treeview-title">내 정보</span>
-            <span class="pull-right-container pull-right">
-              <i class="fa fa-angle-left fa-fw"></i>
-            </span>
+              <span class="treeview-title"><router-link to="/mylibrary">내 정보</router-link></span>
           </a>
           <ul class="treeview-menu">
             <li>
              <router-link to="/mylibrary"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</router-link>
             </li>
               <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>내 정보</a>
+                  <router-link to="/myinfo"><i class="fa fa-blank"></i><span class="blank"></span>내 정보</router-link>
             </li>
               <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>토큰 충전</a>
-            </li>
-              <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a>
+             <a v-on:click="logoutActive()"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a>
             </li>
           </ul>
         </li>
@@ -83,9 +68,6 @@
             <i class="ri-star-line"></i>
               <span class="blank"></span>
             <span class="treeview-title">즐겨찾기</span>
-            <span class="pull-right-container pull-right">
-              <i class="fa fa-angle-left fa-fw"></i>
-            </span>
           </a>
           <ul class="treeview-menu">
             <!--li here-->
@@ -191,6 +173,17 @@
 export default {
   name: 'Sidebar',
   props: ['user'],
+  methods: {
+    logoutActive() {
+      // 세션 삭제
+      this.$session.destroy()
+      // 세션스토리지 삭제
+      sessionStorage.removeItem('walletInstance')
+      this.isLoggedIn = false
+      this.$root.$emit('UserMenu')
+      this.$router.replace(this.$route.query.redirect || '/')
+    }
+  },
   mounted: function() {
   }
 }
@@ -299,5 +292,8 @@ export default {
       100% {
         transform: rotate(-90deg);
       }
-    }    
+    } 
+    .treeview-title a {
+        color:white
+    }
 </style>

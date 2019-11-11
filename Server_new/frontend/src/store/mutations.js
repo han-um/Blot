@@ -78,6 +78,9 @@ export default {
   SET_CURRENT_USER_IMAGE (state, userImage) {
     state.crntUserImg = '/api/files/attachedFiles/' + userImage
   },
+  SET_IS_LOGGED_IN (state, loggedIn) {
+    state.isLoggedIn = loggedIn
+  }
   /* -----------------------------------------------------------
     Co-Pilot Variables (삭제할것)
   ----------------------------------------------------------- */
