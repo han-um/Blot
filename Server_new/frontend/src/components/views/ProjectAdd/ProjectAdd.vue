@@ -130,9 +130,11 @@ export default {
       this.projectImage = this.$refs.projectImage.files[0]
       const formData = new FormData()
       formData.append('userfile', this.projectImage)
+      var projId
       // Step 1 : DB에 프로젝트 등록
-      axios.post('/api/files/upload', formData).then(res => {
-        axios.post('/api/project/', {
+      axios.post('/api/files/upload', formData)
+      .then(res => {
+        return axios.post('/api/project/', {
           title: this.projectTitle,
           description: this.projectOverview,
           language: 'English',
@@ -144,23 +146,32 @@ export default {
           user: this.$session.get('username'),
           image: res.data
         })
-        .then(res2 => {
-          // Step 2 : 대납 처리 및 Sign 요청
-          var payload = {
-            'projectId': res2.data,
-            'writerId': this.$session.get('username'),
-            'deadline': this.$moment(this.selectedDate).format('YYYY.MM.DD'),
-            'reward': this.reward
-          }
-          this.$store.dispatch('CREATE_NEW_PROJECT', payload).then(res3 => {
-            // Step 3 : 결과에 따라 DB에 등록된 프로젝트 삭제 혹은 유지
-            console.log('success', res3)
-            // this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
-          }).catch(error => {
-            this.$swal('프로젝트 등록 실패', '블록체인 대납 서명에 실패하였습니다.(Step 3)<br>' + error, 'error')
-          })
-        }).catch(error => {
-          this.$swal('프로젝트 등록 실패', '블록체인 대납 서명에 실패하였습니다.(Step 2)<br>' + error, 'error')
+      })
+      .then(res => {
+        projId = res.data
+        console.log(projId)
+        // Step 2 : 대납 처리 및 Sign 요청
+        var payload = {
+          'projectId': projId,
+          'writerId': this.$session.get('username'),
+          'deadline': this.$moment(this.selectedDate).format('YYYY.MM.DD'),
+          'reward': this.reward
+        }
+        return this.$store.dispatch('CREATE_NEW_PROJECT', payload)
+      })
+      .then(res => {
+        // Step 3 : 결과에 따라 DB에 등록된 프로젝트 삭제 혹은 유지
+        this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
+      })
+      .catch(error => {
+        // Step 3 : DB에 생성된 프로젝트를 다시 지우기
+        console.log(error)
+        axios.post('/api/project/delete', {p_num: projId})
+        .then(res => {
+          this.$swal('프로젝트 등록 실패', '블록체인 대납 서명에 실패하였습니다.(Step 2)<br> 보유하고 있는 토큰량을 확인하세요.', 'error')
+        })
+        .catch(err => {
+          this.$swal('프로젝트 등록 실패', '블록체인 대납 서명 & DB 데이터 지우기 실패하였습니다.(Step 3)<br>' + err, 'error')
         })
       })
     }

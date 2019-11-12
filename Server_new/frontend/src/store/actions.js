@@ -73,33 +73,20 @@ export default {
     // 세션 스토리지에 wallet instance 정보가 있는지 확인
     const walletFromSession = JSON.parse(sessionStorage.getItem('walletInstance'))
     if (walletFromSession) {
-      try {
-        // transacetion sernder first signature
-        cav.klay.accounts.signTransaction({
-          type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-          from: walletFromSession.address,
-          to: contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS,
-          data: blotProjectContract.methods.registerNewProject(payload.projectId, payload.writerId, payload.deadline, payload.reward).encodeABI(),
-          gas: '500000'
-        }, walletFromSession.privateKey)
-        .then(function (transactionInfo) {
-          console.log(transactionInfo)
-          axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
-          .then(res => {
-            console.log('transaction 결과 정보 : ' + res.data)
-            return res.data
-          }).catch(error => {
-            console.log('inner:', error)
-            throw error
-          })
-        }).catch(error => {
-          throw error
-        })
-      } catch (err) {
-        throw err
-      }
+      // transacetion sernder first signature
+      return cav.klay.accounts.signTransaction({
+        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+        from: walletFromSession.address,
+        to: contractInfo.DEPLOYED_BLOTPROJECT_ADDRESS,
+        data: blotProjectContract.methods.registerNewProject(payload.projectId, payload.writerId, payload.deadline, payload.reward).encodeABI(),
+        gas: '500000'
+      }, walletFromSession.privateKey)
+      .then(function (transactionInfo) {
+        return axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
+      })
     } else {
       console.log('Please activate with your klaytn wallet address to use blockchain service.')
+      return new Error('Please activate with your klaytn wallet address to use blockchain service.')
     }
   },
   // 토큰 구매 : Klay 코인만큼 BLOT 토큰 구매하기
