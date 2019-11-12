@@ -507,13 +507,13 @@ router.post('/sign', async function(req, res, next) {
     try {
         // transcation 대납 서명 후 블록체인에 보내기
         var result = await myKlaytn.payProxy(rawTransaction);
-
-        console.log(result);
+        if(result.status)
+            console.log('Approved : Delegated Transaction');
 
         // transaction 관련 모든 정보 반환해주기
         res.send(result);
     } catch(err) {
-        res.status(500).send('Can\'t register transaction');
+        res.status(500).send('Can\'t process delegated transaction');
     }
 });
 
