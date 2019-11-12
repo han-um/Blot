@@ -126,9 +126,11 @@ export default {
   },
   methods: {
     addProject () {
+      // 이미지 폼 세팅
       this.projectImage = this.$refs.projectImage.files[0]
       const formData = new FormData()
       formData.append('userfile', this.projectImage)
+      // Step 1 : DB에 프로젝트 등록
       axios.post('/api/files/upload', formData).then(res => {
         axios.post('/api/project/', {
           title: this.projectTitle,
@@ -143,7 +145,22 @@ export default {
           image: res.data
         })
         .then(res2 => {
-          this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
+          // Step 2 : 대납 처리 및 Sign 요청
+          var payload = {
+            'projectId': res2.data,
+            'writerId': this.$session.get('username'),
+            'deadline': this.$moment(this.selectedDate).format('YYYY.MM.DD'),
+            'reward': this.reward
+          }
+          this.$store.dispatch('CREATE_NEW_PROJECT', payload).then(res3 => {
+            // Step 3 : 결과에 따라 DB에 등록된 프로젝트 삭제 혹은 유지
+            console.log('success', res3)
+            // this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
+          }).catch(error => {
+            this.$swal('프로젝트 등록 실패', '블록체인 대납 서명에 실패하였습니다.(Step 3)<br>' + error, 'error')
+          })
+        }).catch(error => {
+          this.$swal('프로젝트 등록 실패', '블록체인 대납 서명에 실패하였습니다.(Step 2)<br>' + error, 'error')
         })
       })
     }
