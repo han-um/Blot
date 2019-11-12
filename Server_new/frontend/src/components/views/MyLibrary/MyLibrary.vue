@@ -7,12 +7,12 @@
         </div>
         <div class="row">
             <div class="col-md-2 col-xs-4 white-box cat-box">
-                <div class="box-header"></div>
+                <!--<div class="box-header"></div>-->
                 <div class="cat" v-on:click="getAddedProj()" v-bind:class="{now : (this.$store.state.crntLibMenu === 'Added')}">내가 등록한</div>
                 <div class="cat" v-on:click="getFavoriteProj()" v-bind:class="{now : (this.$store.state.crntLibMenu === 'Favorite')}">즐겨찾기</div>
             </div>
             <div class="col-md-5 col-xs-8 white-box">
-                <div class="box-header"></div>
+                <!--<div class="box-header"></div>-->
                 <!--각 프로젝트 항목-->
             <transition-group enter-active-class="animated fadeIn" tag="div">
                 <div v-for="(eachProject, index) in currentList" class="col-md-6 p-2" v-bind:key="eachProject._id">
@@ -27,7 +27,7 @@
                 <!---->
             </div>
             <div class="col-md-5 hidden-xs white-box">
-                <div class="box-header"></div>
+                <!--<div class="box-header"></div>-->
                   <DetailBox :projectId="nowProject"></DetailBox>
             </div>
         </div>
@@ -85,7 +85,7 @@ export default {
     }
     .white-box {
       padding:0px;
-      background-color:#343434;
+      background-color:#EFEFEF;
       height:80vh;
       -webkit-box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
 -moz-box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
@@ -107,15 +107,16 @@ box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
         background-color:white;
     }
     .title-box {
+        // background-color:#6B6B6B;
         height:40px;
         text-align: center;
         line-height: 40px;
-        color:white;
+        color:#6B6B6B;
         font-size:12px;
         font-weight:300;
     }
     .cat-box .cat {
-        color:#C5C5C5;
+        color:#6B6B6B;
         text-align: center;
         padding-left:10px;
         padding-right:10px;
@@ -127,8 +128,8 @@ box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
         font-size:12px;
     }
     .now {
-        color:white!important;
-        border-bottom:2px solid white;
+        color:#6B6B6B!important;
+        border-bottom:2px solid #6B6B6B;
     }
     .title-box {
         overflow:hidden;white-space:nowrap;text-overflow:ellipsis;

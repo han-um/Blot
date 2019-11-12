@@ -2,7 +2,7 @@
   <div>
                    <div class="detail-box">
                    <!--디테일 표시 상자-->
-                   <div class="preview-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + resultList.image + ')' }">
+                   <div class="preview-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + image + ')' }">
                           <div class="inner">
                               <i v-bind:class="resultList.icon"></i>
                               <br><span class="preview-title">{{resultList.title}}</span>
@@ -69,7 +69,8 @@ export default {
       transCnt: 0,
       originalSize: 0,
       favoriteNum: 0,
-      end: ''
+      end: '',
+      image: '1573054850793.jpg'
     }
   },
   methods: {},
@@ -82,6 +83,7 @@ export default {
       .then(res => {
         this.resultList = res.data
         this.end = this.$moment(res.data.end).format('YYYY년 MM월 DD일')
+        this.image = res.data.image
       })
       axios.get('/api/project/' + this.projectId + '/summary')
       .then(res => {
