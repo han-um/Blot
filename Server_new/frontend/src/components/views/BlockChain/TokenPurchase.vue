@@ -59,6 +59,14 @@ export default {
     purchaseToken() {
       var payload = {'userAddress': this.$store.state.crntWalletId, 'klayNum': this.inpToken / 10000}
       this.$store.dispatch('PURCHASE_BLOT_TOKEN', payload)
+      .then(res => {
+        this.$store.dispatch('REFRESH_CURRENT_BLOTS_BY_ADDR', payload.userAddress)
+        this.$swal('토큰 구매 성공', '잔고에 Token이 충전되었습니다.', 'success')
+      })
+      .catch(err => {
+        console.log(err)
+        this.$swal('토큰 구매 실패', '충분한 Klay를 보유하고 있는지 확인하세요.', 'error')
+      })
     }
   },
   mounted () {}
