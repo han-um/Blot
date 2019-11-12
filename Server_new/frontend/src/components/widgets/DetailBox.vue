@@ -5,7 +5,7 @@
                    <div class="preview-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + image + ')' }">
                           <div class="inner">
                               <i v-bind:class="resultList.icon"></i>
-                              <br><span class="preview-title">{{resultList.title}}</span>
+                              <br><div class="preview-title">{{resultList.title}}</div>
                               <br><span class="preview-overview">{{resultList.description}}</span>
                           </div>
                     </div>
@@ -129,6 +129,8 @@ export default {
     .preview-title {
         color:white;
         font-size:17px;
+        width:100%;
+        overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
     }
     
     .preview-overview {

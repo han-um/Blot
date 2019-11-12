@@ -11,7 +11,7 @@
                   <div class="preview-box" v-bind:style="{ backgroundImage: 'url(' + this.$store.state.crntUserImg + ')' }">
                           <div class="inner">
                               <br><span class="name">{{this.$session.get('username')}}</span>
-                              <br><span class="email">{{this.$store.state.crntWalletId}}</span>
+                              <br><span class="email">일반 사용자</span>
                           </div>
                   </div>
                   <div class="info-icon-box row">
