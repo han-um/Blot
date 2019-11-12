@@ -33,7 +33,7 @@
                          <div class="detail-icon">
                            <i class="ri-pages-line"></i><br>
                            <small>작성 프로젝트</small><br>
-                           <div class="value">5</div>
+                           <div class="value">{{addedList.length}}</div>
                          </div>
                        </div>
                        <div class="col-md-3 p-0">
@@ -193,6 +193,7 @@ export default {
       this.$store.dispatch('REFRESH_USER_RELIABILITY', this.$session.get('username'))
       this.getFavoriteProj()
       this.getTrustLog()
+      this.getAddedProj()
     }
   }
 }
