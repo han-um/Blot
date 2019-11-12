@@ -892,7 +892,6 @@ router.get('/user/:userId/trust', async function(req, res, next) {
             var score = obj.returnValues['4'];
             var type = obj.returnValues['5'];
             var ascore = obj.returnValues['6'];
-            
             var data = {projId:projId, score:score, type:type, ascore: ascore};
             array.push(data);
         }
