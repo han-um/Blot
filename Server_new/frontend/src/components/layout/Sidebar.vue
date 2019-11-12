@@ -28,16 +28,13 @@
              <router-link to="/projadd"><i class="fa fa-blank"></i><span class="blank"></span>새로 만들기</router-link>
             </li>
               <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>태그별 보기</a>
+                  <router-link to="/taglist"><i class="fa fa-blank"></i><span class="blank"></span>태그별 보기</router-link>
             </li>
               <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>인기 프로젝트</a>
             </li>
               <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역이 끝난 프로젝트</a>
-            </li>
-              <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역을 기다리는 프로젝트</a>
             </li>
           </ul>
         </li>
@@ -49,7 +46,7 @@
               <span class="blank"></span>
               <span class="treeview-title"><router-link to="/mylibrary">내 정보</router-link></span>
           </a>
-          <ul v-if="this.$store.state.isLoggedIn" class="treeview-menu">
+          <ul class="treeview-menu">
             <li>
              <router-link to="/mylibrary"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</router-link>
             </li>
@@ -58,11 +55,6 @@
             </li>
               <li>
              <a v-on:click="logoutActive()"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a>
-            </li>
-          </ul>
-      <ul v-if="!this.$store.state.isLoggedIn" class="treeview-menu">
-            <li>
-             <router-link to="/login"><i class="fa fa-blank"></i><span class="blank"></span>로그인</router-link>
             </li>
           </ul>
         </li>
@@ -182,14 +174,16 @@ export default {
   },
   methods: {
     logoutActive() {
-      // 세션 삭제
-      this.$session.destroy()
-      // 세션스토리지 삭제
-      sessionStorage.removeItem('walletInstance')
-      this.$store.commit('SET_IS_LOGGED_IN', false)
-      this.$root.$emit('UserMenu')
-      this.$router.replace(this.$route.query.redirect || '/')
-      // this.$store.state.isLoggedIn
+      if (this.$session.has('username')) {
+        // 세션 삭제
+        this.$session.destroy()
+        // 세션스토리지 삭제
+        sessionStorage.removeItem('walletInstance')
+        this.$store.commit('SET_IS_LOGGED_IN', false)
+        this.$root.$emit('UserMenu')
+        this.$router.replace(this.$route.query.redirect || '/')
+        // this.$store.state.isLoggedIn
+      }
     }
   },
   mounted: function() {

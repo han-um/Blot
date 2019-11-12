@@ -49,8 +49,8 @@
                     <div class="desc-box">
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">지갑 공개 키</div><br>
                       <div class="small">{{this.$store.state.crntWalletId}}</div>
-                    <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">정보 페이지 주소</div><br>
-                      <div class="small">{{nowUrl}}/info/{{this.$session.get('username')}}</div>
+                    <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">신뢰점수 OpenAPI</div><br>
+                      <div class="small">{{nowUrl}}/api/project/user/{{this.$session.get('username')}}/trust</div>
                   </div>
                 </div>
             </div>
@@ -58,16 +58,16 @@
                 <div class="blot-box box">
                   <div class="box-header with-border"><i class="ri-paint-brush-line"></i> 신뢰점수 추이</div>
                   <div class="box-body">
-                      <apexchart type=line width="100%" height=250 :options="chartOptions" :series="series" />
+                      <apexchart v-if="drawChart" type=line width="100%" height=250 :options="chartOptions" :series="series" />
                   </div>
               </div>
             </div>
             <div class="col-md-6 col-lg-8 col-xl-8" style="padding-left: 7px; padding-right: 0px;">
                 <div class="blot-box box">
-                    <div class="box-header with-border"><i class="ri-paint-brush-line"></i> 신뢰점수 추이</div>
+                    <div class="box-header with-border"><i class="ri-paint-brush-line"></i> 신뢰점수 기록</div>
                     <div class="box-body">
                         <div class="padding-inner">
-                          <LogBox v-for="trustLog in trustLogs" :title="trustLog[0]" :text="trustLog[1]"></LogBox>
+                          <LogBox v-for="printData in printList" :title="printData[0]" :text="printData[1]"></LogBox>
                         </div>
                     </div>
               </div>
@@ -93,9 +93,12 @@ export default {
       addedList: [],
       trustLogs: [],
       oriTrustLog: [],
+      trustProj: [],
+      printList: [],
+      drawChart: false,
       nowFavoriteNum: 0,
       series: [{
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+        data: []
       }],
       chartOptions: {
         colors: ['#FBC02D'],
@@ -121,11 +124,51 @@ export default {
     }
   },
   methods: {
-    getTrustLog() {
-      axios.get('/api/project/user/translator1/trust')
+    async getTrustLog() {
+      // STEP1 : 신뢰점수 기록 가져오기
+      await axios.get('/api/project/user/' + this.$session.get('username') + '/trust')
       .then(res => {
         this.oriTrustLog = res.data
       })
+      // STEP2 : 기록으로부터 프로젝트 이름 및 종료일 추가
+      for (var i = 0, trustLog; (trustLog = this.oriTrustLog[i]); i++) {
+        await axios.get('/api/project/' + trustLog.projId) // '5dc9821f1d4230230c68587e' trustLog.projId
+        .then(res => {
+          this.trustProj.push(res.data)
+          console.log(trustLog)
+        }).catch(error => {
+          console.log(error)
+          this.trustProj.push('')
+        })
+      }
+      // STEP3 : 출력문장 생성
+      for (var j = 0, trustLog2; (trustLog2 = this.oriTrustLog[j]); j++) {
+        var tempList = []
+        var header = ''
+        var end = ''
+        var inner = ''
+        var url = ''
+        if (this.trustProj[j] === '') {
+          header = '삭제된 프로젝트로부터 신뢰점수 반영' + trustLog2.score
+          end = '알 수 없는 날자'
+          url = '/myinfo'
+        } else {
+          header = this.trustProj[j].title + '로부터 신뢰점수 반영'
+          end = this.$moment(this.trustProj[j].end).format('YYYY년 MM월 DD일')
+          url = '/projview/' + trustLog2.projId + '/'
+        }
+        inner = end + ', ' + trustLog2.score + '점 획득, 총 누적 ' + trustLog2.ascore + '점'
+        tempList.push(header)
+        tempList.push(inner)
+        tempList.push(url)
+        this.printList.push(tempList)
+      }
+      console.log(this.printList)
+      // STEP4 : 그래프에 적용
+      for (var k = 0, trustLog3; (trustLog3 = this.oriTrustLog[k]); k++) {
+        this.series[0].data.push(trustLog3.ascore)
+      }
+      this.drawChart = true
     },
     getFavoriteProj () {
       axios.get('/api/user/' + this.$session.get('username') + '/project')
@@ -143,10 +186,14 @@ export default {
     }
   },
   mounted () {
-    this.nowUrl = window.location.origin
-    this.$store.dispatch('REFRESH_USER_RELIABILITY', this.$session.get('username'))
-    this.getFavoriteProj()
-    this.getTrustLog()
+    if (!this.$session.has('username')) {
+      this.$router.replace(this.$route.query.redirect || '/login/')
+    } else {
+      this.nowUrl = window.location.origin
+      this.$store.dispatch('REFRESH_USER_RELIABILITY', this.$session.get('username'))
+      this.getFavoriteProj()
+      this.getTrustLog()
+    }
   }
 }
 </script>

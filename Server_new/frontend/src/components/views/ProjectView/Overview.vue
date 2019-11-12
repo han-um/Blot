@@ -168,8 +168,14 @@
             <div class="col-md-7 p-0">
                          <div class="blot-box box">
                             <div class="box-header with-border"><i class="ri-t-box-line"></i> 프로젝트 개요</div>
-                            <div class="box-body h-300">
+                            <div class="box-body" style="height:200px;">
                                 {{description}}
+                            </div>
+                            <div class="box-header with-border"><i class="ri-t-box-line"></i> 디버깅 모드</div>
+                             <div class="box-body" style="height:70px;">
+                                <a class="btn btn-block btn-social btn-bitbucket" style="background-color:#5CD590;border:0;" v-on:click="setProjectEnd()">
+                                    <i class="fa fa-bitbucket"></i> 이 프로젝트를 마감 상태로 전환하기
+                                  </a>
                             </div>
                         </div>
             </div>
@@ -342,6 +348,11 @@ export default {
         }
         this.trustLogs = tempArray2
       })
+    },
+    setProjectEnd() {
+      axios.get('/api/project/manual/' + this.$route.params.id).then(res => {
+        this.$swal('마감처리 완료', '마감처리가 완료되었습니다.', 'success')
+      })
     }
   },
   mounted () {
@@ -349,6 +360,13 @@ export default {
     // 마감된 프로젝트만 블록체인 관련 정보를 불러옴
     axios.get('/api/project/' + this.$route.params.id + '/deadline')
     .then(res => {
+      if (res.data) {
+        this.getTransChartData()
+        this.getEvalChartData()
+        this.getTrustLog()
+        this.nowUrl = window.location.origin
+      }
+      console.log(res.data)
     })
   }
 }

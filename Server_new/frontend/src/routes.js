@@ -33,6 +33,9 @@ import BlockChainLogin from './components/views/BlockChain/BlockChainLogin.vue'
 import MyLibrary from './components/views/MyLibrary/MyLibrary.vue'
 import MyInfo from './components/views/MyLibrary/MyInfo.vue'
 
+// ListView
+import TagList from './components/views/ListView/TagList.vue'
+
 // Routes
 const routes = [
   {
@@ -138,6 +141,11 @@ const routes = [
         component: MyInfo,
         name: 'MyInformation',
         meta: {description: '내 정보'}
+      }, {
+        path: 'taglist',
+        component: TagList,
+        name: 'TagList',
+        meta: {description: '태그 목록'}
       }
     ]
   }, {
