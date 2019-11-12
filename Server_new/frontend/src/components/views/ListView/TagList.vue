@@ -46,6 +46,7 @@ export default {
         data: []
       }],
       chartOptions: {
+        colors: ['#5CD590'],
         plotOptions: {
           bar: {
             horizontal: false
