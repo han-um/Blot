@@ -35,6 +35,7 @@ import MyInfo from './components/views/MyLibrary/MyInfo.vue'
 
 // ListView
 import TagList from './components/views/ListView/TagList.vue'
+import TagProject from './components/views/ListView/TagProject.vue'
 
 // Routes
 const routes = [
@@ -146,6 +147,12 @@ const routes = [
         component: TagList,
         name: 'TagList',
         meta: {description: '태그 목록'}
+      }, {
+        path: 'tagproj/:tag',
+        component: TagProject,
+        name: 'TagProject',
+        props: true,
+        meta: {description: '태그별 프로젝트 목록'}
       }
     ]
   }, {

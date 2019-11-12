@@ -23,7 +23,7 @@
                     </div>
                     </router-link>
                 </div>
-                <div v-show="nowMenu == 'Favorite'" v-for="(eachProject, index) in currentFavList" class="col-md-6 p-2" v-bind:key="eachProject._id">
+                <div v-show="nowMenu == 'Favorite'" v-for="(eachProject, index) in currentFavList" class="col-md-6 p-2" v-bind:key="eachProject._id+'F'">
                     <router-link :to="{path: '/projview/' + eachProject._id + '/'}">
                     <div class="each-box"  v-on:mouseover="selectProject(index, 1)">
                         <div class="img-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + eachProject.image + ')' }"></div>
