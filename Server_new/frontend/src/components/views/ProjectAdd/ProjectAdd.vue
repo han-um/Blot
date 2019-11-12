@@ -129,10 +129,10 @@ export default {
       // 이미지 폼 세팅
       this.projectImage = this.$refs.projectImage.files[0]
       const formData = new FormData()
-      formData.append('userfile', this.projectImage)
+      formData.append('projectFile', this.projectImage)
       var projId
       // Step 1 : DB에 프로젝트 등록
-      axios.post('/api/files/upload', formData)
+      axios.post('/api/files/upload/project', formData)
       .then(res => {
         return axios.post('/api/project/', {
           title: this.projectTitle,
