@@ -165,7 +165,7 @@
             </div>
         </div>
         <div class="row" v-if="!this.$store.state.crntProjEnded">
-            <div class="col-md-8 p-0">
+            <div class="col-md-7 p-0">
                          <div class="blot-box box">
                             <div class="box-header with-border"><i class="ri-t-box-line"></i> 프로젝트 개요</div>
                             <div class="box-body h-300">
@@ -173,7 +173,7 @@
                             </div>
                         </div>
             </div>
-            <div class="col-md-4 p-0">
+            <div class="col-md-5 p-0">
                          <div class="blot-box box">
                             <div class="box-header with-border"><i class="ri-t-box-line"></i> 프로젝트 정보</div>
                             <div class="box-body h-300">
