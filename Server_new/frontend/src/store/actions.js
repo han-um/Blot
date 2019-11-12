@@ -87,10 +87,16 @@ export default {
           axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
           .then(res => {
             console.log('transaction 결과 정보 : ' + res.data)
+            return res.data
+          }).catch(error => {
+            console.log('inner:', error)
+            throw error
           })
+        }).catch(error => {
+          throw error
         })
       } catch (err) {
-        console.log(err)
+        throw err
       }
     } else {
       console.log('Please activate with your klaytn wallet address to use blockchain service.')
@@ -121,10 +127,13 @@ export default {
             if (state.state.crntWalletId === payload.userAddress) {
               state.dispatch('REFRESH_CURRENT_BLOTS_BY_ADDR', payload.userAddress)
             }
+          }).catch(error => {
+            console.log('???', error.response)
+            throw error
           })
         })
       } catch (err) {
-        console.log(err)
+        throw err
       }
     } else {
       console.log('Please activate with your klaytn wallet address to use blockchain service.')
