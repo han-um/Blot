@@ -478,7 +478,7 @@ router.post('/', function(req, res, next){
 
 // 전체 프로젝트 정보 가져오기
 router.get('/', function(req, res, next){
-    Project.find({}, {'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
+    Project.find({}, {'_id': false, 'tags': true, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
         if(err) console.log('ERROR : get(/)');
         else {
             res.send(doc);
@@ -589,7 +589,7 @@ router.get('/tags/:tag', function(req, res, next) {
 // 특정 프로젝트 정보 가져오기
 router.get('/:p_num', function(req, res, next){
     var p_num = req.params.p_num;
-    Project.findOne({'_id':p_num},{'_id': false, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true}, function(err, doc){
+    Project.findOne({'_id':p_num},{'_id': false, 'tags':true, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true}, function(err, doc){
         if(err) console.log('ERROR : /:p_num');
         else {
             res.send(doc);

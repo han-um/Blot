@@ -44,7 +44,7 @@
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">마감일</div><br>
                       <div class="small">{{end}}</div>
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">태그</div><br>
-                      <div class="small"><span class="tags" v-for="eachTag in resultList.tags"> {{eachTag}}, </span></div>
+                      <div class="small"><span class="tags" v-for="eachTag in resultList.tags"> #{{eachTag}} </span></div>
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">상세설명</div><br>
                       <div class="small">{{resultList.description}}</div>
                   </div>
@@ -82,6 +82,7 @@ export default {
       axios.get('/api/project/' + this.projectId)
       .then(res => {
         this.resultList = res.data
+        console.log(res.data)
         this.end = this.$moment(res.data.end).format('YYYY년 MM월 DD일')
         this.image = res.data.image
       })
@@ -190,6 +191,6 @@ export default {
         margin-bottom:15px;
     }
     .tags {
-       text-decoration: underline;
+       //text-decoration: underline;
     }
 </style>

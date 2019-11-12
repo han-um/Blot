@@ -134,12 +134,12 @@
 	> trans_text : 번역문[string]
     > userId : 계정명[string]
 
-- 전체프로젝트 제목,시작일,마감일,아이콘,색상  조회 [GET] - /api/project/
-    > Return : [제목, 시작일, 마감일, 아이콘, 색상] 배열 반환
+- 전체프로젝트 제목,태그,시작일,마감일,아이콘,색상  조회 [GET] - /api/project/
+    > Return : [제목, 태그, 시작일, 마감일, 아이콘, 색상] 배열 반환
     
-- 특정프로젝트 제목,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/:p_num
+- 특정프로젝트 제목,태그,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/:p_num
 	> p_num : 프로젝트 ObjectId[string]
-    > Return : [제목, 시작일, 마감일 ,아이콘, 색상] 반환
+    > Return : [제목, 태그, 시작일, 마감일 ,아이콘, 색상] 반환
     
 
 - 특정프로젝트 전체원본문장 조회 [GET] - /api/project/:p_num/sentence
