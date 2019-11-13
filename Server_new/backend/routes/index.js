@@ -601,7 +601,7 @@ router.get('/:p_num', function(req, res, next){
 });
 
 // 인기있는 프로젝트 정보 가져오기
-router.get('/popular', function(req, res, next){
+router.get('/info/popular', function(req, res, next){
     // mysql에서 projectId별 즐겨찾기 수(내림차순) 가져오기
     db.sequelize.query(
         `SELECT projId, count(projId) AS cnt

@@ -89,9 +89,6 @@ export default {
         data: blotProjectContract.methods.registerNewProject(payload.projectId, payload.writerId, payload.deadline, payload.reward).encodeABI(),
         gas: '500000'
       }, walletFromSession.privateKey)
-      .then(function (transactionInfo) {
-        return axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
-      })
     } else {
       console.log('Please activate with your klaytn wallet address to use blockchain service.')
       return new Error('Please activate with your klaytn wallet address to use blockchain service.')
@@ -111,10 +108,6 @@ export default {
         value: cav.utils.toPeb(payload.klayNum, 'KLAY'),
         gas: '500000'
       }, walletFromSession.privateKey)
-      .then(function (transactionInfo) {
-        console.log(transactionInfo)
-        return axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
-      })
     } else {
       console.log('Please activate with your klaytn wallet address to use blockchain service.')
       return new Error('Please activate with your klaytn wallet address to use blockchain service.')

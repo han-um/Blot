@@ -75,7 +75,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 // import Caver from 'caver-js'
 // import contractInfo from './contractInfo'
 // const cav = new Caver('https://api.baobab.klaytn.net:8651/')
@@ -100,8 +100,13 @@ export default {
       this.inpToken = num
     },
     purchaseToken() {
+      console.log('지갑:' + this.$store.state.crntWalletId)
       var payload = {'userAddress': this.$store.state.crntWalletId, 'klayNum': this.inpToken / 10000}
       this.$store.dispatch('PURCHASE_BLOT_TOKEN', payload)
+      .then(function (transactionInfo) {
+        console.log(transactionInfo)
+        return axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
+      })
       .then(res => {
         this.$store.dispatch('REFRESH_CURRENT_BLOTS_BY_ADDR', payload.userAddress)
         this.alertTitle = '토큰 구매 성공'
@@ -112,7 +117,7 @@ export default {
       .catch(err => {
         console.log(err)
         this.alertTitle = '토큰 구매 실패'
-        this.alertDesc = '충분한 Klay를 보유중인지 확인하세요.'
+        this.alertDesc = '충분한 Klay를 보유중 or 블록체인 로그인 여부를 확인하세요.'
         this.alertColor = '#dd4b39'
         this.showAlert = true
       })
