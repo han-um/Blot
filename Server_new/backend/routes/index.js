@@ -478,7 +478,7 @@ router.post('/', function(req, res, next){
 
 // 전체 프로젝트 정보 가져오기
 router.get('/', function(req, res, next){
-    Project.find({}, {'_id': true, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
+    Project.find({}, {'_id': true, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true, 'description':true, 'image':true}, function(err, doc){
         if(err) console.log('ERROR : get(/)');
         else {
             res.send(doc);
@@ -589,7 +589,7 @@ router.get('/tags/:tag', function(req, res, next) {
 // 특정 프로젝트 정보 가져오기
 router.get('/:p_num', function(req, res, next){
     var p_num = req.params.p_num;
-    Project.findOne({'_id':p_num},{'_id': true, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true}, function(err, doc){
+    Project.findOne({'_id':p_num},{'_id': true, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true, valid: true, tags: true}, function(err, doc){
         if(err) console.log('ERROR : /:p_num');
         else {
             res.send(doc);
@@ -788,12 +788,12 @@ router.get('/:p_num/deadline', function(req, res, next) {
 
 // 특정유저가 등록한 프로젝트ObjectId, 제목, 요약, 아이콘, 색상 조회
 router.get('/user/:userId', function(req, res, next) {
-    Project.find({'user': req.params.userId}, {'title': true, 'description': true, 'icon': true, 'color': true, 'image': true}, function(err, doc) {
+    Project.find({'user': req.params.userId}, {'title': true, 'description': true, 'icon': true, 'color': true, 'image': true, valid: true}, function(err, doc) {
         if(err) { console.log('ERROR : /user/:userId'); return; }
         else {
             var array = [];
             for(var i = 0; i < doc.length; i++) {
-                 var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color, image: doc[i].image };
+                 var data = { _id: doc[i]._id, title: doc[i].title, description: doc[i].description, icon: doc[i].icon, color: doc[i].color, image: doc[i].image, valid: doc[i].valid };
                 array.push(data);
             }
             if(array.length === 0) res.send(false);

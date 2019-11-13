@@ -19,7 +19,7 @@
                     <router-link :to="{path: '/projview/' + eachProject._id + '/'}">
                     <div class="each-box"  v-on:mouseover="selectProject(index, 0)">
                         <div class="img-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + eachProject.image + ')' }"></div>
-                        <div class="title-box">{{eachProject.title}}</div>
+                        <div class="title-box"><i v-if="!eachProject.valid" class="ri-award-fill"></i>{{eachProject.title}}</div>
                     </div>
                     </router-link>
                 </div>
@@ -27,7 +27,7 @@
                     <router-link :to="{path: '/projview/' + eachProject._id + '/'}">
                     <div class="each-box"  v-on:mouseover="selectProject(index, 1)">
                         <div class="img-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + eachProject.image + ')' }"></div>
-                        <div class="title-box">{{eachProject.title}}</div>
+                        <div class="title-box"><i v-if="!eachProject.valid" class="ri-award-fill"></i>{{eachProject.title}}</div>
                     </div>
                     </router-link>
                 </div>
@@ -149,5 +149,8 @@ box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
     }
     .title-box {
         overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+    }
+    .title-box i{
+        color:#5CD590;
     }
 </style>
