@@ -46,6 +46,7 @@
             <div class="blot-box box">
                 <div class="box-header with-border"><i class="ri-file-info-line"></i> 인기 프로젝트</div>
                 <div class="box-body">
+                    {{popProjectList}}
                 </div>
             </div>
         </div>
@@ -161,8 +162,10 @@ export default {
     return {
       allProjectNum: 0,
       allProjectList: [],
+      popProjectList: [],
       allTagNum: 0,
-      showCarousel2: false
+      showCarousel2: false,
+      showCarousel1: false
     }
   },
   computed: {
@@ -174,6 +177,12 @@ export default {
         this.allProjectList = res.data
       })
       this.showCarousel2 = true
+    },
+    async getPopProject() {
+      await axios.get('/api/project/popular').then(res => {
+        this.popProjectList = res.data
+      })
+      this.showCarousel1 = true
     },
     async getAllTag() {
       await axios.get('/api/project/tags').then(res => {
