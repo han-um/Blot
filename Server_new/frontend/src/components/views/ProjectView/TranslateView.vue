@@ -12,9 +12,9 @@
          </ul>
       </div>
       <div class="box-body scrollable vh-75" v-bind:style="{ fontSize: fontsize + 'px' }">
-          <br> 
+          <br>
           <OriginalText v-if="crntMenu === 'original'" v-for="(sentence, i) in sentences" :text="sentence.raw_text" :index="i"></OriginalText>
-          <OriginalText v-if="crntMenu === 'translate'" v-for="(sentence, i) in sentences" :text="sentence.raw_text" :index="i"></OriginalText>   
+          <OriginalText v-if="crntMenu === 'translate'" v-for="(sentence, i) in transSentences" :text="sentence" :index="i"></OriginalText>   
       </div>
   </div>
 </template>
