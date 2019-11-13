@@ -116,6 +116,10 @@ export default {
       })
       .catch(err => {
         console.log(err)
+        if (sessionStorage.getItem('walletInstance') == null) {
+          this.$store.commit('SHOW_BLOCKCHAIN_LOGIN')
+          this.$store.commit('HIDE_TOKEN_PURCHASE')
+        }
         this.alertTitle = '토큰 구매 실패'
         this.alertDesc = '충분한 Klay를 보유중 or 블록체인 로그인 여부를 확인하세요.'
         this.alertColor = '#dd4b39'

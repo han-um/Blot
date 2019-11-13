@@ -171,7 +171,12 @@ export default {
         console.log(error)
         axios.post('/api/project/delete', {p_num: projId})
         .then(res => {
-          this.$swal('프로젝트 등록 실패', '보유하고 있는 토큰량 or 블록체인 로그인 여부를 확인하세요.', 'error')
+          if (sessionStorage.getItem('walletInstance') == null) {
+            this.$store.commit('SHOW_BLOCKCHAIN_LOGIN')
+            this.$store.commit('HIDE_TOKEN_PURCHASE')
+          } else {
+            this.$swal('프로젝트 등록 실패', '보유하고 있는 토큰량 or 블록체인 로그인 여부를 확인하세요.', 'error')
+          }
         })
         .catch(err => {
           this.$swal('프로젝트 등록 실패', '블록체인 대납 서명 & DB 데이터 지우기 실패하였습니다.(Step 3)<br>' + err, 'error')
