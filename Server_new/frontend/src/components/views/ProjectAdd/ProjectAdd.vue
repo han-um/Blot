@@ -67,7 +67,7 @@
                   <div class="box-header with-border"><i class="ri-paint-brush-line"></i> 디자인</div>
                   <div class="box-body">
                       <center>미리보기</center>
-                      <div class="preview-box">
+                      <div class="preview-box" v-bind:style="{ backgroundImage: 'url(' + imageData + ')' }">
                           <div class="inner">
                               <i v-bind:class="$store.state.crntIcon"></i>
                               <br><span class="preview-title">{{projectTitle}}</span>
@@ -79,7 +79,11 @@
                       <IconSelector></IconSelector>
                       <br>
                       <center>대표 이미지</center>
-                      <input class="input-file" type="file" name="myfile" ref='projectImage'>
+                      <input class="input-file" type="file" name="myfile" ref='projectImage' @change="previewImage" id="upload-original">
+                      <br>
+                      <label for="upload-original"><a class="btn btn-block btn-social btn-bitbucket">
+                <i class="ri-upload-2-line"></i> 이미지 업로드하기...
+              </a></label>
                   </div>
               </div>
           </div>
@@ -123,7 +127,8 @@ export default {
       selectedDate: null,
       convertedDate: null,
       projectAll: '',
-      projectImage: ''
+      projectImage: '',
+      imageData: ''
     }
   },
   methods: {
@@ -206,6 +211,16 @@ export default {
           this.$swal('프로젝트 등록 실패', '블록체인 대납 서명 & DB 데이터 지우기 실패하였습니다.(Step 3)<br>' + err, 'error')
         })
       })
+    },
+    previewImage: function(event) {
+      var input = event.target
+      if (input.files && input.files[0]) {
+        var reader = new FileReader()
+        reader.onload = (e) => {
+          this.imageData = e.target.result
+        }
+        reader.readAsDataURL(input.files[0])
+      }
     }
   },
   mounted () {
@@ -350,17 +365,18 @@ Vue.use(VCalendar)
     
     .preview-box {
         width:100%;
-        height:160px;
-        background-color:black;
+        height:360px;
+        background-color:white;
     }
     
     .preview-box .inner {
         position:absolute;
         width:calc(100% - 20px);
-        height:160px;
-        background-color:rgba(255,255,255,0.5);
+        height:360px;
+        background-color:rgba(0,0,0,0.5);
         text-align: center;
         padding:10px;
+        padding-top:110px;
     }
     
     .preview-box .inner i {
@@ -413,6 +429,16 @@ Vue.use(VCalendar)
         font-size:23px;
     }
     
-    
+    .btn-block {
+        width: 100%;
+        background-color:#5CD590;
+        border-color:#51C991;
+    }
+    label {
+        width: 100%;
+    }
+    #upload-original {
+        display:none;
+    }
     
 </style>
