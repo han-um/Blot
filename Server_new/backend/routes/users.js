@@ -4,26 +4,30 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const router = require('express').Router();
 const bcrypt = require('bcrypt-nodejs');
-const Sequelize = require('sequelize');
-const db = {};
 
-const sequelize = new Sequelize(process.env.MYSQL_URI);
+// mysql connection을 따로 둠
+const db = require('../setting/mysqlConnection');
 
-sequelize
-    .authenticate()
-    .then(() => console.log('Connected to mysqld server'))
-    .catch(e => console.error(e));
+// const Sequelize = require('sequelize');
+// const db = {};
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-db.User = require('../models/user')(sequelize, Sequelize);
-db.Library = require('../models/library')(sequelize, Sequelize);
+// const sequelize = new Sequelize(process.env.MYSQL_URI);
 
-db.User.hasMany(db.Library);
-db.Library.belongsTo(db.User);
+// sequelize
+//     .authenticate()
+//     .then(() => console.log('Connected to mysqld server'))
+//     .catch(e => console.error(e));
 
-db.User.sync();
-db.Library.sync();
+// db.sequelize = sequelize;
+// db.Sequelize = Sequelize;
+// db.User = require('../models/user')(sequelize, Sequelize);
+// db.Library = require('../models/library')(sequelize, Sequelize);
+
+// db.User.hasMany(db.Library);
+// db.Library.belongsTo(db.User);
+
+// db.User.sync();
+// db.Library.sync();
 
 
 const Klaytn = require('../blockchain/contract');
