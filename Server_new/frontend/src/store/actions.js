@@ -68,6 +68,12 @@ export default {
       state.commit('SET_CURRENT_RELIABILITY', resolvedData)
     })
   },
+  // userAddress로 사용자의 Klay 잔고 조회
+  REFRESH_KLAY_BALANCE_BY_ADDR (state, userAddress) {
+    cav.klay.getBalance(userAddress).then(function(resolvedData) {
+      state.commit('SET_CURRENT_KLAY', resolvedData / 1e18)
+    })
+  },
   // 블록체인 상에 새로운 프로젝트 정보 등록 요청(서버 대납을 거쳐 블록체인 저장됨)
   CREATE_NEW_PROJECT (state, payload) {
     // 세션 스토리지에 wallet instance 정보가 있는지 확인
