@@ -137,7 +137,7 @@
 - 전체프로젝트 제목,태그,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/
     > Return : [제목, 태그, 시작일, 마감일, 아이콘, 색상] 배열 반환
     
-- 특정프로젝트 제목,태그,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/:p_num
+- 특정프로젝트 제목,태그,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/projInfo/:p_num
 	> p_num : 프로젝트 ObjectId[string]
     > Return : [제목, 태그, 시작일, 마감일 ,아이콘, 색상] 반환
 
