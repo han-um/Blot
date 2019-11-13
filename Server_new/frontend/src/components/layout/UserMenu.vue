@@ -12,13 +12,16 @@
     </a>
     <!-- Account Info and Menu -->
     <ul class="dropdown-menu">
-      <li class="user-header" style="height:auto;min-height:85px;padding-bottom:15px;">
-        <p>
-          <span>{{this.$session.get('username')}}</span>
-          <small style="font-size:10px;"> <br> 지갑 주소 : {{this.$store.state.crntWalletId}}</small>
-        </p>
+      <li class="user-header" style="padding:0px;height:auto;min-height:85px;padding-bottom:15px;">
+        <div class="preview-box" v-bind:style="{ backgroundImage: 'url(' + this.$store.state.crntUserImg + ')' }">
+            <div class="inner">
+               <br><span class="name">{{this.$session.get('username')}}</span>
+               <br><span class="email">{{this.$store.state.crntWalletId}}</span>
+            </div>
+        </div>
       </li>
       <li class="user-footer">
+        <button class="myinfo" v-on:click="gotoMyInfo" >내 정보</button>
         <button class="logout" v-on:click="logoutActive" >로그아웃</button>
       </li>
     </ul>
@@ -71,6 +74,9 @@ export default {
     },
     gotoLogin() {
       this.$router.replace(this.$route.query.redirect || '/login/')
+    },
+    gotoMyInfo() {
+      this.$router.replace(this.$route.query.redirect || '/myinfo/')
     },
     checkLoggedIn() {
       // 로그인 체크
@@ -179,5 +185,39 @@ export default {
       vertical-align: middle;
         height:20px;
         margin-top:15px;
+    }
+    .preview-box {
+        width:100%;
+        height:200px;
+        background-color:white;
+        background-size:cover;
+    }
+    
+    .preview-box .inner {
+        position:absolute;
+        width:100%;
+        height:200px;
+        background-color:rgba(0,0,0,0.5);
+        text-align: left;
+        padding:20px;
+        padding-top:120px;
+        line-height: 18px;
+    }
+    .preview-box .inner .name {
+        font-size:35px;
+        color:white;
+    }
+    .preview-box .inner .email {
+        color:white;
+        font-weight: 100;
+        font-size:10px;
+    }
+    .myinfo {
+        width:100%;
+        border:0px;
+        background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
+        color:white;
+        height:30px;
+        margin-bottom:10px;
     }
 </style>
