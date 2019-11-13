@@ -644,10 +644,13 @@ router.get('/info/popular', function(req, res, next){
             })
 
             res.send(result);
-        }). catch(err => {
+        }).catch(err => {
             console.log(err);
             res.send(false);
         });
+    }).catch(err => {
+        console.log(err);
+        res.send(false);
     });
 });
 
