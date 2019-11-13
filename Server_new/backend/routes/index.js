@@ -615,7 +615,7 @@ router.get('/info/popular', function(req, res, next){
         { type : db.Sequelize.QueryTypes.SELECT, raw:true}
     )
     .then(result => {
-        console.log(result);
+        //console.log(result);
 
         // 인기있는 프로젝트 수는 최대 10개만 하자
         var projSize = result.length;
