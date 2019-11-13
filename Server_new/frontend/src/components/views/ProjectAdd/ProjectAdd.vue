@@ -159,6 +159,9 @@ export default {
         }
         return this.$store.dispatch('CREATE_NEW_PROJECT', payload)
       })
+      .then(function (transactionInfo) {
+        return axios.post('/api/project/sign', {rawTransaction: transactionInfo.rawTransaction})
+      })
       .then(res => {
         // Step 3 : 결과에 따라 DB에 등록된 프로젝트 삭제 혹은 유지
         this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
@@ -168,7 +171,7 @@ export default {
         console.log(error)
         axios.post('/api/project/delete', {p_num: projId})
         .then(res => {
-          this.$swal('프로젝트 등록 실패', '블록체인 대납 서명에 실패하였습니다.(Step 2)<br> 보유하고 있는 토큰량을 확인하세요.', 'error')
+          this.$swal('프로젝트 등록 실패', '보유하고 있는 토큰량 or 블록체인 로그인 여부를 확인하세요.', 'error')
         })
         .catch(err => {
           this.$swal('프로젝트 등록 실패', '블록체인 대납 서명 & DB 데이터 지우기 실패하였습니다.(Step 3)<br>' + err, 'error')
