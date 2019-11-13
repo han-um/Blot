@@ -185,8 +185,10 @@ router.get('/:userId/project', function(req, res, next){
             if(array.length === 0) res.send(false);
             else res.send(array);
         }).catch(err => {
-            console.error(err);
+            console.log(err);
         });
+    }).catch(err => {
+        console.log(err);
     });
 });
 
@@ -204,6 +206,8 @@ router.get('/:userId/project/:projId', function(req, res, next){
         }).catch(err => {
             console.error(err);
         });
+    }).catch(err => {
+        console.log(err);
     });
 });
 
@@ -231,7 +235,9 @@ router.get('/:userId', function(req, res, next){
         where:{ userId: req.params.userId }
     }).then(result => {
         res.send(result);
-    })
+    }).catch(err => {
+        console.log(err);
+    });
 });
 
 module.exports = router;
