@@ -591,14 +591,17 @@ router.get('/tags/:tag', function(req, res, next) {
 
 
 // 특정 프로젝트 정보 가져오기
-router.get('/:p_num', function(req, res, next){
+router.get('/projInfo/:p_num', function(req, res, next){
     var p_num = req.params.p_num;
     Project.findOne({'_id':p_num},{'_id': true, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true, valid: true, tags: true}, function(err, doc){
-        if(err) console.log('ERROR : /:p_num');
+        if(err) console.log('ERROR : projInfo/:p_num'+err);
         else {
             res.send(doc);
         }
+    }).catch(err => {
+        console.log('ERROR : projInfo/:p_num'+p_num+'일때 '+err);
     });
+    
 });
 
 // 인기있는 프로젝트 정보 가져오기
@@ -1093,8 +1096,8 @@ function level(d) {
     return parseInt(ret*d);
 }
 
-// 자동 감지 on
-endDetect();
+// 자동 감지 off
+//endDetect();
 
 module.exports = router;
 
