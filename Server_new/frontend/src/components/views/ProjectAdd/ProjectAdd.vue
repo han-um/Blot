@@ -128,7 +128,8 @@ export default {
       convertedDate: null,
       projectAll: '',
       projectImage: '',
-      imageData: ''
+      imageData: '',
+      tempId: ''
     }
   },
   methods: {
@@ -178,6 +179,7 @@ export default {
       })
       .then(res => {
         projId = res.data
+        this.tempId = res.data
         console.log(projId)
         // Step 2 : 대납 처리 및 Sign 요청
         var payload = {
@@ -193,6 +195,8 @@ export default {
       })
       .then(res => {
         // Step 3 : 결과에 따라 DB에 등록된 프로젝트 삭제 혹은 유지
+        this.$router.replace(this.$route.query.redirect || '/projview/' + this.tempId + '/')
+        this.$root.$emit('UserMenu')
         this.$swal('프로젝트 등록', '프로젝트가 등록되었습니다.', 'success')
       })
       .catch(error => {

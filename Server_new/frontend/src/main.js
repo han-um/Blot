@@ -47,6 +47,10 @@ Vue.use(Caver)
 import VueApexCharts from 'vue-apexcharts'
 Vue.component('apexchart', VueApexCharts)
 
+// Vue-nprogress
+import { loadProgressBar } from 'axios-progress-bar'
+loadProgressBar()
+
 // Routing logic
 var router = new VueRouter({
   routes: routes,
