@@ -4,7 +4,7 @@
       <div class="box-header-menu">
          <ul>
            <li v-on:click="crntMenu = 'original'" v-bind:class="{active : crntMenu === 'original'}">원본보기</li>
-           <li v-on:click="crntMenu = 'translate'" v-bind:class="{active : crntMenu === 'translate'}">번역보기</li>
+           <li v-if="this.$store.state.crntProjEnded" v-on:click="crntMenu = 'translate'" v-bind:class="{active : crntMenu === 'translate'}">번역보기</li>
            <li class="icon" style="float:right" v-on:click="fontsize--" v-if="fontsize>10"><i class="ri-subtract-fill"></i></li>
            <li class="icon disabled" style="float:right" v-if="fontsize<=10"><i class="ri-subtract-fill"></i></li>
            <li class="icon" style="float:right" v-on:click="fontsize++"><i class="ri-add-line"></i></li>
@@ -14,7 +14,7 @@
       <div class="box-body scrollable vh-75" v-bind:style="{ fontSize: fontsize + 'px' }">
           <br> 
           <OriginalText v-if="crntMenu === 'original'" v-for="(sentence, i) in sentences" :text="sentence.raw_text" :index="i"></OriginalText>
-          <OriginalText v-if="crntMenu === 'original'" v-for="(sentence, i) in sentences" :text="sentence.raw_text" :index="i"></OriginalText>   
+          <OriginalText v-if="crntMenu === 'translate'" v-for="(sentence, i) in sentences" :text="sentence.raw_text" :index="i"></OriginalText>   
       </div>
   </div>
 </template>
