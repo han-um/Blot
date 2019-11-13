@@ -219,4 +219,7 @@ export default {
         height:30px;
         margin-bottom:10px;
     }
+    .navbar-nav li {
+        cursor: pointer;
+    }
 </style>

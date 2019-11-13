@@ -235,7 +235,7 @@ export default {
         height:70vh;
         text-align: left;
         padding:40px;
-        padding-top:35vh;
+        padding-top:30vh;
         line-height: 30px;
     }
     .main-box .inner .title {
@@ -266,6 +266,7 @@ export default {
     }
     .carousel-inner {
         height:45vh;
+        cursor: pointer;
     }
     .carousel-inner .item {
         height:45vh;
@@ -314,6 +315,7 @@ export default {
     .pop-box {
         margin-bottom:5px;
         border-bottom: 1px solid #C5C5C5;
+        cursor: pointer;
     }
     .pop-box .icon {
         padding-left:3px;

@@ -236,6 +236,7 @@ export default {
         padding:5px;
         font-size:15px;
         text-align: center;
+        cursor: pointer;
     }
     .back-btn{
         bottom:0px;

@@ -265,13 +265,13 @@ export default {
       nowUrl: '',
       tempEnded: false,
       transChartOptions: {
-        colors: ['#5AE0A1', '#51C991', '#48AF7F', '#3C936B'],
+        colors: ['#5AE0A1', '#5477EB', '#FBC02D', '#FF0031'],
         labels: []
       },
       transSeries: [],
       drawTransChart: false,
       evalChartOptions: {
-        colors: ['#5AE0A1', '#51C991', '#48AF7F', '#3C936B'],
+        colors: ['#5AE0A1', '#FF0031', '#FBC02D', '#5477EB'],
         labels: []
       },
       evalSeries: [],
