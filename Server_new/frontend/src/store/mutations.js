@@ -47,12 +47,14 @@ export default {
   },
   TOGGLE_BLOCKCHAIN_LOGIN (state) {
     state.showBlockChainLogin = !state.showBlockChainLogin
+    state.showPurchase = false
   },
 /* -----------------------------------------------------------
     TokenPurchase
   ----------------------------------------------------------- */
   TOGGLE_TOKEN_PURCHASE (state) {
     state.showPurchase = !state.showPurchase
+    state.showBlockChainLogin = false
   },
   SHOW_TOKEN_PURCHASE (state) {
     state.showPurchase = true

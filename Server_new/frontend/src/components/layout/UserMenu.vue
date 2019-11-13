@@ -65,6 +65,8 @@ export default {
       sessionStorage.removeItem('walletInstance')
       this.isLoggedIn = false
       this.$store.commit('SET_IS_LOGGED_IN', false)
+      this.$store.commit('HIDE_BLOCKCHAIN_LOGIN')
+      this.$store.commit('HIDE_TOKEN_PURCHASE')
       this.$router.replace(this.$route.query.redirect || '/')
     },
     gotoLogin() {

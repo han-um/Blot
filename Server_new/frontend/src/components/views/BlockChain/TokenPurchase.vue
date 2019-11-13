@@ -3,7 +3,9 @@
           <div class='container' id='login-section'>
           <!-- 로그인 -->
           <div class="row">
-            <div class="col-md-9"></div>
+            <div class="col-md-9" v-on:click="$store.commit('HIDE_TOKEN_PURCHASE')">
+                <div class="click-box"></div>
+                </div>
             <div class="col-md-3">
                 <div class="inner-box">
                     <div class="header">BLOT 구매</div>
@@ -86,7 +88,6 @@ export default {
     .inner-box{
         background-color:white;
         height:calc(100vh - 50px);
-        border: 3px solid #FBC02D;
         border-top: 0px;
         color:white;
     }
@@ -180,6 +181,10 @@ export default {
         background-color:#6B6B6B;
         padding:12px;
         font-size:17px;
+    }
+    .click-box {
+        height:100vh;
+        width:100%;
     }
 
 </style>
