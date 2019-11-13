@@ -722,13 +722,18 @@ router.get('/:p_num/sentence', function(req, res, next){
 // 프로젝트의 모든 최종 번역 문장 가져오기
 router.get('/:p_num/sentence/finalTrans', function(req, res, next){
     var p_num = req.params.p_num;
-    Project.findOne({'_id':p_num}, {'_id': false, 'sentence.trans_text': true}, function(err, doc){
+    Project.findOne({'_id':p_num}, {'_id': false, 'sentence.raw_text': true, 'sentence.trans_text': true}, function(err, doc){
         if(err) console.log('ERROR : Can\'t get all translation of project.');
         else {
             var trans_array = [];
             var len = doc.sentence.length;
-            for(var i=0; i<len; i++)
-                trans_array.push(doc.sentence[i].trans_text);
+            for(var i=0; i<len; i++) {
+                if(doc.sentence[i].trans_text)
+                    trans_array.push(doc.sentence[i].trans_text);
+                else
+                    trans_array.push(doc.sentence[i].raw_text)
+            }
+                
             res.send(trans_array);
         }
     }); 
