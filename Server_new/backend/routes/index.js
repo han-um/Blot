@@ -751,16 +751,24 @@ router.get('/:p_num/sentence/:s_num/trans', function(req, res, next){
         else {
             //res.send(doc.sentence[s_num].trans);
             //res.send(doc.sentence[s_num]);
-            var array = [];
-            var trans_array = [];
-            var len = doc.sentence[s_num].trans.length;
-            for(var i=0; i<len; i++) {
-                var data = { idx: i, text: doc.sentence[s_num].trans[i].text};
-                array.push(data);
+            try {
+                var array = [];
+                var trans_array = [];
+                var len = 0;
+                if(doc.sentence[s_num].trans)
+                    len=doc.sentence[s_num].trans.length;
+                for(var i=0; i<len; i++) {
+                    var data = { idx: i, text: doc.sentence[s_num].trans[i].text};
+                    array.push(data);
+                }
+                shuffle(array);
+                res.send(array);
+            } catch(err) {
+                console.log(err);
             }
-            shuffle(array);
-            res.send(array);
         }
+    }).catch(err=>{
+        console.log(err);
     });
 });
 
@@ -776,42 +784,52 @@ router.get('/:p_num/sentence/:s_num/score', function(req, res, next){
             // 번역자, 번역문장, 몇점을 받았는가
             var returnArray = new Array();
 
-            var lenTrans = doc.sentence[s_num].trans.length;
-            
-            // 번역 문장별 평가 점수
-            var scoreArray = Array.apply(null, new Array(lenTrans)).map(Number.prototype.valueOf, 0);
-            var trustArray = new Array();
+            try {
+                var lenTrans = 0;
+                if(doc.sentence[s_num].trans)
+                    lenTrans = doc.sentence[s_num].trans.length;
+                
+                // 번역 문장별 평가 점수
+                var scoreArray = Array.apply(null, new Array(lenTrans)).map(Number.prototype.valueOf, 0);
+                var trustArray = new Array();
 
-            // 각 번역 문장이 몇점을 얻었는지 계산
-            var lenLike = doc.sentence[s_num].like.length;
-            for(var i=0; i<lenLike; i++) {
-                var transId = doc.sentence[s_num].like[i].trans_id;
-                var evaluatorId = doc.sentence[s_num].like[i].user;
+                // 각 번역 문장이 몇점을 얻었는지 계산
+                var lenLike = 0;
+                if(doc.sentence[s_num].like)
+                    lenLike=doc.sentence[s_num].like.length;
+                for(var i=0; i<lenLike; i++) {
+                    var transId = doc.sentence[s_num].like[i].trans_id;
+                    var evaluatorId = doc.sentence[s_num].like[i].user;
 
-                if(!trustArray[evaluatorId]) {
-                    var trust = await myKlaytn.getTrust(doc.sentence[s_num].like[i].user);
-                    trust = level(parseInt(trust));
-                    trustArray[evaluatorId] = trust;
+                    if(!trustArray[evaluatorId]) {
+                        var trust = await myKlaytn.getTrust(doc.sentence[s_num].like[i].user);
+                        trust = level(parseInt(trust));
+                        trustArray[evaluatorId] = trust;
+                    }
+                    scoreArray[transId] += trustArray[evaluatorId];                    
                 }
-                scoreArray[transId] += trustArray[evaluatorId];                    
-            }
 
-            // 각 번역 문장에 대하여
-            for (var i=0; i<lenTrans; i++) {
-                var data = { transId : doc.sentence[s_num].trans[i].user, transText : doc.sentence[s_num].trans[i].text, score : scoreArray[i]};
-                returnArray.push(data);
-            }
+                // 각 번역 문장에 대하여
+                for (var i=0; i<lenTrans; i++) {
+                    var data = { transId : doc.sentence[s_num].trans[i].user, transText : doc.sentence[s_num].trans[i].text, score : scoreArray[i]};
+                    returnArray.push(data);
+                }
 
-            if(returnArray.length==0) res.send(false);
-            else {
-                // 내림차순 정렬해서
-                returnArray.sort(function(a, b) {
-                    return a.score < b.score;
-                })
+                if(returnArray.length==0) res.send(false);
+                else {
+                    // 내림차순 정렬해서
+                    returnArray.sort(function(a, b) {
+                        return a.score < b.score;
+                    })
 
-                // 결과 전송
-                res.send(returnArray);
+                    // 결과 전송
+                    res.send(returnArray);
+                }
+            } catch(err) {
+                console.log(err);
+                res.send(false);
             }
+            
         }
     }).catch(err => {
         console.log(err);
@@ -828,19 +846,26 @@ router.get('/:p_num/sentence/:s_num/user/:userId', function(req, res, next){
     Project.findOne({'_id':p_num},function(err, doc){
         if(err) { console.log('ERROR : Can\'t get translation index of the user'); return; }
         else {
-            var len = doc.sentence[s_num].like.length;
-            //console.log(len);
-            var flag = false;
-            var result = -1;
-            for(var i=0; i<len; i++) {
-                if(doc.sentence[s_num].like[i].user == userId) {
-                    result = doc.sentence[s_num].like[i].trans_id;
-                    flag = true;
-                    break;
+            try {
+                var len = 0;
+                if(doc.sentence[s_num].like)
+                    len = doc.sentence[s_num].like.length;
+                
+                //console.log(len);
+                var flag = false;
+                var result = -1;
+                for(var i=0; i<len; i++) {
+                    if(doc.sentence[s_num].like[i].user == userId) {
+                        result = doc.sentence[s_num].like[i].trans_id;
+                        flag = true;
+                        break;
+                    }
                 }
+                if(flag == false) { res.send((result).toString()) }
+                else { res.send((result).toString()); }
+            } catch(err) {
+                console.log(err);
             }
-            if(flag == false) { res.send((result).toString()) }
-            else { res.send((result).toString()); }
         }
     });
 });
