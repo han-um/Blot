@@ -26,6 +26,7 @@
                       <center>프로젝트 요약</center>
                       <textarea v-model="projectOverview"class="overview-input" placeholder="원문의 내용과 번역 목적 등을 입력해주세요"></textarea>
                       <center>번역 마감일</center>
+                      <center>{{convertedDate}}</center>
                       <v-date-picker
                          mode='single'
                         tint-color='#5CD590'
@@ -120,6 +121,7 @@ export default {
       projectOverview: '',
       reward: '',
       selectedDate: null,
+      convertedDate: null,
       projectAll: '',
       projectImage: ''
     }
@@ -131,6 +133,28 @@ export default {
       const formData = new FormData()
       formData.append('projectFile', this.projectImage)
       var projId
+      // 예외처리
+      if (this.projectTitle === '') {
+        this.$swal('프로젝트 등록 실패', '프로젝트 제목을 입력해주세요', 'error')
+        return
+      }
+      if (this.projectOverview === '') {
+        this.$swal('프로젝트 등록 실패', '프로젝트 요약을 입력해주세요', 'error')
+        return
+      }
+      if (this.reward === '' || this.reward < 100) {
+        this.$swal('프로젝트 등록 실패', '보상금이 100 이하이거나 잘못된 입력입니다', 'error')
+        return
+      }
+      var today = new Date()
+      if (this.selectedDate === null || today > this.convertedDate) {
+        this.$swal('프로젝트 등록 실패', '날자가 잘못 지정되었습니다.', 'error')
+        return
+      }
+      if (this.projectImage === null) {
+        this.$swal('프로젝트 등록 실패', '이미지가 없습니다.', 'error')
+        return
+      }
       // Step 1 : DB에 프로젝트 등록
       axios.post('/api/files/upload/project', formData)
       .then(res => {
@@ -139,7 +163,7 @@ export default {
           description: this.projectOverview,
           language: 'English',
           tags: this.projectTags,
-          end: this.selectedDate,
+          end: this.convertedDate,
           reward: this.reward,
           icon: this.$store.state.crntIcon,
           all: this.projectAll,
@@ -188,6 +212,15 @@ export default {
     // 이 페이지는 로그인되어있어야만 사용할 수 있음
     if (!this.$session.has('username')) {
       this.$router.replace(this.$route.query.redirect || '/login/')
+    }
+  },
+  watch: {
+    selectedDate: function (val) {
+      this.convertedDate = JSON.parse(JSON.stringify(this.selectedDate))
+      var year = this.convertedDate.substr(0, 4)
+      var month = this.convertedDate.substr(5, 2)
+      var day = Number(this.convertedDate.substr(8, 2)) + 2
+      this.convertedDate = new Date(year, month, day)
     }
   }
 }
