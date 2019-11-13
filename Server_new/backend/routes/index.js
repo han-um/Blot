@@ -665,6 +665,21 @@ router.get('/:p_num/sentence', function(req, res, next){
     }); 
 });
 
+// 프로젝트의 모든 최종 번역 문장 가져오기
+router.get('/:p_num/sentence/finalTrans', function(req, res, next){
+    var p_num = req.params.p_num;
+    Project.findOne({'_id':p_num}, {'_id': false, 'sentence.trans_text': true}, function(err, doc){
+        if(err) console.log('ERROR : Can\'t get all translation of project.');
+        else {
+            var trans_array = [];
+            var len = doc.sentence.length;
+            for(var i=0; i<len; i++)
+                trans_array.push(doc.sentence[i].trans_text);
+            res.send(trans_array);
+        }
+    }); 
+});
+
 // 프로젝트 문장의 번역 데이터 가져오기
 router.get('/:p_num/sentence/:s_num/trans', function(req, res, next){
     var p_num = req.params.p_num;
@@ -683,6 +698,58 @@ router.get('/:p_num/sentence/:s_num/trans', function(req, res, next){
             }
             shuffle(array);
             res.send(array);
+        }
+    });
+});
+
+
+// 프로젝트의 번역 문장 별 평가점수 가져오기
+router.get('/:p_num/sentence/:s_num/score', function(req, res, next){
+    var p_num = req.params.p_num;
+    var s_num = req.params.s_num;
+    Project.findOne({'_id':p_num},{'_id': false, 'sentence.trans.user': true, 'sentence.trans.text': true, 'sentence.like': true}, async function(err, doc){
+        if(err) console.log('ERROR : Can\'t get translation of the sentence.');
+        else {
+            
+            // 번역자, 번역문장, 몇점을 받았는가
+            var returnArray = new Array();
+
+            var lenTrans = doc.sentence[s_num].trans.len;
+            
+            // 번역 문장별 평가 점수
+            var scoreArray = Array.apply(null, new Array(lenTrans)).map(Number.prototype.valueOf, 0);
+            var trustArray = new Array();
+
+            // 각 번역 문장이 몇점을 얻었는지 계산
+            var lenLike = doc.sentence.like.length;
+            for(var i=0; i<lenLike; i++) {
+                var transId = doc.sentence.like[i].trans_id;
+                var evaluatorId = doc.sentence.like[i].user;
+
+                if(!trustArray[evaluatorId]) {
+                    var trust = await myKlaytn.getTrust(doc.sentence.like[i].user);
+                    trust = level(parseInt(trust));
+                    trustArray[evaluatorId] = trust;
+                }
+                scoreArray[transId] += trustArray[evaluatorId];                    
+            }
+
+            // 각 번역 문장에 대하여
+            for (var i=0; i<lenTrans; i++) {
+                var data = { transId : doc.sentence.trans[i].user, transText : doc.sentence.trans[i].text, score : scoreArray[i]};
+                returnArray.push(data);
+            }
+
+            if(returnArray.length==0) res.send(false);
+            else {
+                // 내림차순 정렬해서
+                returnArray.sort(function(a, b) {
+                    return a.score < b.score;
+                })
+
+                // 결과 전송
+                res.send(returnArray);
+            }
         }
     });
 });

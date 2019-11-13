@@ -204,7 +204,19 @@
     > userId : 계정명[string] 
     > Return : [ {projId : 프로젝트 아이디, score : 추가신뢰도점수, type : 유형, ascore : 반영후 신뢰도 점수} ] 객체배열 존재하지 않을시 false
     > type 정의 : [0 : 번역활동, 1 : 평가활동, 2 : 정기적 감소]
-    
+
+
+- **<U>특정프로젝트 전체 최종 번역 문장 조회 [GET] - /api/project/:p_num/sentence/finalTrans</U>**
+	> p_num : 프로젝트 ObjectId[string]
+    > Return : 프로젝트 최종 번역 문장[string Array]
+
+- **<U>프로젝트의 번역 문장 별 평가점수 가져오기 [GET] - /api/project/:p_num/sentence/:s_num/score </U>**
+    > p_num : 프로젝트 ObjectId[string]  
+    > s_num: 문장 번호[number]  
+    > Return - [ {transId : 번역자, transText : 번역내용, score : 받은 평가점수} ] 객체배열 존재하지 않을시 false
+
+
+
 ### TODO
 - 프로젝트 검색어 조회 ( GET /api/project/keyword/:key ) 에서 description이 일부 프로젝트만 출력되는 문제 해결
 
