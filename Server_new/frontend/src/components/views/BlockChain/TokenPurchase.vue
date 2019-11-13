@@ -3,10 +3,10 @@
           <div class='container' id='login-section'>
           <!-- 로그인 -->
           <div class="row">
-            <div class="col-md-9" v-on:click="$store.commit('HIDE_TOKEN_PURCHASE')">
+            <div class="col-md-7 col-lg-9" v-on:click="$store.commit('HIDE_TOKEN_PURCHASE')">
                 <div class="click-box"></div>
                 </div>
-            <div class="col-md-3">
+            <div class="col-md-5 col-lg-3">
                 <div class="inner-box">
                     <div class="header">BLOT 구매 및 판매</div>
                         <div class="box-body">
@@ -21,7 +21,7 @@
                         <!--Klay잔고 표시-->
                         <div class="small-box" style="background-color:#5CD590">
                             <div class="inner">
-                              <h3>150 <small>klay</small></h3>
+                              <h3>{{this.$store.state.crntKlays}} <small>klay</small></h3>
                               <p>현재 Kalytn 잔고</p>
                             </div>
                             <div class="icon">
@@ -116,9 +116,14 @@ export default {
         this.alertColor = '#dd4b39'
         this.showAlert = true
       })
+    },
+    async getKlay() {
+      await this.$store.dispatch('REFRESH_KLAY_BALANCE_BY_ADDR', this.$session.get('username'))
     }
   },
-  mounted () {}
+  mounted () {
+    this.getKlay()
+  }
 }
 </script>
 
