@@ -9,7 +9,7 @@
               <div class="box-header-menu">
                   <ul>
                       <li v-on:click="changeTransMenu('eval')" v-bind:class="{active: this.transMenuState==='eval'}">평가</li>
-                      <li v-on:click="changeTransMenu('add')"  v-bind:class="{active: this.transMenuState==='add'}">번역</li>
+                      <li v-if="!this.$store.state.crntProjEnded" v-on:click="changeTransMenu('add')"  v-bind:class="{active: this.transMenuState==='add'}">번역</li>
                   </ul>
               </div>
               <div class="p-0 vh-75 box-body scrollable ">

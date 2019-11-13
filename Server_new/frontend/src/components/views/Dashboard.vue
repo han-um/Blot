@@ -13,13 +13,13 @@
                     <div class="main-info-container">
                         <div class="col-md-4">
                             <div class="main-info-box">
-                                <span class="green"><i class="ri-arrow-up-s-fill"></i> 36개</span>의 프로젝트<br>
+                                <span class="green"><i class="ri-arrow-up-s-fill"></i> {{allProjectNum}}개</span>의 프로젝트<br>
                                 <span class="sub">여태까지 생성됨</span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="main-info-box">
-                                <span class="green"><i class="ri-arrow-up-s-fill"></i> 36개</span>의 태그<br>
+                                <span class="green"><i class="ri-arrow-up-s-fill"></i> {{allTagNum}}</span>의 태그<br>
                                 <span class="sub">여태까지 생성됨</span>
                             </div>
                         </div>
@@ -119,15 +119,15 @@
               </div>
               <!--내 프로젝트 끝-->
               <!--전체 프로젝트-->
-              <div class="col-md-6" style="padding-left:0px;">
+              <div v-if="showCarousel2" class="col-md-6" style="padding-left:0px;">
                       <div id="carousel-example-generic3" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
-                          <div class="item active">
-                            <div class="image-box">
+                          <div v-for="(project, index) in allProjectList" v-bind:class="{active : index == 0}" class="item">
+                            <div class="image-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + project.image + ')' }" v-on:click="gotoProject(project._id)">
                                 <div class="text-box proj2">
                                     <span class="small-alert" style="background-color:white;color:#5D5D5D">인기 프로젝트</span><br>
-                                    <span class="big-text">프로젝트 이름</span><br>
-                                    <small>프로젝트 설명</small>
+                                    <span class="big-text">{{project.title}}</span><br>
+                                    <small>{{project.description}}</small>
                                 </div>
                             </div>
                           </div>
@@ -150,6 +150,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import TagBox from '../widgets/TagBox'
 export default {
   name: 'Dashboard',
@@ -158,11 +159,35 @@ export default {
   },
   data () {
     return {
+      allProjectNum: 0,
+      allProjectList: [],
+      allTagNum: 0,
+      showCarousel2: false
     }
   },
   computed: {
   },
+  methods: {
+    async getAllProject() {
+      await axios.get('/api/project').then(res => {
+        this.allProjectNum = res.data.length
+        this.allProjectList = res.data
+      })
+      this.showCarousel2 = true
+    },
+    async getAllTag() {
+      await axios.get('/api/project/tags').then(res => {
+        this.allTagNum = res.data.length
+      })
+    },
+    gotoProject(route) {
+      this.$router.replace(this.$route.query.redirect || '/projView/' + route + '/')
+    }
+  },
   mounted () {
+    this.getAllProject()
+    this.getAllTag()
+    this.getPopProject()
   }
 }
 </script>
@@ -260,6 +285,8 @@ export default {
         color:white;
         padding-top:50px;
         padding-left:30px;
+        padding-right:30px;
+        padding-bottom:30px;
     }
     .blot-box {
         padding-top:5px;

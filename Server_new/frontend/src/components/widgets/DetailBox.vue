@@ -6,7 +6,8 @@
                           <div class="inner">
                               <i v-bind:class="resultList.icon"></i>
                               <br><div class="preview-title">{{resultList.title}}</div>
-                              <br><span class="preview-overview">{{resultList.description}}</span>
+                              <br><span v-if="resultList.valid" class="preview-overview"><i class="ri-pie-chart-line"></i> 번역 진행중</span>
+                              <span v-if="!resultList.valid" class="preview-overview"><i class="ri-award-fill"></i> 번역 완료됨</span>
                           </div>
                     </div>
                    <div class="info-icon-box row">
@@ -44,7 +45,7 @@
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">마감일</div><br>
                       <div class="small">{{end}}</div>
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">태그</div><br>
-                      <div class="small"><span class="tags" v-for="eachTag in resultList.tags"> #{{eachTag}} </span></div>
+                      <div class="small"><span class="tags" v-for="eachTag in resultList.tags" v-on:click="gotoTagProject(eachTag)"> #{{eachTag}} </span></div>
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">상세설명</div><br>
                       <div class="small">{{resultList.description}}</div>
                   </div>
@@ -73,7 +74,11 @@ export default {
       image: '1573054850793.jpg'
     }
   },
-  methods: {},
+  methods: {
+    gotoTagProject(route) {
+      this.$router.replace(this.$route.query.redirect || '/tagproj/' + route + '/')
+    }
+  },
   mounted () {
   },
   watch: {
@@ -184,6 +189,7 @@ export default {
     .desc-box .title-box {
         display: inline-block;
         font-weight: 600;
+        font-size:12px;
     }
     .desc-box .small {
        font-size: 13px;
@@ -194,5 +200,8 @@ export default {
     }
     .tags {
        //text-decoration: underline;
+    }
+    .preview-overview i {
+        font-size:15px!important;
     }
 </style>
