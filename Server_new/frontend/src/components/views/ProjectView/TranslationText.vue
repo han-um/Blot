@@ -21,12 +21,14 @@ export default {
   methods: {
     // 이 번역을 선택함 (평가함)
     evalTrans () {
-      console.log(this.$session.get('username'))
-      axios.get('/api/project/' + this.$route.params.id + '/sentence/' + this.$store.state.crntStcIndex + '/trans/' + this.idx + '/user/' + this.$session.get('username'))
-      .then(res => {
-        this.$store.commit('SET_CURRENT_TRANS_INDEX', this.idx)
-      })
-      console.log(this.idx)
+      if (!this.$store.state.crntProjEnded) {
+        console.log(this.$session.get('username'))
+        axios.get('/api/project/' + this.$route.params.id + '/sentence/' + this.$store.state.crntStcIndex + '/trans/' + this.idx + '/user/' + this.$session.get('username'))
+        .then(res => {
+          this.$store.commit('SET_CURRENT_TRANS_INDEX', this.idx)
+        })
+        console.log(this.idx)
+      }
     }
   },
   mounted () {
