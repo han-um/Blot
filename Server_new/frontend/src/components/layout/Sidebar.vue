@@ -57,18 +57,6 @@
             </li>
           </ul>
         </li>
-            
-  <li class="treeview active">
-          <a href="#">
-              <span class="blank-line"></span>
-            <i class="ri-star-line"></i>
-              <span class="blank"></span>
-            <span class="treeview-title">즐겨찾기</span>
-          </a>
-          <ul class="treeview-menu">
-            <!--li here-->
-          </ul>
-        </li>
       </ul>
     </section>
     <!-- /.sidebar -->

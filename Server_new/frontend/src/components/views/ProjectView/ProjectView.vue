@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="box project-contents">
                 <div class="p-0 box-header with-border">
-                    <div class="icon-box green"><i class="ri-building-line"></i></div>
+                    <div class="icon-box green"><i v-bind:class="icon"></i></div>
                     <div class="icon-box"  v-bind:class="{yellow : isFavorite}" v-on:click=" setFavorite()"><i class="ri-heart-2-line"></i></div>
                     <div class="proj-title">
                         <h4>{{title}}</h4>

@@ -11,7 +11,7 @@
                   <div class="box-header with-border"><i class="ri-file-info-line"></i> 태그 빈도</div>
                   <div class="box-body">
                       <div id="chart">
-                          <apexchart v-if="showChart" type=bar height=300 :options="chartOptions" :series="series" />
+                          <apexchart v-if="showChart" type=bar height=400 :options="chartOptions" :series="series" />
                         </div>
                   </div>
                </div>
@@ -19,7 +19,7 @@
              <div class="col-md-12 col-lg-12 col-xl-12" style="padding-left: 7px; padding-right: 0px;">
                <div class="blot-box box">
                   <div class="box-header with-border"><i class="ri-file-info-line"></i> 태그 목록</div>
-                  <div class="box-body">
+                  <div class="box-body" style="min-height: 100px;">
                       <TagBox></TagBox>
                   </div>
                </div>
@@ -87,8 +87,5 @@ export default {
 <style scoped>
     .content {
         padding:40px;
-    }
-    .box-body {
-        min-height: 300px;
     }
 </style>

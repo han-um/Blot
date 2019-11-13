@@ -102,10 +102,11 @@ export default {
     .white-box {
       padding:0px;
       background-color:#EFEFEF;
-      height:80vh;
+      height:72vh;
       -webkit-box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
 -moz-box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
 box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
+      overflow-y:scroll;
     }
     .box-header {
         background-color:#4E4E4E;
