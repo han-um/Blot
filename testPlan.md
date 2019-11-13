@@ -54,24 +54,19 @@
 
 ## 프로젝트 등록
 - 등록 후, 프로젝트를 열람했을때 프로젝트 요약보기 확인
-    - [writer1]이 글 등록
-    - 0번 계정
-        - writer1
-        - soft2013!
-        - writer1@naver.com
-        - 0x6f560ac6ede19461b28382816232c4dd50bd4843
-    - [writer3]이 글 등록
+    - [Andew]이 글 등록
     - 1번 계정
-        - writer3
+        - Andew
         - soft2013!
-        - writer3@naver.com
+        - Andew@naver.com
         - 0x6f560ac6ede19461b28382816232c4dd50bd4843
-    - [writer10]이 글 등록
-    - 8번 계정
-        - writer10
+
+    - [Asher]이 글 등록
+    - 2번 계정
+        - Asher
         - soft2013!
-        - writer10@naver.com
-        - 0x71fc9e71e8b15151919f9e78e9b16dfcfa2cb127
+        - Asher@naver.com
+        - 0x19f74f83114ad84736df48534f3b0c569ebcd419
 
 - 해결사항
     - 프로젝트 등록할 때 문장별 지분 계산에 오차가 크게 남 >> 소수점 3째짜리까지해서 반올림하기로 함 O
@@ -84,43 +79,43 @@
 
 ## 번역 하기
 - 특정 프로젝트 번역하기 링크 : http://localhost:8080/projview/프로젝트ID/trans
-- [translator1] : 2번 계정
-    - translator1
+- [Bentley] : 3번 계정
+    - Bentley
     - soft2013!
-    - translator1@naver.com
-    - 0x19f74f83114ad84736df48534f3b0c569ebcd419
-
-- [translator2] : 3번 계정
-    - translator2
-    - soft2013!
-    - translator2@naver.com
+    - Bentley@naver.com
     - 0xad4abd5ba764b4cbd1c97219bb42365749f6d03c
 
-- [translator3] : 4번 계정
-    - translator3
+- [Brody] : 4번 계정
+    - Brody
     - soft2013!
-    - translator3@naver.com
+    - Brody@naver.com
     - 0x1c2ab35c73cd04279e8273832dc925d2db101d8e
+
+- [Brooks] : 5번 계정
+    - Brooks
+    - soft2013!
+    - Brooks@naver.com
+    - 0x9ca1e6b1fd6cd7633ecd12461d3d5129235d76bf
 
 ## 평가 하기
 - 번역되어 있는 문장이 하나밖에 없을 때, 번역 문장을 선택(평가)했을 때 사용자 입장에서는 아무 변화를 못 느낌. 창을 띄워주면 좋겠음
-- [evaluator1] : 5번 계정
-    - evaluator1
+- [Charles] : 6번 계정
+    - Charles
     - soft2013!
-    - evaluator1@naver.com
-    - 0x9ca1e6b1fd6cd7633ecd12461d3d5129235d76bf
-
-- [evaluator2] : 6번 계정
-    - evaluator2
-    - soft2013!
-    - evaluator2@naver.com
+    - Charles@naver.com
     - 0x162f692a95a89c63fb50a7026988a2016e5f1928
 
-- [evaluator3] : 7번 계정
-    - evaluator3
+- [Colin] : 7번 계정
+    - Colin
     - soft2013!
-    - evaluator3@naver.com
+    - Colin@naver.com
     - 0xa924e091ff0daec8237953124309818011b32563
+
+- [Corbin] : 8번 계정
+    - Corbin
+    - soft2013!
+    - Corbin@naver.com
+    - 0x71fc9e71e8b15151919f9e78e9b16dfcfa2cb127
 
 ## 마감하기
 - 해결사항
@@ -154,3 +149,69 @@
 ## 즐겨찾기
 
 ## 검색
+
+- [writer1]이 글 등록
+    - 0번 계정
+        - writer1
+        - soft2013!
+        - writer1@naver.com
+        - 0x6f560ac6ede19461b28382816232c4dd50bd4843
+
+- [writer3]이 글 등록
+    - 1번 계정
+        - writer3
+        - soft2013!
+        - writer3@naver.com
+        - 0x6f560ac6ede19461b28382816232c4dd50bd4843
+
+- [writer10]이 글 등록
+    - 8번 계정
+        - writer10
+        - soft2013!
+        - writer10@naver.com
+        - 0x71fc9e71e8b15151919f9e78e9b16dfcfa2cb127
+
+- [translator1] : 2번 계정
+    - translator1
+    - soft2013!
+    - translator1@naver.com
+    - 0x19f74f83114ad84736df48534f3b0c569ebcd419
+
+- [translator2] : 3번 계정
+    - translator2
+    - soft2013!
+    - translator2@naver.com
+    - 0xad4abd5ba764b4cbd1c97219bb42365749f6d03c
+
+- [translator3] : 4번 계정
+    - translator3
+    - soft2013!
+    - translator3@naver.com
+    - 0x1c2ab35c73cd04279e8273832dc925d2db101d8e
+
+- [evaluator1] : 5번 계정
+    - evaluator1
+    - soft2013!
+    - evaluator1@naver.com
+    - 0x9ca1e6b1fd6cd7633ecd12461d3d5129235d76bf
+
+- [evaluator2] : 6번 계정
+    - evaluator2
+    - soft2013!
+    - evaluator2@naver.com
+    - 0x162f692a95a89c63fb50a7026988a2016e5f1928
+
+- [evaluator3] : 7번 계정
+    - evaluator3
+    - soft2013!
+    - evaluator3@naver.com
+    - 0xa924e091ff0daec8237953124309818011b32563
+
+- blotProject
+    - 0x4A6B78b7bb1FC745d31289753D2d2D7a8A38078D
+
+- User
+    - 0x753aC13d0e9DC1eC1Eb29d74147cF1c1EA776607
+
+- Token
+    - 0xC0ef482562bCA5B412eD54b462256d283e215CE6
