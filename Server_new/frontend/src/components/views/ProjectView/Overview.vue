@@ -284,7 +284,7 @@ export default {
   },
   methods: {
     getProjectInfo() {
-      axios.get('/api/project/' + this.$route.params.id)
+      axios.get('/api/project/projInfo/' + this.$route.params.id)
       .then(response => {
         this.description = response.data.description
         console.log('Response:', response.data.title)

@@ -84,7 +84,7 @@ export default {
   watch: {
     // 컴포넌트에 바인딩된 ProjectId가 달라지면, 바로 정보도 바뀐다.
     projectId: function (val) {
-      axios.get('/api/project/' + this.projectId)
+      axios.get('/api/project/projInfo/' + this.projectId)
       .then(res => {
         this.resultList = res.data
         console.log(res.data)
