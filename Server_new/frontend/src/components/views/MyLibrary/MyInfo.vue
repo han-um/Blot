@@ -132,7 +132,7 @@ export default {
       })
       // STEP2 : 기록으로부터 프로젝트 이름 및 종료일 추가
       for (var i = 0, trustLog; (trustLog = this.oriTrustLog[i]); i++) {
-        await axios.get('/api/project/' + trustLog.projId) // '5dc9821f1d4230230c68587e' trustLog.projId
+        await axios.get('/api/project/projInfo/' + trustLog.projId) // '5dc9821f1d4230230c68587e' trustLog.projId
         .then(res => {
           this.trustProj.push(res.data)
           console.log(trustLog)

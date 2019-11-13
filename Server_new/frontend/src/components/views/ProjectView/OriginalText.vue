@@ -20,7 +20,7 @@ export default {
       this.$root.$emit('TranslateEval')
       // EVAL에서 사용할 기존 평가정보 가져오기
       if (!this.$store.state.crntProjEnded) {
-        axios.get('/api/project/' + this.$route.params.id + '/sentence/' + this.$store.state.crntStcIndex + '/user/' + this.$session.get('username'))
+        axios.get('/api/project/projInfo/' + this.$route.params.id + '/sentence/' + this.$store.state.crntStcIndex + '/user/' + this.$session.get('username'))
         .then(res => {
           this.$store.commit('SET_CURRENT_TRANS_INDEX', res.data)
         })

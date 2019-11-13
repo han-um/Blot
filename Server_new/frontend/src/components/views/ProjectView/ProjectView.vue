@@ -49,7 +49,7 @@ export default {
   methods: {
     getProjectInfo() {
       // 프로젝트 정보 가져오기
-      axios.get('/api/project/' + this.$route.params.id)
+      axios.get('/api/project/projInfo/' + this.$route.params.id)
       .then(response => {
         console.log('Response:', response.data.title)
         if (response.status !== 200) {

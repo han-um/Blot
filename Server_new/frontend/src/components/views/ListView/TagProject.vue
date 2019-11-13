@@ -69,7 +69,7 @@ export default {
       })
       // STEP2 : ID로부터 정보를 가져와서 배열에 넣음
       for (var i = 0, eachId; (eachId = this.idList[i]); i++) {
-        await axios.get('/api/project/' + eachId)
+        await axios.get('/api/project/projInfo/' + eachId)
         .then(res => {
           this.infoList.push(res.data)
         })
