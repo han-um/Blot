@@ -2,10 +2,10 @@
   <div>
                    <div class="detail-box">
                    <!--디테일 표시 상자-->
-                   <div class="preview-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + resultList.image + ')' }">
+                   <div class="preview-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + image + ')' }">
                           <div class="inner">
                               <i v-bind:class="resultList.icon"></i>
-                              <br><span class="preview-title">{{resultList.title}}</span>
+                              <br><div class="preview-title">{{resultList.title}}</div>
                               <br><span class="preview-overview">{{resultList.description}}</span>
                           </div>
                     </div>
@@ -44,7 +44,7 @@
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">마감일</div><br>
                       <div class="small">{{end}}</div>
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">태그</div><br>
-                      <div class="small"><span class="tags" v-for="eachTag in resultList.tags"> {{eachTag}}, </span></div>
+                      <div class="small"><span class="tags" v-for="eachTag in resultList.tags"> #{{eachTag}} </span></div>
                       <div class="icon-box"><i class="ri-calendar-line"></i></div> <div class="title-box">상세설명</div><br>
                       <div class="small">{{resultList.description}}</div>
                   </div>
@@ -69,7 +69,8 @@ export default {
       transCnt: 0,
       originalSize: 0,
       favoriteNum: 0,
-      end: ''
+      end: '',
+      image: '1573054850793.jpg'
     }
   },
   methods: {},
@@ -81,7 +82,9 @@ export default {
       axios.get('/api/project/' + this.projectId)
       .then(res => {
         this.resultList = res.data
+        console.log(res.data)
         this.end = this.$moment(res.data.end).format('YYYY년 MM월 DD일')
+        this.image = res.data.image
       })
       axios.get('/api/project/' + this.projectId + '/summary')
       .then(res => {
@@ -126,6 +129,8 @@ export default {
     .preview-title {
         color:white;
         font-size:17px;
+        width:100%;
+        overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
     }
     
     .preview-overview {
@@ -188,6 +193,6 @@ export default {
         margin-bottom:15px;
     }
     .tags {
-       text-decoration: underline;
+       //text-decoration: underline;
     }
 </style>

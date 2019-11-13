@@ -28,17 +28,16 @@
              <router-link to="/projadd"><i class="fa fa-blank"></i><span class="blank"></span>새로 만들기</router-link>
             </li>
               <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>태그별 보기</a>
+                  <router-link to="/taglist"><i class="fa fa-blank"></i><span class="blank"></span>태그별 보기</router-link>
             </li>
+              <!--
               <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>인기 프로젝트</a>
             </li>
               <li>
              <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역이 끝난 프로젝트</a>
             </li>
-              <li>
-             <a href="index2.html"><i class="fa fa-blank"></i><span class="blank"></span>번역을 기다리는 프로젝트</a>
-            </li>
+              -->
           </ul>
         </li>
             
@@ -49,7 +48,7 @@
               <span class="blank"></span>
               <span class="treeview-title"><router-link to="/mylibrary">내 정보</router-link></span>
           </a>
-          <ul v-if="this.$store.state.isLoggedIn" class="treeview-menu">
+          <ul class="treeview-menu">
             <li>
              <router-link to="/mylibrary"><i class="fa fa-blank"></i><span class="blank"></span>내 서재</router-link>
             </li>
@@ -58,11 +57,6 @@
             </li>
               <li>
              <a v-on:click="logoutActive()"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a>
-            </li>
-          </ul>
-      <ul v-if="!this.$store.state.isLoggedIn" class="treeview-menu">
-            <li>
-             <router-link to="/login"><i class="fa fa-blank"></i><span class="blank"></span>로그인</router-link>
             </li>
           </ul>
         </li>
@@ -78,97 +72,6 @@
             <!--li here-->
           </ul>
         </li>
-        <!--TODO : 삭제할것--> 
-            <!--
-        <li class="header">DEBUG MENU</li>
-        <router-link tag="li" class="pageLink" to="/">
-          <a>
-            <i class="fa fa-desktop"></i>
-            <span class="page">Dashboard</span>
-          </a>
-        </router-link>
-        <router-link tag="li" class="pageLink" to="/tables">
-          <a>
-            <i class="fa fa-table"></i>
-            <span class="page">Tables</span>
-          </a>
-        </router-link>
-
-        <li class="header">ME</li>
-        <router-link tag="li" class="pageLink" to="/tasks">
-          <a>
-            <i class="fa fa-tasks"></i>
-            <span class="page">Tasks</span>
-          </a>
-        </router-link>
-        <router-link tag="li" class="pageLink" to="/setting">
-          <a>
-            <i class="fa fa-cog"></i>
-            <span class="page">Settings</span>
-          </a>
-        </router-link>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-folder-o"></i>
-            <span class="treeview-title">Files</span>
-            <span class="pull-right-container pull-right">
-              <i class="fa fa-angle-left fa-fw"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li>
-              <a href="#">
-                <i class="fa fa-file-word-o"></i> Item 1
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa fa-file-picture-o"></i> Item 2
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa fa-file-pdf-o"></i> Item 3
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="header">LOGS</li>
-        <router-link tag="li" class="pageLink" to="/access">
-          <a>
-            <i class="fa fa-book"></i>
-            <span class="page">Access</span>
-          </a>
-        </router-link>
-        <router-link tag="li" class="pageLink" to="/server">
-          <a>
-            <i class="fa fa-hdd-o"></i>
-            <span class="page">Server</span>
-          </a>
-        </router-link>
-        <router-link tag="li" class="pageLink" to="/repos">
-          <a>
-            <i class="fa fa-heart"></i>
-            <span class="page">Repos</span>
-            <small class="label pull-right bg-green">AJAX</small>
-          </a>
-        </router-link>
-
-        <li class="header">PAGES</li>
-        <router-link tag="li" class="pageLink" to="/login">
-          <a>
-            <i class="fa fa-circle-o text-yellow"></i>
-            <span class="page"> Login</span>
-          </a>
-        </router-link>
-        <router-link tag="li" class="pageLink" to="/404">
-          <a>
-            <i class="fa fa-circle-o text-red"></i>
-            <span class="page"> 404</span>
-          </a>
-        </router-link>
-        -->
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -182,14 +85,16 @@ export default {
   },
   methods: {
     logoutActive() {
-      // 세션 삭제
-      this.$session.destroy()
-      // 세션스토리지 삭제
-      sessionStorage.removeItem('walletInstance')
-      this.$store.commit('SET_IS_LOGGED_IN', false)
-      this.$root.$emit('UserMenu')
-      this.$router.replace(this.$route.query.redirect || '/')
-      // this.$store.state.isLoggedIn
+      if (this.$session.has('username')) {
+        // 세션 삭제
+        this.$session.destroy()
+        // 세션스토리지 삭제
+        sessionStorage.removeItem('walletInstance')
+        this.$store.commit('SET_IS_LOGGED_IN', false)
+        this.$root.$emit('UserMenu')
+        this.$router.replace(this.$route.query.redirect || '/')
+        // this.$store.state.isLoggedIn
+      }
     }
   },
   mounted: function() {

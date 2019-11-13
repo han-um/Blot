@@ -67,12 +67,6 @@ export default {
     },
     selectProject(index) {
       this.nowProject = this.resultList[index]._id
-      /*
-      this.nowTitle = this.resultList[index].title
-      this.nowOverview = this.resultList[index].description
-      this.nowIcon = this.resultList[index].icon
-      this.nowImage = '/api/files/attachedFiles/' + this.resultList[index].image
-      */
     }
   },
   mounted () {

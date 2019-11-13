@@ -7,17 +7,25 @@
         </div>
         <div class="row">
             <div class="col-md-2 col-xs-4 white-box cat-box">
-                <div class="box-header"></div>
-                <div class="cat" v-on:click="getAddedProj()" v-bind:class="{now : (this.$store.state.crntLibMenu === 'Added')}">내가 등록한</div>
-                <div class="cat" v-on:click="getFavoriteProj()" v-bind:class="{now : (this.$store.state.crntLibMenu === 'Favorite')}">즐겨찾기</div>
+                <!--<div class="box-header"></div>-->
+                <div class="cat" v-on:click="selectMenu('Added')" v-bind:class="{now : (nowMenu === 'Added')}">내가 등록한</div>
+                <div class="cat" v-on:click="selectMenu('Favorite')" v-bind:class="{now : (nowMenu === 'Favorite')}">즐겨찾기</div>
             </div>
             <div class="col-md-5 col-xs-8 white-box">
-                <div class="box-header"></div>
+                <!--<div class="box-header"></div>-->
                 <!--각 프로젝트 항목-->
             <transition-group enter-active-class="animated fadeIn" tag="div">
-                <div v-for="(eachProject, index) in currentList" class="col-md-6 p-2" v-bind:key="eachProject._id">
+                <div v-if="nowMenu == 'Added'" v-for="(eachProject, index) in currentList" class="col-md-6 p-2" v-bind:key="eachProject._id">
                     <router-link :to="{path: '/projview/' + eachProject._id + '/'}">
-                    <div class="each-box"  v-on:mouseover="selectProject(index)">
+                    <div class="each-box"  v-on:mouseover="selectProject(index, 0)">
+                        <div class="img-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + eachProject.image + ')' }"></div>
+                        <div class="title-box">{{eachProject.title}}</div>
+                    </div>
+                    </router-link>
+                </div>
+                <div v-show="nowMenu == 'Favorite'" v-for="(eachProject, index) in currentFavList" class="col-md-6 p-2" v-bind:key="eachProject._id+'F'">
+                    <router-link :to="{path: '/projview/' + eachProject._id + '/'}">
+                    <div class="each-box"  v-on:mouseover="selectProject(index, 1)">
                         <div class="img-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + eachProject.image + ')' }"></div>
                         <div class="title-box">{{eachProject.title}}</div>
                     </div>
@@ -27,7 +35,7 @@
                 <!---->
             </div>
             <div class="col-md-5 hidden-xs white-box">
-                <div class="box-header"></div>
+                <!--<div class="box-header"></div>-->
                   <DetailBox :projectId="nowProject"></DetailBox>
             </div>
         </div>
@@ -43,7 +51,9 @@ export default {
   data () {
     return {
       currentList: [],
-      nowProject: ''
+      currentFavList: [],
+      nowProject: '',
+      nowMenu: 'Added'
     }
   },
   components: {
@@ -53,19 +63,24 @@ export default {
     getFavoriteProj () {
       axios.get('/api/user/' + this.$session.get('username') + '/project')
       .then(res => {
-        this.currentList = res.data
-        this.$store.commit('SET_CURRENT_LIBRARY_MENU', 'Favorite')
+        this.currentFavList = res.data
       })
     },
     getAddedProj () {
       axios.get('/api/project/user/' + this.$session.get('username'))
       .then(res => {
         this.currentList = res.data
-        this.$store.commit('SET_CURRENT_LIBRARY_MENU', 'Added')
       })
     },
-    selectProject(index) {
-      this.nowProject = this.currentList[index]._id
+    selectProject(index, type) {
+      if (type) {
+        this.nowProject = this.currentFavList[index]._id // 1
+      } else {
+        this.nowProject = this.currentList[index]._id // 0
+      }
+    },
+    selectMenu(input) {
+      this.nowMenu = input
     }
   },
   mounted () {
@@ -74,6 +89,7 @@ export default {
       this.$router.replace(this.$route.query.redirect || '/login/')
     }
     // Mounted
+    this.getFavoriteProj()
     this.getAddedProj()
   }
 }
@@ -85,7 +101,7 @@ export default {
     }
     .white-box {
       padding:0px;
-      background-color:#343434;
+      background-color:#EFEFEF;
       height:80vh;
       -webkit-box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
 -moz-box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
@@ -107,15 +123,16 @@ box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
         background-color:white;
     }
     .title-box {
+        // background-color:#6B6B6B;
         height:40px;
         text-align: center;
         line-height: 40px;
-        color:white;
+        color:#6B6B6B;
         font-size:12px;
         font-weight:300;
     }
     .cat-box .cat {
-        color:#C5C5C5;
+        color:#6B6B6B;
         text-align: center;
         padding-left:10px;
         padding-right:10px;
@@ -127,8 +144,8 @@ box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
         font-size:12px;
     }
     .now {
-        color:white!important;
-        border-bottom:2px solid white;
+        color:#6B6B6B!important;
+        border-bottom:2px solid #6B6B6B;
     }
     .title-box {
         overflow:hidden;white-space:nowrap;text-overflow:ellipsis;

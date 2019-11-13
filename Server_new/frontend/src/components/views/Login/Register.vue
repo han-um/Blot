@@ -65,7 +65,7 @@
               <div class="p-0 col-xs-12 col-md-6">
                   <h4>블록체인 정보</h4>
                   <div class="inner-box">
-                      <button class="klaytn-button">Klaytn 계정 만들기</button>
+                      <button class="klaytn-button" onclick="window.open('https://baobab.wallet.klaytn.com/')">Klaytn 계정 만들기</button>
                       <center><small><u> 공개 키를 어떻게 얻을 수 있나요? </u></small></center>
                       <input type="text"  v-model="inpWAddr" placeholder="공개 키" name="blockchain" id="blockchain">
                       <div class="caution">
@@ -116,8 +116,8 @@ export default {
     RegisterPost: function (event) {
       this.inpImage = this.$refs.userImage.files[0]
       const formData = new FormData()
-      formData.append('userfile', this.inpImage)
-      axios.post('/api/files/upload', formData).then(res => {
+      formData.append('userFile', this.inpImage)
+      axios.post('/api/files/upload/user', formData).then(res => {
         axios.post('/api/user/', {userId: this.inpUserId, password: this.inpPassword, email: this.inpEmail, wAddr: this.inpWAddr, image: res.data})
         .then(res2 => {
           console.log(res2)

@@ -471,13 +471,14 @@ router.post('/', function(req, res, next){
             res.send(false);
             return;
         }*/
+        console.log('projectId : '+_id);
         res.send(_id);
     });
 });
 
 // 전체 프로젝트 정보 가져오기
 router.get('/', function(req, res, next){
-    Project.find({}, {'_id': false, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
+    Project.find({}, {'_id': true, 'title': true, 'start': true, 'end': true, 'icon': true, 'color': true}, function(err, doc){
         if(err) console.log('ERROR : get(/)');
         else {
             res.send(doc);
@@ -494,6 +495,7 @@ router.post('/delete', function(req, res, next){
             res.send(false);
             return;
         } else {
+            console.log(p_num+' 프로젝트 삭제 완료');
             res.send(true);
         }
     });
@@ -505,13 +507,13 @@ router.post('/sign', async function(req, res, next) {
     try {
         // transcation 대납 서명 후 블록체인에 보내기
         var result = await myKlaytn.payProxy(rawTransaction);
-
-        console.log(result);
+        if(result.status)
+            console.log('Approved : Delegated Transaction');
 
         // transaction 관련 모든 정보 반환해주기
         res.send(result);
     } catch(err) {
-        res.status(500).send('Can\'t register transaction' + err);
+        res.status(500).send('Can\'t process delegated transaction');
     }
 });
 
@@ -587,7 +589,7 @@ router.get('/tags/:tag', function(req, res, next) {
 // 특정 프로젝트 정보 가져오기
 router.get('/:p_num', function(req, res, next){
     var p_num = req.params.p_num;
-    Project.findOne({'_id':p_num},{'_id': false, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true}, function(err, doc){
+    Project.findOne({'_id':p_num},{'_id': true, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true}, function(err, doc){
         if(err) console.log('ERROR : /:p_num');
         else {
             res.send(doc);
