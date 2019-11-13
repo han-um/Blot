@@ -55,9 +55,6 @@
               <li>
                   <router-link to="/myinfo"><i class="fa fa-blank"></i><span class="blank"></span>내 정보</router-link>
             </li>
-              <li>
-             <a v-on:click="logoutActive()"><i class="fa fa-blank"></i><span class="blank"></span>로그아웃</a>
-            </li>
           </ul>
         </li>
             
