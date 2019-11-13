@@ -109,8 +109,8 @@ async function deadline(doc) {
             continue;
         }
         
-        console.log('CONTENT');
-        console.log(content);
+        //console.log('CONTENT');
+        //console.log(content);
 
         // STEP 2. 번역 문장별 평가 점수를 토대로 최종 번역 문장 정하기
 
@@ -134,8 +134,8 @@ async function deadline(doc) {
         // 최종 번역문장 평가자 수
         if(content.length != 0) { eval_cnt.push(content[finalIdx].eval.length); }
         
-        console.log('final : ' + final);
-        console.log('finalIdx : ' + finalIdx);
+        //console.log('final : ' + final);
+        //console.log('finalIdx : ' + finalIdx);
 
         // STEP 3. 최종 문장 번역자 찾기 && 최종 번역 문장 메모
         var trans_user;
