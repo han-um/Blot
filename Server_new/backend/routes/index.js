@@ -773,20 +773,20 @@ router.get('/:p_num/sentence/:s_num/score', function(req, res, next){
             // 번역자, 번역문장, 몇점을 받았는가
             var returnArray = new Array();
 
-            var lenTrans = doc.sentence[s_num].trans.len;
+            var lenTrans = doc.sentence[s_num].trans.length;
             
             // 번역 문장별 평가 점수
             var scoreArray = Array.apply(null, new Array(lenTrans)).map(Number.prototype.valueOf, 0);
             var trustArray = new Array();
 
             // 각 번역 문장이 몇점을 얻었는지 계산
-            var lenLike = doc.sentence.like.length;
+            var lenLike = doc.sentence[s_num].like.length;
             for(var i=0; i<lenLike; i++) {
-                var transId = doc.sentence.like[i].trans_id;
-                var evaluatorId = doc.sentence.like[i].user;
+                var transId = doc.sentence[s_num].like[i].trans_id;
+                var evaluatorId = doc.sentence[s_num].like[i].user;
 
                 if(!trustArray[evaluatorId]) {
-                    var trust = await myKlaytn.getTrust(doc.sentence.like[i].user);
+                    var trust = await myKlaytn.getTrust(doc.sentence[s_num].like[i].user);
                     trust = level(parseInt(trust));
                     trustArray[evaluatorId] = trust;
                 }
@@ -795,7 +795,7 @@ router.get('/:p_num/sentence/:s_num/score', function(req, res, next){
 
             // 각 번역 문장에 대하여
             for (var i=0; i<lenTrans; i++) {
-                var data = { transId : doc.sentence.trans[i].user, transText : doc.sentence.trans[i].text, score : scoreArray[i]};
+                var data = { transId : doc.sentence[s_num].trans[i].user, transText : doc.sentence[s_num].trans[i].text, score : scoreArray[i]};
                 returnArray.push(data);
             }
 
@@ -810,6 +810,9 @@ router.get('/:p_num/sentence/:s_num/score', function(req, res, next){
                 res.send(returnArray);
             }
         }
+    }).catch(err => {
+        console.log(err);
+        res.send(false);
     });
 });
 
