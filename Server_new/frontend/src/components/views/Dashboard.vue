@@ -44,9 +44,12 @@
         </div>
         <div class="col-md-6" style="padding:15px 0px 0px 7px;">
             <div class="blot-box box">
-                <div class="box-header with-border"><i class="ri-file-info-line"></i> 인기 프로젝트</div>
+                <div class="box-header with-border"><i class="ri-file-info-line"></i> 프로젝트 즐겨찾기 순위</div>
                 <div class="box-body">
-                    {{popProjectList}}
+                    <div class="pop-box" v-for="project in popProjectList" v-on:click="gotoProject(project._id)">
+                        <div class="icon"><i v-bind:class="project.icon"></i></div>
+                        <div class="title">{{project.title}}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,15 +100,15 @@
               </div>
               <!--공지사항 끝-->
               <!--내 프로젝트-->
-              <div class="col-md-6" style="padding-left:0px;">
+              <div v-if="showCarousel1" class="col-md-6" style="padding-left:0px;">
                       <div id="carousel-example-generic2" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
-                          <div class="item active">
-                            <div class="image-box">
-                                <div class="proj1 text-box">
-                                    <span class="small-alert" style="background-color:white;color:#5D5D5D">추천 프로젝트</span><br>
-                                    <span class="big-text">프로젝트 이름</span><br>
-                                    <small>프로젝트 설명</small>
+                          <div v-for="(project, index) in popProjectList" v-bind:class="{active : index == 0}" class="item">
+                            <div class="image-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + project.image + ')' }" v-on:click="gotoProject(project._id)">
+                                <div class="text-box proj1">
+                                    <span class="small-alert" style="background-color:white;color:#5D5D5D">인기 프로젝트</span><br>
+                                    <span class="big-text">{{project.title}}</span><br>
+                                    <div class="small"> {{project.description}}</div>
                                 </div>
                             </div>
                           </div>
@@ -126,9 +129,9 @@
                           <div v-for="(project, index) in allProjectList" v-bind:class="{active : index == 0}" class="item">
                             <div class="image-box" v-bind:style="{ backgroundImage: 'url(/api/files/attachedFiles/' + project.image + ')' }" v-on:click="gotoProject(project._id)">
                                 <div class="text-box proj2">
-                                    <span class="small-alert" style="background-color:white;color:#5D5D5D">인기 프로젝트</span><br>
+                                    <span class="small-alert" style="background-color:white;color:#5D5D5D">추천 프로젝트</span><br>
                                     <span class="big-text">{{project.title}}</span><br>
-                                    <small>{{project.description}}</small>
+                                    <div class="small">{{project.description}}</div>
                                 </div>
                             </div>
                           </div>
@@ -171,6 +174,9 @@ export default {
   computed: {
   },
   methods: {
+    gotoTagProject(route) {
+      this.$router.replace(this.$route.query.redirect || '/projview/' + route + '/')
+    },
     async getAllProject() {
       await axios.get('/api/project').then(res => {
         this.allProjectNum = res.data.length
@@ -179,7 +185,7 @@ export default {
       this.showCarousel2 = true
     },
     async getPopProject() {
-      await axios.get('/api/project/popular').then(res => {
+      await axios.get('/api/project/info/popular').then(res => {
         this.popProjectList = res.data
       })
       this.showCarousel1 = true
@@ -273,8 +279,10 @@ export default {
         padding-top:70px;
         padding-left:30px;
     }
-    .image-box .text-box small {
+    .image-box .text-box .small {
         font-weight: 100;
+        overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+        width:80%;
     }
     .image-box .text-box .big-text{
         font-size:30px;
@@ -302,5 +310,22 @@ export default {
         height:20vh;
         overflow-x:scroll;
         overflow-y:scroll;
+    }
+    .pop-box {
+        margin-bottom:5px;
+        border-bottom: 1px solid #C5C5C5;
+    }
+    .pop-box .icon {
+        padding-left:3px;
+        padding-right:3px;
+        border: 1px solid #C5C5C5;
+        display: inline-block;
+    }
+    .pop-box .title {
+        display: inline-block;
+        overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+        width:90%;
+        font-size:13px;
+        color:#6B6B6B;
     }
 </style>
