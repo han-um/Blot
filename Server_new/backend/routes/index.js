@@ -23,26 +23,29 @@ const Project = require('../models/project');
 const Sentence = mongoose.model('Sentence',require('../models/sentence'));
 const Trans = mongoose.model('Trans', require('../models/trans'));
 
-const Sequelize = require('sequelize');
-const db = {};
+// mysql connection을 따로 둠
+const db = require('../setting/mysqlConnection');
+
+// const Sequelize = require('sequelize');
+// const db = {};
 
 // express와 mysql 연결
-const sequelize = new Sequelize(process.env.MYSQL_URI);
-sequelize
-    .authenticate()
-    .then(() => console.log('Connected to mysqld server'))
-    .catch(e => console.error(e));
+// const sequelize = new Sequelize(process.env.MYSQL_URI);
+// sequelize
+//     .authenticate()
+//     .then(() => console.log('Connected to mysqld server'))
+//     .catch(e => console.error(e));
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+// db.sequelize = sequelize;
+// db.Sequelize = Sequelize;
 
-// Mysql 모델과 sequelize 연결
-db.User = require('../models/user')(sequelize, Sequelize);
-db.Library = require('../models/library')(sequelize, Sequelize);
+// // Mysql 모델과 sequelize 연결
+// db.User = require('../models/user')(sequelize, Sequelize);
+// db.Library = require('../models/library')(sequelize, Sequelize);
 
-// User와 Library는 1:N 관계
-db.User.hasMany(db.Library);
-db.Library.belongsTo(db.User);
+// // User와 Library는 1:N 관계
+// db.User.hasMany(db.Library);
+// db.Library.belongsTo(db.User);
 
 const Klaytn = require('../blockchain/contract');
 const myKlaytn = Klaytn();
@@ -594,6 +597,57 @@ router.get('/:p_num', function(req, res, next){
         else {
             res.send(doc);
         }
+    });
+});
+
+// 인기있는 프로젝트 정보 가져오기
+router.get('/popular', function(req, res, next){
+    // mysql에서 projectId별 즐겨찾기 수(내림차순) 가져오기
+    db.sequelize.query(
+        `SELECT projId, count(projId) AS cnt
+        FROM BLOT.library
+        group by(projId)
+        order by cnt DESC`,
+        { type : db.Sequelize.QueryTypes.SELECT, raw:true}
+    )
+    .then(result => {
+        console.log(result);
+
+        // 인기있는 프로젝트 수는 최대 10개만 하자
+        var projSize = result.length;
+        if(projSize>10)
+            projSize = 10;
+
+        var projIdArray = new Array();
+        var projScore = new Array();
+        for(var i=0; i<projSize; i++) {
+            projIdArray.push(result[i].projId);
+            projScore[result[i].projId]=result[i].cnt;
+        }
+        
+        // projIdArray에 담은 순서대로 쿼리가 진행되는 것이 아니라 정렬한 게 의미가 없어짐
+        Project.find(
+            {'_id': projIdArray},
+            {'_id': true, 'title': true, 'description':true, 'start': true, 'end': true, 'icon': true, 'color': true, 'image': true, valid: true, tags: true}
+        )
+        .then(result => {
+            // Oject Array에 key 추가가 안되어서 이 과정을 거침
+            var result = JSON.parse(JSON.stringify(result));
+
+            // // 프로젝트 정보에 즐겨찾기 수 정보를 넣어줌
+            for(var i=0; i<result.length; i++) {
+                result[i].cnt = projScore[result[i]._id];
+            }
+
+            result.sort(function(a, b) {
+                return a.cnt < b.cnt; 
+            })
+
+            res.send(result);
+        }). catch(err => {
+            console.log(err);
+            res.send(false);
+        });
     });
 });
 

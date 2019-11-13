@@ -69,6 +69,9 @@ export default {
   SET_CURRENT_BLOTS (state, blots) {
     state.crntBlots = blots
   },
+  SET_CURRENT_KLAY (state, klays) {
+    state.crntKlays = klays
+  },
   SET_CURRENT_RELIABILITY (state, userReliability) {
     state.crntReliability = userReliability
   },

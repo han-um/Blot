@@ -134,13 +134,12 @@
 	> trans_text : 번역문[string]
     > userId : 계정명[string]
 
-- 전체프로젝트 제목,태그,시작일,마감일,아이콘,색상  조회 [GET] - /api/project/
+- 전체프로젝트 제목,태그,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/
     > Return : [제목, 태그, 시작일, 마감일, 아이콘, 색상] 배열 반환
     
 - 특정프로젝트 제목,태그,시작일,마감일,아이콘,색상 조회 [GET] - /api/project/:p_num
 	> p_num : 프로젝트 ObjectId[string]
     > Return : [제목, 태그, 시작일, 마감일 ,아이콘, 색상] 반환
-    
 
 - 특정프로젝트 전체원본문장 조회 [GET] - /api/project/:p_num/sentence
 	> p_num : 프로젝트 ObjectId[string]
@@ -210,13 +209,31 @@
 	> p_num : 프로젝트 ObjectId[string]
     > Return : 프로젝트 최종 번역 문장[string Array]
 
-- **<U>프로젝트의 번역 문장 별 평가점수 가져오기 [GET] - /api/project/:p_num/sentence/:s_num/score </U>**
+- **<U>프로젝트의 번역 문장 별 평가점수 조회 (내림차순으로 전달됨) [GET] - /api/project/:p_num/sentence/:s_num/score</U>**
     > p_num : 프로젝트 ObjectId[string]  
     > s_num: 문장 번호[number]  
     > Return - [ {transId : 번역자, transText : 번역내용, score : 받은 평가점수} ] 객체배열 존재하지 않을시 false
 
-
-
+- **<U>인기있는(즐겨찾기 수가 많은) 프로젝트 정보 조회(제목, 태그, 시작일, 마감일, 아이콘, 색상, 사용자들이 즐겨찾기한 횟수) 조회 (내림차순으로 전달됨) [GET] - /api/project/popular</U>**
+    > Return : [제목, 태그, 시작일, 마감일 ,아이콘, 색상, 사용자들이 즐겨찾기한 횟수] 반환 (아래 참조)
+    > 프로젝트 개수는 최대 10개가 반환되며, 그 이하 개수는 그 갯수만큼만 반환됨.
+    ``` javascript
+    [ 
+        { 
+            tags: [ '운영체제', '자료구조' ],
+            valid: 1,
+            _id: '5dcab1afdffce7401822e637',
+            start: '2019-11-12T13:20:47.801Z',
+            title: 'EndTest',
+            description: 'EndTest',
+            end: '2019-11-27T15:00:00.000Z',
+            icon: 'ri-calculator-line',
+            image: '1573564848615.jpg',
+            cnt: 1 
+        }
+    ]
+    ```
+    
 ### TODO
 - 프로젝트 검색어 조회 ( GET /api/project/keyword/:key ) 에서 description이 일부 프로젝트만 출력되는 문제 해결
 
