@@ -89,7 +89,6 @@ export default {
     checkBlockChain() {
       // 블록체인 로그인 체크
       if (sessionStorage.getItem('walletInstance')) {
-        console.log(sessionStorage.getItem('walletInstance'))
         this.isBlockChain = true
       } else {
         this.isBlockChain = false

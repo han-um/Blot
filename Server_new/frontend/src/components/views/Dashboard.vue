@@ -324,7 +324,7 @@ export default {
     .pop-box .title {
         display: inline-block;
         overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
-        width:90%;
+        width:80%;
         font-size:13px;
         color:#6B6B6B;
     }

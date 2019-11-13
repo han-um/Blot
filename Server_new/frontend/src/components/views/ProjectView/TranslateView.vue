@@ -16,7 +16,6 @@
           <OriginalText v-if="crntMenu === 'original'" v-for="(sentence, i) in sentences" :text="sentence.raw_text" :index="i"></OriginalText>
           <OriginalText v-if="crntMenu === 'translate'" v-for="(sentence, i) in sentences" :text="sentence.raw_text" :index="i"></OriginalText>   
       </div>
-      {{transSentences}}
   </div>
 </template>
 
