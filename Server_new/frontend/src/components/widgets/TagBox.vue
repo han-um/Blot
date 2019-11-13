@@ -40,6 +40,7 @@ export default {
         padding-right:10px;
         display:inline-block;
         margin:3px;
+        cursor: pointer;
     }
     .tag-box:hover {
         background-color:#E8E8E8;

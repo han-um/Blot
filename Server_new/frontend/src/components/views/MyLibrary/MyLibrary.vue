@@ -143,6 +143,7 @@ box-shadow: -1px 2px 6px -1px rgba(0,0,0,0.57);
         margin-right:15px;
         width:calc(100%-30px);
         font-size:12px;
+        cursor: pointer;
     }
     .now {
         color:#6B6B6B!important;

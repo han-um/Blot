@@ -422,6 +422,7 @@ Vue.use(VCalendar)
         text-align: center;
         vertical-align: middle;
         color:white;
+        cursor: pointer;
     }
     
     .submit-btn .inner-text {

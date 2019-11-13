@@ -38,6 +38,7 @@ export default {
     vertical-align: middle;
     height:40px;
     font-size:15px;
+    cursor: pointer;
   }
   .icon-box i {
     padding:10px;

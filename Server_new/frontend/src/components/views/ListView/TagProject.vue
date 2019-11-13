@@ -106,6 +106,7 @@ export default {
         margin:0px;
         padding-right:10px;
         padding-bottom:10px;
+        cursor: pointer;
     }
     .icon-box {
         padding: 5px;
@@ -175,5 +176,6 @@ export default {
         text-decoration: underline;
         font-weight: 600;
         color:white;
+        cursor: pointer;
     }
 </style>
