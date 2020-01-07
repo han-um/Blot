@@ -59,9 +59,9 @@ Blot은 블록체인 기반 공동 번역 시스템입니다. 전문 지식이 �
 
 ## 시스템 구성도
 - 전체 구성도
-![structure](./IMG/structure.png){: width="70%"}
+![structure](./IMG/structure.png)
 - 플로우 차트
-![flow](./IMG/flow.png){: width="70%"}
+![flow](./IMG/flow.png)
 
 ## 기술 스택
 ![stack](./IMG/stack.png)
