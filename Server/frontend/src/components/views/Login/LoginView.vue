@@ -36,7 +36,7 @@ export default {
 
 <style scoped>
     .login-wrapper {
-      background: url(/static/img/blurwp.PNG) no-repeat center center/cover; 
+      background: url(/static/img/blurwp.png) no-repeat center center/cover; 
         overflow-y:scroll;
         height: 100%;
     }
