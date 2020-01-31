@@ -96,7 +96,7 @@ export default {
 /* BLOT : Sidebar Style */
     .skin-black-light .main-sidebar,
     .skin-black-light .left-side {
-      background: url(/static/img/blurwp.PNG) no-repeat center center/cover;
+      background: url(/static/img/blurwp.png) no-repeat center center/cover;
       color:white; 
     }
 
