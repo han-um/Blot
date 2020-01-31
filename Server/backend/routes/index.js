@@ -392,6 +392,9 @@ router.get('/manual/:p_num', function(req, res, next) {
     });
 })
 
+// 프론트엔드 라우팅
+router.get('/', function(req, res, next) { res.sendFile(path.join(__dirname, '../public', 'index.html')); });
+
 
 // 프로젝트 정보 등록하기
 router.post('/', function(req, res, next){
