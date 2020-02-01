@@ -23,16 +23,17 @@ Blot은 블록체인 기반 공동 번역 시스템입니다. 전문 지식이 �
 
 
 ## 구동 방법
-- FrontEnd
+- 구동 방법
     - Node.js 10.16.3 Required
-        > cd .../Server/frontend
+    - Python 2.7 Required
+        > cd ../Server/backend
         > npm install
-        > npm run dev
-- BackEnd
-    - Node.js 10.16.3 Required
-    > cd .../Server/backend
+        > node app.js
+- Build FrontEnd
+    - 빌드 시 /backend/public 에 저장됨
+    > cd .../Server/frontend
     > npm install
-    > node app.js
+    > npm run build
 - DB
     - MYSQL 5.0.77 Required
         - ./_DB_Backups/MySQL
