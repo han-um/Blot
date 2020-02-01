@@ -73,6 +73,7 @@ export default {
       })
     },
     setFavorite() {
+    /* Demo
       if (this.isFavorite) {
         this.$swal('즐겨찾기 실패', '이미 즐겨찾기에 등록되어 있습니다.', 'error')
       } else {
@@ -82,6 +83,7 @@ export default {
           this.isFavorite = true
         })
       }
+    */
     }
   },
   mounted () {

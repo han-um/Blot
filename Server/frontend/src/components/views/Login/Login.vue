@@ -3,9 +3,9 @@
   <div class="login-form">
           <router-link to="/"><i class="ri-shape-2-fill"></i>
           <div class="logo-title">blot</div></router-link>
-          <input type="text" v-model="inpUsername" placeholder="계정 이름"><br>
+          <input type="text" v-model="inpUsername" placeholder="계정 이름" disabled><br> <!--Demo-->
           <div class="password-box">
-              <input type="password" v-model="inpPassword" id="password" placeholder="암호">
+              <input type="password" v-model="inpPassword" id="password" placeholder="암호" disabled> <!--Demo-->
               <button class="login-button" v-on:click="loginActive()"><i class="ri-send-plane-fill"></i></button>
           </div>
           <div class="login-menu">
@@ -23,8 +23,9 @@ export default {
   },
   data: function () {
     return {
-      inpUsername: '',
-      inpPassword: ''
+      // Demo
+      inpUsername: 'Andew',
+      inpPassword: 'soft2013!'
     }
   },
   computed: {

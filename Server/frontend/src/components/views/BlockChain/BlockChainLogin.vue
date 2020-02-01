@@ -36,7 +36,7 @@
                   <div class="info-footer">
                     <button type="button" class="btn btn-primary"  v-on:click="$store.commit('TOGGLE_BLOCKCHAIN_LOGIN')" >돌아가기</button>
                       <button type="button" class="btn btn-primary" id="submit" v-on:click="handleLoginByKeyStore()" style="
-        border-left:1px solid white;">제출</button>
+        border-left:1px solid white;" disabled>제출</button> <!--Demo-->
                     </div>
                   <!-- 비밀키로 로그인
                   <div id="myPrivateKey">
@@ -103,6 +103,7 @@ export default {
       return isValidKeystore
     },
     handleLoginByKeyStore() {
+      /* Demo
       try {
         const privateKey = cav.klay.accounts.decrypt(this.$store.state.keystore, this.password).privateKey
         this.integrateWallet(privateKey)
@@ -110,6 +111,7 @@ export default {
       } catch (e) {
         this.errorMsg = '비밀번호가 잘못되었습니다!'
       }
+      */
     },
     integrateWallet(privateKey) {
        // walletInstance는 계정 정보라고 생각하면 된다.

@@ -24,6 +24,9 @@
 
         this.$router.push('/login')
       }
+    },
+    mounted () {
+      this.$swal('This is a Demo Version', '이 시스템은 데모입니다. <br> 일부 기능은 비활성화되어있습니다.<br><br><a href="https://github.com/han-um/Blot">https://github.com/han-um/Blot</a><br><a href="mailto:boncheolb@gmail.com">boncheolb@gmail.com</a><br>', 'warning')
     }
   }
 </script>

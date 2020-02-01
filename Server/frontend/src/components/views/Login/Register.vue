@@ -54,7 +54,7 @@
                           <input type="text" v-model="inpUserId" placeholder="이름" name="username" id="username">
                           <input type="password" v-model="inpPassword" placeholder="비밀번호" name="password" id="password">
                           <input type="password" v-model="inpPasswordRe" placeholder="비밀번호 재입력" name="password-re" id="password-re">
-                          <input type="text" v-model="inpEmail" placeholder="이메일" name="email" id="email">
+                          <input type="text" v-model="inpEmail" placeholder="이메일" name="email" id="email" disabled>
                           <button class="email-button"><i class="ri-send-plane-fill"></i></button>
                       </form>
                       <br>
@@ -76,7 +76,7 @@
           </div>
           <center><span class="error-msg">{{errorMsg}}</span></center>
           <div class="login-buttons">
-            <center><button v-on:click="nowPage='agree'">이전</button><button v-on:click="RegisterPost()">회원가입</button></center>
+            <center><button v-on:click="nowPage='agree'">이전</button><button v-on:click="RegisterPost()" disabled>회원가입</button></center> <!--Demo-->
           </div>
       </div>
       </transition>
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+/* Demo import axios from 'axios' */
 
 export default {
   name: 'Register',
@@ -114,6 +114,7 @@ export default {
     ValidCheck: function (event) {
     },
     RegisterPost: function (event) {
+      /* Demo
       this.inpImage = this.$refs.userImage.files[0]
       const formData = new FormData()
       formData.append('userFile', this.inpImage)
@@ -123,6 +124,7 @@ export default {
           console.log(res2)
         })
       })
+      */
     }
   },
   computed: {

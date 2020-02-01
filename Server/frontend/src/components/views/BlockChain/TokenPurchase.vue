@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// Demo import axios from 'axios'
 // import Caver from 'caver-js'
 // import contractInfo from './contractInfo'
 // const cav = new Caver('https://api.baobab.klaytn.net:8651/')
@@ -100,6 +100,7 @@ export default {
       this.inpToken = num
     },
     purchaseToken() {
+      /* Demo
       console.log('지갑:' + this.$store.state.crntWalletId)
       var payload = {'userAddress': this.$store.state.crntWalletId, 'klayNum': this.inpToken / 10000}
       this.$store.dispatch('PURCHASE_BLOT_TOKEN', payload)
@@ -125,6 +126,7 @@ export default {
         this.alertColor = '#dd4b39'
         this.showAlert = true
       })
+      */
     },
     async getKlay() {
       await this.$store.dispatch('REFRESH_KLAY_BALANCE_BY_ADDR', this.$session.get('username'))

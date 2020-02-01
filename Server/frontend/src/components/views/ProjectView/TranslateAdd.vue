@@ -21,6 +21,14 @@ export default {
   },
   methods: {
     addTrans() {
+      this.$swal('등록 성공', '번역이 등록되었습니다.', 'success')
+      this.inputText = ''
+      var payload = { 'p_num': this.$route.params.id, 'index': this.$store.state.crntStcIndex + 1 }
+      this.$store.dispatch('SKIP_CURRENT_SENTENCE', payload).then(function (resolvedData) {
+        this.$root.$emit('TranslateEval')
+      })
+    /* Demo
+        })
       axios.post('/api/project/trans', {p_num: this.$route.params.id, s_num: this.$store.state.crntStcIndex, trans_text: this.inputText, userId: this.$session.get('username')})
       .then(res => {
         this.$swal('등록 성공', '번역이 등록되었습니다.', 'success')
@@ -33,6 +41,7 @@ export default {
           this.$root.$emit('TranslateEval')
         })
       })
+      */
     }
   },
   mounted () {}

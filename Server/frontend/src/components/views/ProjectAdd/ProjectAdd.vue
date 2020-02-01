@@ -110,7 +110,7 @@
 <script>
 import VTagInput from 'v-tag-input'
 import IconSelector from './IconSelector'
-import axios from 'axios'
+// Demo import axios from 'axios'
 export default {
   name: 'ProjectAdd',
   components: {
@@ -134,6 +134,7 @@ export default {
   },
   methods: {
     addProject () {
+    /* Demo
       // 이미지 폼 세팅
       this.projectImage = this.$refs.projectImage.files[0]
       const formData = new FormData()
@@ -215,6 +216,7 @@ export default {
           this.$swal('프로젝트 등록 실패', '블록체인 대납 서명 & DB 데이터 지우기 실패하였습니다.(Step 3)<br>' + err, 'error')
         })
       })
+      */
     },
     previewImage: function(event) {
       var input = event.target
